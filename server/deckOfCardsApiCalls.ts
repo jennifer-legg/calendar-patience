@@ -1,11 +1,13 @@
 import request from 'superagent'
+import type { Deck, DrawnCards, DrawnFromPile, PileData } from '../models/deck'
 
 // Shuffle new deck. Add deck_count to define the number of Decks you want to use.
 // The default is 1. Returns type Deck
 export async function shuffleNewDeck() {
-  return await request.get(
+  const response = await request.get(
     'https://www.deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1',
   )
+  return response.body as Deck
 }
 
 // Draw cards. The count variable defines how many cards to draw from the deck.
@@ -13,9 +15,10 @@ export async function shuffleNewDeck() {
 // Use 'new' instead of a deckid to create a new shuffled deck and draw cards at the same time.
 // Returns type DrawnCards
 export async function drawCards(numCards: number, deckId: string = 'new') {
-  return await request.get(
+  const response = await request.get(
     `https://www.deckofcardsapi.com/api/deck/${deckId}/draw/?count=${numCards}`,
   )
+  return response.body as DrawnCards
 }
 
 // Reshuffle the current deck.
@@ -31,7 +34,7 @@ export async function shuffleCards(deckId: string, allCards: boolean) {
       : await request.get(
           `https://www.deckofcardsapi.com/api/deck/${deckId}/shuffle/?remaining:true`,
         )
-  return response
+  return response.body as Deck
 }
 
 // Adding to piles. Does not work with multiple decks.
@@ -42,24 +45,27 @@ export async function shuffleCards(deckId: string, allCards: boolean) {
 // Cards parameter can be multiple cards separated by a comma eg "AS,2S"
 // Returns type PileData.
 export async function addToPile(deckId: string, pile: string, cards: string[]) {
-  return await request.get(
+  const response = await request.get(
     `https://www.deckofcardsapi.com/api/deck/${deckId}/pile/${pile}/add/?cards=${cards.join()}`,
   )
+  return response.body as PileData
 }
 
 // Shuffle pile. Does not work with multiple decks.
 // Returns type PileData
 export async function shufflePile(deckId: string, pile: string) {
-  return await request.get(
+  const response = await request.get(
     `https://www.deckofcardsapi.com/api/deck/${deckId}/pile/${pile}/shuffle/`,
   )
+  return response.body as PileData
 }
 
 //List cards in a pile. Will not work on multiple decks. Returns type PileData
 export async function listCardsInPile(deckId: string, pile: string) {
-  return await request.get(
+  const response = await request.get(
     `https://www.deckofcardsapi.com/api/deck/${deckId}/pile/${pile}/list/`,
   )
+  return response.body as PileData
 }
 
 // Drawing from piles.
@@ -75,11 +81,16 @@ export async function listCardsInPile(deckId: string, pile: string) {
 export async function drawFromPile(
   deckId: string,
   pile: string,
-  details: string,
+  details: string | null = null,
 ) {
-  return await request.get(
-    `https://www.deckofcardsapi.com/api/deck/${deckId}/pile/${pile}/draw/${details}/`,
-  )
+  const response = details
+    ? await request.get(
+        `https://www.deckofcardsapi.com/api/deck/${deckId}/pile/${pile}/draw/${details}/`,
+      )
+    : await request.get(
+        `https://www.deckofcardsapi.com/api/deck/${deckId}/pile/${pile}/draw/`,
+      )
+  return response.body as DrawnFromPile
 }
 
 // Returning drawn cards to the deck.
@@ -87,13 +98,14 @@ export async function drawFromPile(
 // Can take the cards parameter for a list of specific cards to return or return all if left blank
 // Returns type PileData
 export async function returnDrawnCardsToDeck(deckId: string, cards: string[]) {
-  return cards[0]
+  const response = cards[0]
     ? await request.get(
         `https://www.deckofcardsapi.com/api/deck/${deckId}/return/?${cards}`,
       )
     : await request.get(
         `https://www.deckofcardsapi.com/api/deck/${deckId}/return/`,
       )
+  return response.body as PileData
 }
 
 // Return cards to main deck from a pile
@@ -104,11 +116,12 @@ export async function returnCardsFromPileToDeck(
   cards: string[],
   pile: string,
 ) {
-  return cards[0]
+  const response = cards[0]
     ? await request.get(
         `https://www.deckofcardsapi.com/api/deck/${deckId}/pile/${pile}/return/?cards=${cards}`,
       )
     : await request.get(
         `https://www.deckofcardsapi.com/api/deck/${deckId}/pile/${pile}/return/`,
       )
+  return response.body as PileData
 }
