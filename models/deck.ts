@@ -22,10 +22,10 @@ export interface DrawnFromPile extends DrawnCards {
 
 export interface Card {
   code: string
-  image: URL
+  image: string
   images?: {
-    svg: URL
-    png: URL
+    svg: string
+    png: string
   }
   value: string
   suit: Suit
