@@ -7,11 +7,12 @@ import {
 import { getNewDeck } from '../apis/deck.ts'
 
 export function useNewDeck() {
-  const query = useQuery({ queryKey: ['deck'], queryFn: getNewDeck })
-  return {
-    ...query,
-    // Extra queries go here e.g. addFruit: useAddFruit()
-  }
+  const data = useQuery({
+    queryKey: ['deck'],
+    queryFn: getNewDeck,
+  })
+  return data
+  // Extra queries go here e.g. addFruit: useAddFruit()
 }
 
 // export function useFruitsMutation<TData = unknown, TVariables = unknown>(
