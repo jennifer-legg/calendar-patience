@@ -1,13 +1,13 @@
 import express from 'express'
 import * as Path from 'node:path'
 
-import deckOfCards from './routes/cards'
+import deckOfCards from './routes/clock.ts'
 
 const server = express()
 
 server.use(express.json())
 
-server.use('/api/v1/deck', deckOfCards)
+server.use('/api/v1/clock', deckOfCards)
 
 if (process.env.NODE_ENV === 'production') {
   server.use(express.static(Path.resolve('public')))

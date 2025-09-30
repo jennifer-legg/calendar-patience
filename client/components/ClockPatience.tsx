@@ -1,14 +1,14 @@
-// import { useNewDeck,  } from '../hooks/useDeck.ts'
 import { useNewDeck } from '../hooks/useDeck.ts'
 import OpenCard from './OpenCard.tsx'
 import Pile from './Pile.tsx'
-// import { useState } from 'react'
-// import type { Card } from '../../models/deck.ts'
+import { useState } from 'react'
+import type { Card } from '../../models/deck.ts'
 
 function ClockPatience() {
-  // const [isDrawn, setisDrawn] = useState<boolean>(false)
-  // const [openCard, setOpenCard] = useState<Card | null>(null)
-  // const [turnedCards, setTurnedCards] = useState([])
+  const [isDrawn, setisDrawn] = useState<boolean>(false)
+  const [openCard, setOpenCard] = useState<Card | null>(null)
+  const [currentPile, setCurrentPile] = useState<string | null>(null)
+
   const { data, isError, isPending, error } = useNewDeck()
 
   if (isPending) {
@@ -20,6 +20,7 @@ function ClockPatience() {
   }
 
   const deckId: string = data
+  console.log(deckId)
 
   //Setup piles
   const clockPosition = [
@@ -40,14 +41,15 @@ function ClockPatience() {
 
   const handlePileClick = (pile: string) => {
     console.log(`card clicked from ${pile}`)
-    // if (deckId) {
-    //   const { data } = drawCard(deckId, pile)
-    //   if (data && data.card) {
-    //     setisDrawn(true)
-    //     setOpenCard(data.card)
-    //   }
-    // }
+    setCurrentPile(pile)
+    setisDrawn(true)
   }
+
+  const handleUpdateCard = (card: Card) => {
+    setOpenCard(card)
+  }
+
+  console.log(openCard)
 
   return (
     <>
@@ -76,7 +78,7 @@ function ClockPatience() {
               return (
                 <div key={`pile${i}`}>
                   <Pile
-                    number={i}
+                    pileNumber={i}
                     deckId={deckId}
                     deg={item}
                     pileType={pileType}
@@ -86,7 +88,13 @@ function ClockPatience() {
               )
             })}
         </div>
-        {/* {isDrawn && openCard && <OpenCard card={openCard} />} */}
+        {isDrawn && currentPile && (
+          <OpenCard
+            deckId={deckId}
+            pile={currentPile}
+            handleUpdateCard={handleUpdateCard}
+          />
+        )}
       </div>
     </>
   )

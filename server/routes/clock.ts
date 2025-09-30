@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import * as doc from '../deckOfCardsApiCalls.ts'
-import { Card, PileData } from '../../models/deck.ts'
+import { Card, PileData, DrawnFromPile } from '../../models/deck.ts'
 
 const router = Router()
 
@@ -34,19 +34,19 @@ router.get('/new-deck', async (req, res) => {
   }
 })
 
-// router.get('/:deckId/draw-card/:pile', async (req, res) => {
-//   const { deckId, pile } = req.params
-//   try {
-//     //Draw a card from pile
-//     const drawnCards: DrawnFromPile = await doc.drawFromPile(deckId, pile)
-//     //Pass the card to the front end
-//     const card = drawnCards.cards[0]
-//     res.status(200).json(card)
-//   } catch (error) {
-//     console.log(error)
-//     res.status(500).json({ message: 'Something went wrong' })
-//   }
-// })
+router.get('/:deckId/draw-card/:pile', async (req, res) => {
+  const { deckId, pile } = req.params
+  try {
+    //Draw a card from pile
+    const drawnCards: DrawnFromPile = await doc.drawFromPile(deckId, pile)
+    //Pass the card to the front end
+    const card = drawnCards.cards[0]
+    res.status(200).json(card)
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ message: 'Something went wrong' })
+  }
+})
 
 // router.get('/:deckId/add-to-pile/:pileName/:cardCode', async (req, res) => {
 //   const { deckId, pileName, cardCode } = req.params

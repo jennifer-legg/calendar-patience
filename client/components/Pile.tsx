@@ -1,5 +1,5 @@
 interface Props {
-  number: number
+  pileNumber: number
   deckId: string
   deg: string
   pileType: string
@@ -7,7 +7,7 @@ interface Props {
 }
 
 export default function Pile({
-  number,
+  pileNumber,
   deg,
   pileType,
   handlePileClick,
@@ -15,12 +15,12 @@ export default function Pile({
   return (
     <div
       className={`${deg} circle-item`}
-      id={`facedown-position-${number}oclock`}
+      id={`facedown-position-${pileNumber}oclock`}
     >
       <p>{pileType} </p>
       <button
         className="card-container"
-        onClick={() => handlePileClick(pileType)}
+        onClick={() => handlePileClick(pileNumber.toString())}
       >
         <img
           className="card"
