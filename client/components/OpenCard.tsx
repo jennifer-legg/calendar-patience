@@ -1,24 +1,27 @@
 import { useGetCardFromPile } from '../hooks/useDeck.ts'
-import type { Card } from '../../models/deck.ts'
+import { useState } from 'react'
 
 interface Props {
   deckId: string
   pile: string
-  handleUpdateCard: (card: Card) => void
 }
 
-export default function OpenCard({ deckId, pile, handleUpdateCard }: Props) {
+export default function OpenCard({ deckId, pile }: Props) {
+  const [isBeingDragged, setIsBeingDragged] = useState<boolean>(false)
+
   const {
     data: card,
     isError,
     isPending,
     error,
-  } = useGetCardFromPile(deckId, `pile${pile}`)
+  } = useGetCardFromPile(deckId, pile)
 
   if (isError) {
-    ;<div>
-      <p>{error.message}</p>
-    </div>
+    return (
+      <div>
+        <p>Error {error && <>{error.message}</>}</p>
+      </div>
+    )
   }
 
   if (isPending) {
@@ -30,10 +33,33 @@ export default function OpenCard({ deckId, pile, handleUpdateCard }: Props) {
   }
 
   if (card) {
-    handleUpdateCard(card)
+    const handleDrag = (event: React.DragEvent<HTMLDivElement>) => {
+      event.preventDefault()
+    }
+
+    const handleDragStart = (event: React.DragEvent<HTMLDivElement>) => {
+      setIsBeingDragged(true)
+      event.dataTransfer.clearData()
+      event.dataTransfer.setData('application/json', JSON.stringify(card))
+      event.dataTransfer.effectAllowed = 'move'
+      // event.preventDefault()
+    }
+
+    const handleDragEnd = (event: React.DragEvent<HTMLDivElement>) => {
+      setIsBeingDragged(false)
+      event.preventDefault()
+    }
+
     return (
-      <div>
+      <div
+        className={`draggablediv ${isBeingDragged ? 'dragging' : ''}`}
+        draggable="true"
+        onDrag={handleDrag}
+        onDragStart={handleDragStart}
+        onDragEnd={handleDragEnd}
+      >
         <img
+          draggable="false"
           src={card.image}
           alt={`Playing card face-up, the ${card.value} of ${card.suit}`}
         />

@@ -19,12 +19,6 @@ h1 {
   text-align: center;
 }
 
-.card {
-  max-width: 100%;
-  max-height: 100%;
-  overflow: hidden;
-}
-
 .card-container {
   margin: none;
   padding: none;
@@ -35,9 +29,6 @@ h1 {
 
 .circle-item {
   position: absolute; 
-  width: 90px; 
-  height: 120px;
-  background-color: rgb(247, 244, 244);
   display: block; 
   justify-content: center;
   align-items: center;
@@ -46,6 +37,57 @@ h1 {
   left: 40%;
   margin: 0px;
   border: none;
+}
+
+.highlight {
+  background-color: rgb(27, 169, 122);
+  width: 100px; 
+  height: 130px;
+}
+
+.no-highlight {
+  width: 90px; 
+  height: 120px;
+  background-color: rgb(247, 244, 244);
+}
+
+.dragging {
+  opacity: 0.5;
+}
+
+.stacked-cards {
+  position: relative; /* Establish a positioning context */
+  max-width: 90px; /* Adjust as needed */
+  margin: 50px auto;
+}
+
+.card {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  position: sticky; /* Make cards sticky within their parent */
+  top: 0; /* Initial sticky position */
+  z-index: 1; /* Ensure cards stack correctly */
+}
+
+.stacked-cards img {
+  max-width: 100%;
+  max-height: 100%;
+  overflow: hidden;
+}
+
+/* Dynamically adjust 'top' for each card to create the stacked effect */
+.card:nth-child(1) {
+  top: 0px;
+  z-index: 3; /* Higher z-index for the top card */
+}
+
+.card:nth-child(2) {
+  top: 20px; /* Adjust this value to control the visible portion of the card below */
+  z-index: 2;
+}
+
+.card:nth-child(3) {
+  top: 40px; /* Adjust this value to control the visible portion of the card below */
+  z-index: 1;
 }
 
 // .circle-container img { display: block; width: 100%; }

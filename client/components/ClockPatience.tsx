@@ -2,11 +2,9 @@ import { useNewDeck } from '../hooks/useDeck.ts'
 import OpenCard from './OpenCard.tsx'
 import Pile from './Pile.tsx'
 import { useState } from 'react'
-import type { Card } from '../../models/deck.ts'
 
 function ClockPatience() {
   const [isDrawn, setisDrawn] = useState<boolean>(false)
-  const [openCard, setOpenCard] = useState<Card | null>(null)
   const [currentPile, setCurrentPile] = useState<string | null>(null)
 
   const { data, isError, isPending, error } = useNewDeck()
@@ -45,11 +43,9 @@ function ClockPatience() {
     setisDrawn(true)
   }
 
-  const handleUpdateCard = (card: Card) => {
-    setOpenCard(card)
+  const handleDroppedCard = (isVisible: boolean) => {
+    setisDrawn(isVisible)
   }
-
-  console.log(openCard)
 
   return (
     <>
@@ -83,17 +79,14 @@ function ClockPatience() {
                     deg={item}
                     pileType={pileType}
                     handlePileClick={handlePileClick}
+                    handleDroppedCard={handleDroppedCard}
                   />
                 </div>
               )
             })}
         </div>
         {isDrawn && currentPile && (
-          <OpenCard
-            deckId={deckId}
-            pile={currentPile}
-            handleUpdateCard={handleUpdateCard}
-          />
+          <OpenCard deckId={deckId} pile={currentPile} />
         )}
       </div>
     </>
