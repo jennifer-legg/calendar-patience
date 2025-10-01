@@ -19,6 +19,7 @@ export default function Pile({
 }: Props) {
   const [isHighlighted, setHighlight] = useState<boolean>(false)
   const [faceUpCards, setFaceUpCards] = useState<Card[]>([])
+  const [buttonIsVisible, setButtonIsVisible] = useState<boolean>(true)
 
   const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault()
@@ -47,8 +48,10 @@ export default function Pile({
     ) {
       event.preventDefault()
       setFaceUpCards([...faceUpCards, card])
-      console.log(card, faceUpCards)
       handleDroppedCard(false)
+    }
+    if (pileType === 'King' && faceUpCards.length >= 3) {
+      setButtonIsVisible(false)
     }
     setHighlight(false)
   }
@@ -64,26 +67,35 @@ export default function Pile({
     >
       <p>{pileType} </p>
       <div className="stacked-cards">
-        {faceUpCards.length > 0 && (
-          <div className="card">
-            {faceUpCards.map((card: Card) => (
-              <img
-                key={`${card.code}`}
-                alt={`${card.value} of ${card.suit}`}
-                src={card.image}
-              ></img>
-            ))}
-          </div>
+        {buttonIsVisible && (
+          <button
+            className="card-button card"
+            onClick={() => {
+              handlePileClick(`pile${pileNumber}`)
+              if (faceUpCards.length >= 4) {
+                setButtonIsVisible(false)
+              }
+            }}
+          >
+            <img
+              src="https://www.deckofcardsapi.com/static/img/back.png"
+              alt="Back of a playing card with white and black patterning"
+            />
+          </button>
         )}
-        <button
-          className="card-container"
-          onClick={() => handlePileClick(`pile${pileNumber}`)}
-        >
-          <img
-            src="https://www.deckofcardsapi.com/static/img/back.png"
-            alt="Back of a playing card with white and black patterning"
-          />
-        </button>
+
+        {faceUpCards.length > 0 && (
+          <>
+            {faceUpCards.map((card: Card) => (
+              <div key={`${card.code}`} className="card">
+                <img
+                  alt={`${card.value} of ${card.suit}`}
+                  src={card.image}
+                ></img>
+              </div>
+            ))}
+          </>
+        )}
       </div>
     </div>
   )

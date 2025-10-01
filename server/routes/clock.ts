@@ -5,7 +5,6 @@ import { Card, PileData, DrawnFromPile } from '../../models/deck.ts'
 const router = Router()
 
 router.get('/new-deck', async (req, res) => {
-  console.log('router called')
   try {
     //Initiate deck and draw 4 cards
     const newDeck = await doc.drawCards(52)
@@ -41,23 +40,12 @@ router.get('/:deckId/draw-card/:pile', async (req, res) => {
     const drawnCards: DrawnFromPile = await doc.drawFromPile(deckId, pile)
     //Pass the card to the front end
     const card = drawnCards.cards[0]
+    console.log(card, deckId)
     res.status(200).json(card)
   } catch (error) {
     console.log(error)
     res.status(500).json({ message: 'Something went wrong' })
   }
 })
-
-// router.get('/:deckId/add-to-pile/:pileName/:cardCode', async (req, res) => {
-//   const { deckId, pileName, cardCode } = req.params
-//   try {
-//     //Put card into a pile
-//     const pile: PileData = await doc.addToPile(deckId, pileName, [cardCode])
-//     res.status(200).json(pile)
-//   } catch (error) {
-//     console.log(error)
-//     res.status(500).json({ message: 'Something went wrong' })
-//   }
-// })
 
 export default router

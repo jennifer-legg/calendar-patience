@@ -42,7 +42,6 @@ export default function OpenCard({ deckId, pile }: Props) {
       event.dataTransfer.clearData()
       event.dataTransfer.setData('application/json', JSON.stringify(card))
       event.dataTransfer.effectAllowed = 'move'
-      // event.preventDefault()
     }
 
     const handleDragEnd = (event: React.DragEvent<HTMLDivElement>) => {
@@ -52,7 +51,7 @@ export default function OpenCard({ deckId, pile }: Props) {
 
     return (
       <div
-        className={`draggablediv ${isBeingDragged ? 'dragging' : ''}`}
+        className={`draggablediv ${isBeingDragged ? 'dragging' : ''} open-card`}
         draggable="true"
         onDrag={handleDrag}
         onDragStart={handleDragStart}
