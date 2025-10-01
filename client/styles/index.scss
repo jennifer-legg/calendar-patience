@@ -14,7 +14,7 @@ h1 {
   position: relative;
   width: 400px;
   height: 600px;
-  padding: 30px 200px;
+  padding: 30px 400px;
   border-radius: 50%;
   margin: auto;
   text-align: center;
@@ -61,17 +61,7 @@ h1 {
   max-width: 100%;
   max-height: 100%;
   overflow: hidden;
-  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
-}
-
-.highlight {
-  background-color: rgb(27, 169, 122);
-  width: 100px; 
-  height: 130px;
-}
-
-.no-highlight {
-  background-color: rgb(247, 244, 244);
+  box-shadow: 0 6px 100px rgba(0, 0, 0, 0.1);
 }
 
 .dragging {
@@ -110,8 +100,25 @@ h1 {
   z-index: 1;
 }
 
-.middle { transform: rotate(30deg) rotate(-30deg); }
-.deg0 { transform: translate(285px); } /* 12em = half the width of the wrapper */
+.alert-message {
+  z-index: 100;
+  background-color: black;
+  color: white;
+  height: 200px;
+  width: 300px;
+  position: absolute;
+  top: 200px;
+  right: 1000px;
+  padding: 10px;
+  text-align: center;
+}
+
+.glow {
+  box-shadow: 0 0 100px rgb(10, 99, 195);
+}
+
+.king { transform: rotate(30deg) rotate(-30deg); }
+.deg0 { transform: translate(285px); }
 .deg30 { transform: rotate(30deg) translate(230px) rotate(-30deg); }
 .deg60 { transform: rotate(60deg) translate(230px) rotate(-60deg); }
 .deg90 { transform: rotate(90deg) translate(230px) rotate(-90deg); }

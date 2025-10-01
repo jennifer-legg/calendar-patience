@@ -2,12 +2,15 @@ import { useNewDeck } from '../hooks/useDeck.ts'
 import OpenCard from './OpenCard.tsx'
 import Pile from './Pile.tsx'
 import { useState } from 'react'
+import GameEndMessage from './GameEndMessage'
 
 function ClockPatience() {
   const [isDrawn, setisDrawn] = useState<boolean>(false)
   const [currentPile, setCurrentPile] = useState<string | null>(null)
+  const [gameLost, setGameLost] = useState<boolean>(false)
+  const [gameEnded, setGameEnded] = useState<boolean>(false)
 
-  const { data, isError, isPending, error } = useNewDeck()
+  const { data: deckId, isError, isPending, error, refetch } = useNewDeck()
 
   if (isPending) {
     return <p>Loading...</p>
@@ -16,9 +19,6 @@ function ClockPatience() {
   if (isError) {
     return <p>{error.message}</p>
   }
-
-  const deckId: string = data
-  console.log(deckId)
 
   //Setup piles
   const clockPosition = [
@@ -38,7 +38,6 @@ function ClockPatience() {
   ]
 
   const handlePileClick = (pile: string) => {
-    console.log(`card clicked from ${pile}`)
     setCurrentPile(pile)
     setisDrawn(true)
   }
@@ -47,46 +46,61 @@ function ClockPatience() {
     setisDrawn(isVisible)
   }
 
+  const handleResetGame = () => {
+    setisDrawn(false)
+    setCurrentPile(null)
+    refetch()
+    setGameEnded(false)
+    setGameLost(false)
+  }
+
+  const handleGameLost = (isLost: boolean) => {
+    setGameLost(isLost)
+    setGameEnded(isLost)
+  }
+
   return (
     <>
       <div className="app">
         <h1>Calendar Patience</h1>
-        <div className="circle-container">
-          {deckId &&
-            clockPosition.map((item, i) => {
-              let pileType: string = ''
-              switch (i) {
-                case 0:
-                  pileType = 'King'
-                  break
-                case 1:
-                  pileType = 'Ace'
-                  break
-                case 11:
-                  pileType = 'Jack'
-                  break
-                case 12:
-                  pileType = 'Queen'
-                  break
-                default:
-                  pileType = `${i}`
-              }
-              return (
-                <div key={`pile${i}`}>
-                  <Pile
-                    pileNumber={i}
-                    deckId={deckId}
-                    deg={item}
-                    pileType={pileType}
-                    handlePileClick={handlePileClick}
-                    handleDroppedCard={handleDroppedCard}
-                  />
-                </div>
-              )
-            })}
+        <div className="circle-container" key={deckId}>
+          {clockPosition.map((item, i) => {
+            let pileType: string = ''
+            switch (i) {
+              case 0:
+                pileType = 'king'
+                break
+              case 1:
+                pileType = 'ace'
+                break
+              case 11:
+                pileType = 'jack'
+                break
+              case 12:
+                pileType = 'queen'
+                break
+              default:
+                pileType = `${i}`
+            }
+            return (
+              <div key={`pile${i}-${deckId}`}>
+                <Pile
+                  pileNumber={i}
+                  deg={item}
+                  pileType={pileType}
+                  handlePileClick={handlePileClick}
+                  handleDroppedCard={handleDroppedCard}
+                  gameLost={handleGameLost}
+                />
+              </div>
+            )
+          })}
         </div>
         {isDrawn && currentPile && (
-          <OpenCard deckId={deckId} pile={currentPile} />
+          <OpenCard deckId={deckId} pile={currentPile} key={deckId} />
+        )}
+        {gameEnded && (
+          <GameEndMessage gameLost={gameLost} resetGame={handleResetGame} />
         )}
       </div>
     </>
