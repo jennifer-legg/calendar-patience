@@ -21,21 +21,7 @@ function ClockPatience() {
   }
 
   //Setup piles
-  const clockPosition = [
-    'middle',
-    'deg300',
-    'deg330',
-    'deg0',
-    'deg30',
-    'deg60',
-    'deg90',
-    'deg120',
-    'deg150',
-    'deg180',
-    'deg210',
-    'deg240',
-    'deg270',
-  ]
+  const clockPosition = Array(13).fill('')
 
   const handlePileClick = (pile: string) => {
     setCurrentPile(pile)
@@ -86,7 +72,6 @@ function ClockPatience() {
               <div key={`pile${i}-${deckId}`}>
                 <Pile
                   pileNumber={i}
-                  deg={item}
                   pileType={pileType}
                   handlePileClick={handlePileClick}
                   handleDroppedCard={handleDroppedCard}

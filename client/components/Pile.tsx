@@ -3,7 +3,6 @@ import type { Card } from '../../models/deck'
 
 interface Props {
   pileNumber: number
-  deg: string
   pileType: string
   handlePileClick: (pile: string) => void
   handleDroppedCard: (isVisible: boolean) => void
@@ -12,7 +11,6 @@ interface Props {
 
 export default function Pile({
   pileNumber,
-  deg,
   pileType,
   handlePileClick,
   handleDroppedCard,
@@ -56,7 +54,7 @@ export default function Pile({
 
   return (
     <div
-      className={`${deg} circle-item`}
+      className={`place-${pileType} circle-item`}
       id={`facedown-position-${pileNumber}oclock`}
       onDragOver={handleDragOver}
       onDragEnter={handleDragEnter}
