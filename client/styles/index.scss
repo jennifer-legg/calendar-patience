@@ -61,7 +61,7 @@ h1 {
   max-width: 100%;
   max-height: 100%;
   overflow: hidden;
-  box-shadow: 0 6px 100px rgba(0, 0, 0, 0.1);
+  
 }
 
 .dragging {
@@ -113,8 +113,16 @@ h1 {
   text-align: center;
 }
 
-.glow {
-  box-shadow: 0 0 100px rgb(10, 99, 195);
+.glow-blue {
+  box-shadow: 0 0 50px rgb(10, 99, 195);
+}
+
+.glow-black {
+  box-shadow: 0 6px 10px black;
+}
+
+.inner-glow {
+  filter: sepia(100%) hue-rotate(180deg) saturate(250%)
 }
 
 .place-king { transform: rotate(30deg) rotate(-30deg); }

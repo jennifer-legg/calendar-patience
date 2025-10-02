@@ -9,6 +9,7 @@ function ClockPatience() {
   const [currentPile, setCurrentPile] = useState<string | null>(null)
   const [gameLost, setGameLost] = useState<boolean>(false)
   const [gameEnded, setGameEnded] = useState<boolean>(false)
+  // const [completedPiles, setPileComplete] = useState<number[] | null>(null)
 
   const { data: deckId, isError, isPending, error, refetch } = useNewDeck()
 

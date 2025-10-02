@@ -64,7 +64,7 @@ export default function Pile({
       <div className="stacked-cards">
         {buttonIsVisible && (
           <button
-            className={`card-button card ${buttonIsClickable ? 'glow' : 'plain'}`}
+            className={`card-button card ${buttonIsClickable ? 'glow-blue' : 'glow-black'}`}
             onClick={() => {
               if (buttonIsClickable) {
                 handlePileClick(`pile${pileNumber}`)
@@ -76,6 +76,7 @@ export default function Pile({
             }}
           >
             <img
+              className={`${buttonIsClickable ? 'inner-glow' : 'plain'}`}
               src="https://www.deckofcardsapi.com/static/img/back.png"
               alt="Back of a playing card with white and black patterning"
             />
