@@ -4,20 +4,12 @@ import {
   // useQueryClient,
   // MutationFunction,
 } from '@tanstack/react-query'
-import { getNewDeck, drawCardFromPile } from '../apis/deck.ts'
+import { getNewDeck } from '../apis/deck.ts'
 
 export function useNewDeck() {
   const data = useQuery({
     queryKey: ['deck'],
     queryFn: getNewDeck,
-  })
-  return data
-}
-
-export function useGetCardFromPile(deckId: string, pile: string) {
-  const data = useQuery({
-    queryKey: ['card'],
-    queryFn: () => drawCardFromPile(deckId, pile),
   })
   return data
 }
@@ -35,8 +27,3 @@ export function useGetCardFromPile(deckId: string, pile: string) {
 
 //   return mutation
 // }
-
-// Query functions go here e.g. useAddFruit
-/* function useAddFruit() {
-  return useFruitsMutation(addFruit)
-} */
