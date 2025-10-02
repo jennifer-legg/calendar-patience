@@ -27,8 +27,6 @@ export default function ClockFrame() {
     ]
   }
 
-  console.log(deckId, clockPiles)
-
   const refreshDeck = () => {
     refetch()
   }

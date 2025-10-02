@@ -5,7 +5,6 @@ interface Props {
   pileNumber: number
   pileType: string
   handlePileClick: (
-    pileType: string,
     pileNumber: number,
     card: Card,
     pileIsActive: boolean,
@@ -69,12 +68,7 @@ export default function Pile({
       const currentCard: Card = { ...facedownCards[0] }
       const remainingCards = [...facedownCards.slice(1)]
       setFaceDownCards(remainingCards)
-      handlePileClick(
-        pileType,
-        pileNumber,
-        currentCard,
-        remainingCards.length > 0,
-      )
+      handlePileClick(pileNumber, currentCard, remainingCards.length > 0)
       if (faceUpCards.length >= 4 || facedownCards.length == 0) {
         setButtonIsVisible(false)
       }

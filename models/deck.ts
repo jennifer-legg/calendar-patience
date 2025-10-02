@@ -36,9 +36,4 @@ interface Pile {
   cards?: Card[]
 }
 
-export interface ClockPiles {
-  deckId: string
-  clockPiles: Card[][]
-}
-
 type Suit = 'SPADES' | 'DIAMONDS' | 'HEARTS' | 'CLUBS'

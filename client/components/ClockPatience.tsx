@@ -1,7 +1,7 @@
 import OpenCard from './OpenCard.tsx'
 import Pile from './Pile.tsx'
-import { useState } from 'react'
 import GameEndMessage from './GameEndMessage'
+import { useState } from 'react'
 import type { Card } from '../../models/deck.ts'
 
 interface Props {
@@ -24,7 +24,6 @@ export default function ClockPatience({
   const [openCard, setOpenCard] = useState<Card | null>(null)
 
   const handlePileClick = (
-    pile: string,
     pileNumber: number,
     card: Card,
     pileIsActive: boolean,
@@ -36,7 +35,9 @@ export default function ClockPatience({
           i === pileNumber ? false : currentValue,
         ),
       )
+      checkIfGameWon(pileNumber)
     }
+    console.log(activePiles, pileNumber, pileIsActive)
     setisHidden(false)
   }
 
@@ -55,6 +56,25 @@ export default function ClockPatience({
   const handleGameLost = (isLost: boolean) => {
     setGameLost(isLost)
     setGameEnded(true)
+  }
+
+  const checkIfGameWon = (pileNumber: number) => {
+    //Game is ended if all piles are inactive except for the king pile
+    //& current pile
+    const indexes: number[] = []
+    //Get indexes of all active piles
+    activePiles.forEach((value, i) => {
+      if (value === true) {
+        indexes.push(i)
+      }
+    })
+    //Remove indexes that match the king's pile (0) and the current pile
+    const filteredIndexes = indexes.filter(
+      (num) => num != 0 && num != pileNumber,
+    )
+    if (filteredIndexes.length == 0) {
+      setGameEnded(true)
+    }
   }
 
   return (
