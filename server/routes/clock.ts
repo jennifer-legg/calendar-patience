@@ -1,13 +1,14 @@
 import { Router } from 'express'
 import * as doc from '../deckOfCardsApiCalls.ts'
-import { Card, PileData, DrawnFromPile } from '../../models/deck.ts'
+import { Card, PileData, DrawnFromPile, DrawnCards } from '../../models/deck.ts'
 
 const router = Router()
 
 router.get('/new-deck', async (req, res) => {
   try {
-    //Initiate deck and draw 4 cards
-    const newDeck = await doc.drawCards(52)
+    //Initiate deck and draw all 52 cards
+    const newDeck: DrawnCards = await doc.drawCards(52)
+    console.log(newDeck)
     //Get new deck id
     const deckId: string = newDeck.deck_id
     const cards: string[] = newDeck.cards.map((card: Card) => card.code)
@@ -20,9 +21,6 @@ router.get('/new-deck', async (req, res) => {
         cards[2 + i * 4],
         cards[3 + i * 4],
       ])
-      if (i === 12) {
-        console.log(responseArr[i].piles)
-      }
     }
     deckId
       ? res.status(200).json(deckId)
