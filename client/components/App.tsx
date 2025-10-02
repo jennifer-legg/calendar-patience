@@ -1,9 +1,9 @@
-import ClockPatience from './ClockPatience.tsx'
+import ClockFrame from './ClockFrame.tsx'
 
 function App() {
   return (
     <>
-      <ClockPatience />
+      <ClockFrame />
     </>
   )
 }

@@ -14,19 +14,20 @@ export default function OpenCard({ deckId, pile }: Props) {
     isError,
     isPending,
     error,
+    isFetching,
   } = useGetCardFromPile(deckId, pile)
 
   if (isError) {
     return (
-      <div>
+      <div className="open-card">
         <p>Error {error && <>{error.message}</>}</p>
       </div>
     )
   }
 
-  if (isPending) {
+  if (isPending || isFetching) {
     return (
-      <div>
+      <div className="open-card">
         <p>Loading...</p>
       </div>
     )
