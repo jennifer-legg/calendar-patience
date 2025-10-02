@@ -1,69 +1,42 @@
-import { useGetCardFromPile } from '../hooks/useDeck.ts'
+import { Card } from '../../models/deck.ts'
 import { useState } from 'react'
 
 interface Props {
-  deckId: string
-  pile: string
+  openCard: Card
 }
 
-export default function OpenCard({ deckId, pile }: Props) {
+export default function OpenCard({ openCard }: Props) {
   const [isBeingDragged, setIsBeingDragged] = useState<boolean>(false)
 
-  const {
-    data: card,
-    isError,
-    isPending,
-    error,
-    isFetching,
-  } = useGetCardFromPile(deckId, pile)
-
-  if (isError) {
-    return (
-      <div className="open-card">
-        <p>Error {error && <>{error.message}</>}</p>
-      </div>
-    )
+  const handleDrag = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault()
   }
 
-  if (isPending || isFetching) {
-    return (
-      <div className="open-card">
-        <p>Loading...</p>
-      </div>
-    )
+  const handleDragStart = (event: React.DragEvent<HTMLDivElement>) => {
+    setIsBeingDragged(true)
+    event.dataTransfer.clearData()
+    event.dataTransfer.setData('application/json', JSON.stringify(openCard))
+    event.dataTransfer.effectAllowed = 'move'
   }
 
-  if (card) {
-    const handleDrag = (event: React.DragEvent<HTMLDivElement>) => {
-      event.preventDefault()
-    }
-
-    const handleDragStart = (event: React.DragEvent<HTMLDivElement>) => {
-      setIsBeingDragged(true)
-      event.dataTransfer.clearData()
-      event.dataTransfer.setData('application/json', JSON.stringify(card))
-      event.dataTransfer.effectAllowed = 'move'
-    }
-
-    const handleDragEnd = (event: React.DragEvent<HTMLDivElement>) => {
-      setIsBeingDragged(false)
-      event.preventDefault()
-    }
-
-    return (
-      <div
-        className={`draggablediv ${isBeingDragged ? 'dragging' : ''} open-card`}
-        draggable="true"
-        onDrag={handleDrag}
-        onDragStart={handleDragStart}
-        onDragEnd={handleDragEnd}
-      >
-        <img
-          draggable="false"
-          src={card.image}
-          alt={`Playing card face-up, the ${card.value} of ${card.suit}`}
-        />
-      </div>
-    )
+  const handleDragEnd = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault()
+    setIsBeingDragged(false)
   }
+
+  return (
+    <div
+      className={`draggablediv ${isBeingDragged ? 'dragging' : ''} open-card`}
+      draggable="true"
+      onDrag={handleDrag}
+      onDragStart={handleDragStart}
+      onDragEnd={handleDragEnd}
+    >
+      <img
+        draggable="false"
+        src={openCard.image}
+        alt={`Playing card face-up, the ${openCard.value} of ${openCard.suit}`}
+      />
+    </div>
+  )
 }

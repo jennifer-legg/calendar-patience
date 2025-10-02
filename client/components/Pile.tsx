@@ -4,22 +4,34 @@ import type { Card } from '../../models/deck'
 interface Props {
   pileNumber: number
   pileType: string
-  handlePileClick: (pile: string) => void
-  handleDroppedCard: (isVisible: boolean) => void
+  handlePileClick: (
+    pileType: string,
+    pileNumber: number,
+    card: Card,
+    pileIsActive: boolean,
+  ) => void
+  hideOpenCard: (isHidden: boolean) => void
   gameLost: (isLost: boolean) => void
+  pileCards: Card[]
 }
 
 export default function Pile({
   pileNumber,
   pileType,
   handlePileClick,
-  handleDroppedCard,
+  hideOpenCard,
   gameLost,
+  pileCards,
 }: Props) {
   const [faceUpCards, setFaceUpCards] = useState<Card[]>([])
   const [buttonIsVisible, setButtonIsVisible] = useState<boolean>(true)
   const [buttonIsClickable, setButtonClickable] = useState<boolean>(
     pileType === 'king' ? true : false,
+  )
+  const [facedownCards, setFaceDownCards] = useState<Card[]>(
+    pileCards.map((card: Card) => {
+      return { ...card }
+    }),
   )
 
   const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
@@ -44,11 +56,29 @@ export default function Pile({
       event.preventDefault()
       setButtonClickable(true)
       setFaceUpCards([...faceUpCards, card])
-      handleDroppedCard(false)
+      hideOpenCard(true)
     }
     if (pileType === 'king' && faceUpCards.length >= 3) {
       setButtonIsVisible(false)
       gameLost(true)
+    }
+  }
+
+  const handleButtonClick = () => {
+    if (buttonIsClickable && facedownCards.length > 0) {
+      const currentCard: Card = { ...facedownCards[0] }
+      const remainingCards = [...facedownCards.slice(1)]
+      setFaceDownCards(remainingCards)
+      handlePileClick(
+        pileType,
+        pileNumber,
+        currentCard,
+        remainingCards.length > 0,
+      )
+      if (faceUpCards.length >= 4 || facedownCards.length == 0) {
+        setButtonIsVisible(false)
+      }
+      setButtonClickable(false)
     }
   }
 
@@ -65,15 +95,7 @@ export default function Pile({
         {buttonIsVisible && (
           <button
             className={`card-button card ${buttonIsClickable ? 'glow-blue' : 'glow-black'}`}
-            onClick={() => {
-              if (buttonIsClickable) {
-                handlePileClick(`pile${pileNumber}`)
-                if (faceUpCards.length >= 4) {
-                  setButtonIsVisible(false)
-                }
-                setButtonClickable(false)
-              }
-            }}
+            onClick={handleButtonClick}
           >
             <img
               className={`${buttonIsClickable ? 'inner-glow' : 'plain'}`}

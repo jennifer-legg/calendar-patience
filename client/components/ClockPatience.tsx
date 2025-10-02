@@ -2,47 +2,65 @@ import OpenCard from './OpenCard.tsx'
 import Pile from './Pile.tsx'
 import { useState } from 'react'
 import GameEndMessage from './GameEndMessage'
+import type { Card } from '../../models/deck.ts'
 
 interface Props {
   deckId: string
+  clockPiles: Card[][]
   refreshDeck: () => void
 }
 
-function ClockPatience({ deckId, refreshDeck }: Props) {
-  const [isDrawn, setisDrawn] = useState<boolean>(false)
-  const [currentPile, setCurrentPile] = useState<string | null>(null)
+export default function ClockPatience({
+  deckId,
+  refreshDeck,
+  clockPiles,
+}: Props) {
+  const [activePiles, setActivePiles] = useState<boolean[]>(
+    Array(13).fill(true),
+  )
+  const [isHidden, setisHidden] = useState<boolean>(false)
   const [gameLost, setGameLost] = useState<boolean>(false)
   const [gameEnded, setGameEnded] = useState<boolean>(false)
+  const [openCard, setOpenCard] = useState<Card | null>(null)
 
-  const handlePileClick = (pile: string) => {
-    setCurrentPile(pile)
-    setisDrawn(true)
+  const handlePileClick = (
+    pile: string,
+    pileNumber: number,
+    card: Card,
+    pileIsActive: boolean,
+  ) => {
+    setOpenCard(card)
+    if (!pileIsActive) {
+      setActivePiles(
+        activePiles.map((currentValue, i) =>
+          i === pileNumber ? false : currentValue,
+        ),
+      )
+    }
+    setisHidden(false)
   }
 
-  const handleDroppedCard = (isVisible: boolean) => {
-    setisDrawn(isVisible)
+  const hideOpenCard = (isHidden: boolean) => {
+    setisHidden(isHidden)
   }
 
   const handleResetGame = () => {
-    setisDrawn(false)
-    setCurrentPile(null)
+    setisHidden(true)
     refreshDeck()
     setGameEnded(false)
     setGameLost(false)
+    setActivePiles(Array(13).fill(true))
   }
 
   const handleGameLost = (isLost: boolean) => {
     setGameLost(isLost)
-    setGameEnded(isLost)
+    setGameEnded(true)
   }
-
-  //Setup piles
-  const clockPosition = Array(13).fill('')
 
   return (
     <div>
       <div className="circle-container" key={deckId}>
-        {clockPosition.map((item, i) => {
+        {clockPiles.map((pileCards: Card[], i) => {
           let pileType: string = ''
           switch (i) {
             case 0:
@@ -66,21 +84,18 @@ function ClockPatience({ deckId, refreshDeck }: Props) {
                 pileNumber={i}
                 pileType={pileType}
                 handlePileClick={handlePileClick}
-                handleDroppedCard={handleDroppedCard}
+                hideOpenCard={hideOpenCard}
                 gameLost={handleGameLost}
+                pileCards={pileCards}
               />
             </div>
           )
         })}
       </div>
-      {isDrawn && currentPile && (
-        <OpenCard deckId={deckId} pile={currentPile} key={deckId} />
-      )}
+      {!isHidden && openCard && <OpenCard openCard={openCard} key={deckId} />}
       {gameEnded && (
         <GameEndMessage gameLost={gameLost} resetGame={handleResetGame} />
       )}
     </div>
   )
 }
-
-export default ClockPatience
