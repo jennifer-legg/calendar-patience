@@ -32,13 +32,13 @@ export default function ClockFrame() {
   }
 
   return (
-    <div>
-      <h1>Calendar Patience</h1>
+    <main>
+      <h2>Calendar Patience</h2>
       <ClockPatience
         deckId={deckId}
         refreshDeck={refreshDeck}
         clockPiles={clockPiles}
       />
-    </div>
+    </main>
   )
 }

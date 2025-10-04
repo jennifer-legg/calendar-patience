@@ -9,6 +9,31 @@ h1 {
   text-align: center;
 }
 
+#site-container {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr 1fr;
+  gap: 20px;
+  grid-auto-rows: minmax(50px, auto);
+  text-align: center;
+}
+
+header {
+  grid-column: 1/5;
+  grid-row: 1;
+}
+
+footer {
+  grid-column: 1/5;
+  grid-row: 3;
+}
+
+main {
+  grid-column: 2/4;
+  grid-row: 2;
+}
+
+
+
 .circle-container {
   display: inline-block;
   position: relative;

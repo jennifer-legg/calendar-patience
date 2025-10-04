@@ -29,16 +29,15 @@ export default function ClockPatience({
     pileIsActive: boolean,
   ) => {
     setOpenCard(card)
+    setisHidden(false)
     if (!pileIsActive) {
+      checkIfGameWon(pileNumber)
       setActivePiles(
         activePiles.map((currentValue, i) =>
           i === pileNumber ? false : currentValue,
         ),
       )
-      checkIfGameWon(pileNumber)
     }
-    console.log(activePiles, pileNumber, pileIsActive)
-    setisHidden(false)
   }
 
   const hideOpenCard = (isHidden: boolean) => {
@@ -58,9 +57,8 @@ export default function ClockPatience({
     setGameEnded(true)
   }
 
+  //Game is ended if all piles are inactive except for the king pile
   const checkIfGameWon = (pileNumber: number) => {
-    //Game is ended if all piles are inactive except for the king pile
-    //& current pile
     const indexes: number[] = []
     //Get indexes of all active piles
     activePiles.forEach((value, i) => {
@@ -69,6 +67,7 @@ export default function ClockPatience({
       }
     })
     //Remove indexes that match the king's pile (0) and the current pile
+    //Remove current pile index because state hasn't updated yet to show it is inactive
     const filteredIndexes = indexes.filter(
       (num) => num != 0 && num != pileNumber,
     )
@@ -112,7 +111,7 @@ export default function ClockPatience({
           )
         })}
       </div>
-      {!isHidden && openCard && <OpenCard openCard={openCard} key={deckId} />}
+      {!isHidden && openCard && <OpenCard openCard={openCard} />}
       {gameEnded && (
         <GameEndMessage gameLost={gameLost} resetGame={handleResetGame} />
       )}
