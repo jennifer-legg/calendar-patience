@@ -4,3 +4,168 @@ html,
 body {
   font-family: 'Montserrat', sans-serif;
 }
+
+h1 {
+  text-align: center;
+}
+
+#site-container {
+  display: grid;
+  grid-template-columns: 1fr 4fr 1fr;
+  gap: 20px;
+  grid-auto-rows: minmax(50px, auto);
+  text-align: center;
+}
+
+header {
+  grid-column: 1/4;
+  grid-row: 1;
+}
+
+footer {
+  grid-column: 1/4;
+  grid-row: 3;
+}
+
+main {
+  grid-column: 2/3;
+  grid-row: 2;
+}
+
+.circle-container {
+  display: inline-block;
+  position: relative;
+  width: 400px;
+  height: 600px;
+  padding: 30px 400px;
+  border-radius: 50%;
+  margin: auto;
+  text-align: center;
+}
+
+.card-button {
+  margin: 0px;
+  padding: 0px;
+  border: 0px;
+  display: block;
+}
+
+.circle-item {
+  position: absolute; 
+  display: block; 
+  justify-content: center;
+  align-items: center;
+  padding:0%;
+  top: 40%; 
+  left: 40%;
+  margin: 0px;
+  border: none;
+  width: 90px; 
+  height: 120px;
+}
+
+.open-card {
+  display: inline-block;
+  vertical-align: 1200%;
+}
+
+.open-card img {
+  max-width: 150px;
+}
+
+.card {
+  position: fixed; 
+  bottom: 0; 
+  max-width: 90px; 
+  max-height: 120px;
+}
+
+.stacked-cards img {
+  max-width: 100%;
+  max-height: 100%;
+  overflow: hidden;
+  
+}
+
+.dragging {
+  opacity: 0.5;
+}
+
+.stacked-cards {
+  position: relative; 
+  margin: 2px auto;
+  max-width: 90px; 
+  max-height: 120px;
+}
+
+.card:nth-child(1) {
+  bottom: 0px;
+  z-index: 5;
+}
+
+.card:nth-child(2) {
+  bottom: 20px; 
+  z-index: 4;
+}
+
+.card:nth-child(3) {
+  bottom: 40px; 
+  z-index: 3;
+}
+
+.card:nth-child(4) {
+  bottom: 60px; 
+  z-index: 2;
+}
+
+.card:nth-child(5) {
+  bottom: 80px; 
+  z-index: 1;
+}
+
+.alert-message {
+  z-index: 100;
+  color: white;
+  height: 100px;
+  width: 300px;
+  position: absolute;
+  top: 400px;
+  right: 1000px;
+  padding: 20px;
+  text-align: center;
+}
+
+.glow-blue {
+  box-shadow: 0 0 50px rgb(10, 99, 195);
+}
+
+.glow-black {
+  box-shadow: 0 6px 10px black;
+}
+
+.inner-glow {
+  filter: sepia(100%) hue-rotate(180deg) saturate(250%)
+}
+
+.red-bg {
+  background-color: rgb(72, 8, 22);
+}
+
+.green-bg {
+  background-color: rgb(10, 47, 24);
+}
+
+.place-king { transform: rotate(30deg) rotate(-30deg); }
+.place-3 { transform: translate(310px); }
+.place-4 { transform: rotate(30deg) translate(240px) rotate(-30deg); }
+.place-5 { transform: rotate(60deg) translate(215px) rotate(-60deg); }
+.place-6 { transform: rotate(90deg) translate(240px) rotate(-90deg); }
+.place-7 { transform: rotate(120deg) translate(215px) rotate(-120deg); }
+.place-8 { transform: rotate(150deg) translate(240px) rotate(-150deg); }
+.place-9 { transform: rotate(180deg) translate(310px) rotate(-180deg); }
+.place-10 { transform: rotate(210deg) translate(240px) rotate(-210deg); }
+.place-jack { transform: rotate(240deg) translate(215px) rotate(-240deg); }
+.place-queen { transform: rotate(270deg) translate(240px) rotate(90deg); }
+.place-ace { transform: rotate(300deg) translate(215px) rotate(-300deg); }
+.place-2 { transform: rotate(330deg) translate(240px) rotate(-330deg); }
+
