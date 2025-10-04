@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import type { Card } from '../../models/deck'
+import CardBack from './CardBack'
+import CardFace from './CardFace'
 
 interface Props {
   pileNumber: number
@@ -14,7 +16,7 @@ interface Props {
   pileCards: Card[]
 }
 
-export default function Pile({
+export default function ClockPile({
   pileNumber,
   pileType,
   handlePileClick,
@@ -91,23 +93,13 @@ export default function Pile({
             className={`card-button card ${buttonIsClickable ? 'glow-blue' : 'glow-black'}`}
             onClick={handleButtonClick}
           >
-            <img
-              className={`${buttonIsClickable ? 'inner-glow' : 'plain'}`}
-              src="https://www.deckofcardsapi.com/static/img/back.png"
-              alt="Back of a playing card with white and black patterning"
-            />
+            <CardBack imgGlows={buttonIsClickable} />
           </button>
         )}
-
         {faceUpCards.length > 0 && (
           <>
             {faceUpCards.map((card: Card) => (
-              <div key={`${card.code}`} className="card">
-                <img
-                  alt={`${card.value} of ${card.suit}`}
-                  src={card.image}
-                ></img>
-              </div>
+              <CardFace key={`${card.code}`} card={card} />
             ))}
           </>
         )}

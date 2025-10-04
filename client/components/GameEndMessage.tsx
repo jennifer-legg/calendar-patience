@@ -8,7 +8,7 @@ export default function GameEndMessage({ gameLost, resetGame }: Props) {
   }
 
   return (
-    <div className="alert-message">
+    <div className={`alert-message ${gameLost ? 'red-bg' : 'green-bg'} `}>
       <p>Game Over. {gameLost ? <>Bad luck, the pack won</> : <>You won!</>}</p>
       <button onClick={handleClick}>Play again</button>
     </div>

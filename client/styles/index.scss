@@ -11,28 +11,26 @@ h1 {
 
 #site-container {
   display: grid;
-  grid-template-columns: 1fr 2fr 1fr 1fr;
+  grid-template-columns: 1fr 4fr 1fr;
   gap: 20px;
   grid-auto-rows: minmax(50px, auto);
   text-align: center;
 }
 
 header {
-  grid-column: 1/5;
+  grid-column: 1/4;
   grid-row: 1;
 }
 
 footer {
-  grid-column: 1/5;
+  grid-column: 1/4;
   grid-row: 3;
 }
 
 main {
-  grid-column: 2/4;
+  grid-column: 2/3;
   grid-row: 2;
 }
-
-
 
 .circle-container {
   display: inline-block;
@@ -127,14 +125,13 @@ main {
 
 .alert-message {
   z-index: 100;
-  background-color: black;
   color: white;
-  height: 200px;
+  height: 100px;
   width: 300px;
   position: absolute;
-  top: 200px;
+  top: 400px;
   right: 1000px;
-  padding: 10px;
+  padding: 20px;
   text-align: center;
 }
 
@@ -148,6 +145,14 @@ main {
 
 .inner-glow {
   filter: sepia(100%) hue-rotate(180deg) saturate(250%)
+}
+
+.red-bg {
+  background-color: rgb(72, 8, 22);
+}
+
+.green-bg {
+  background-color: rgb(10, 47, 24);
 }
 
 .place-king { transform: rotate(30deg) rotate(-30deg); }

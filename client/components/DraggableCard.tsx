@@ -5,7 +5,7 @@ interface Props {
   openCard: Card
 }
 
-export default function OpenCard({ openCard }: Props) {
+export default function DraggableCard({ openCard }: Props) {
   const [isBeingDragged, setIsBeingDragged] = useState<boolean>(false)
 
   const handleDrag = (event: React.DragEvent<HTMLDivElement>) => {
@@ -35,7 +35,7 @@ export default function OpenCard({ openCard }: Props) {
       <img
         draggable="false"
         src={openCard.image}
-        alt={`Playing card face-up, the ${openCard.value} of ${openCard.suit}`}
+        alt={`${openCard.value} of ${openCard.suit}`}
       />
     </div>
   )

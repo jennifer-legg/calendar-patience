@@ -1,5 +1,5 @@
-import OpenCard from './OpenCard.tsx'
-import Pile from './Pile.tsx'
+import DraggableCard from './DraggableCard.tsx'
+import ClockPile from './ClockPile.tsx'
 import GameEndMessage from './GameEndMessage'
 import { useState } from 'react'
 import type { Card } from '../../models/deck.ts'
@@ -99,7 +99,7 @@ export default function ClockPatience({
           }
           return (
             <div key={`pile${i}-${deckId}`}>
-              <Pile
+              <ClockPile
                 pileNumber={i}
                 pileType={pileType}
                 handlePileClick={handlePileClick}
@@ -111,7 +111,7 @@ export default function ClockPatience({
           )
         })}
       </div>
-      {!isHidden && openCard && <OpenCard openCard={openCard} />}
+      {!isHidden && openCard && <DraggableCard openCard={openCard} />}
       {gameEnded && (
         <GameEndMessage gameLost={gameLost} resetGame={handleResetGame} />
       )}
