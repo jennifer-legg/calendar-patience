@@ -2,6 +2,7 @@ import { useState } from 'react'
 import type { Card } from '../../models/deck'
 import CardBack from './CardBack'
 import CardFace from './CardFace'
+import DropZone from './DropZone'
 
 interface Props {
   pileNumber: number
@@ -11,7 +12,7 @@ interface Props {
     card: Card,
     pileIsActive: boolean,
   ) => void
-  hideOpenCard: (isHidden: boolean) => void
+  hideDroppableCard: (isHidden: boolean) => void
   gameLost: (isLost: boolean) => void
   pileCards: Card[]
 }
@@ -20,7 +21,7 @@ export default function ClockPile({
   pileNumber,
   pileType,
   handlePileClick,
-  hideOpenCard,
+  hideDroppableCard,
   gameLost,
   pileCards,
 }: Props) {
@@ -35,30 +36,10 @@ export default function ClockPile({
     }),
   )
 
-  const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
-    event.preventDefault()
-  }
-
-  const handleDragEnter = (event: React.DragEvent<HTMLDivElement>) => {
-    event.preventDefault()
-  }
-
-  const handleDragLeave = (event: React.DragEvent<HTMLDivElement>) => {
-    event.preventDefault()
-  }
-
-  const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
-    const cardJSON = event.dataTransfer.getData('application/json')
-    const card: Card = JSON.parse(cardJSON)
-    if (
-      card.value.toLowerCase() === pileType.toLowerCase() &&
-      faceUpCards.length < 4
-    ) {
-      event.preventDefault()
-      setButtonClickable(true)
-      setFaceUpCards([...faceUpCards, card])
-      hideOpenCard(true)
-    }
+  const handleUpdatePile = (card: Card) => {
+    setButtonClickable(true)
+    setFaceUpCards([...faceUpCards, card])
+    hideDroppableCard(true)
     if (pileType === 'king' && faceUpCards.length >= 3) {
       setButtonIsVisible(false)
       gameLost(true)
@@ -82,11 +63,14 @@ export default function ClockPile({
     <div
       className={`place-${pileType} circle-item`}
       id={`facedown-position-${pileNumber}oclock`}
-      onDragOver={handleDragOver}
-      onDragEnter={handleDragEnter}
-      onDragLeave={handleDragLeave}
-      onDrop={handleDrop}
     >
+      {!buttonIsClickable && (
+        <DropZone
+          handleUpdatePile={handleUpdatePile}
+          pileNumber={pileNumber}
+          pileType={pileType}
+        />
+      )}
       <div className="stacked-cards">
         {buttonIsVisible && (
           <button
