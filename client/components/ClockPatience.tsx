@@ -56,7 +56,6 @@ export default function ClockPatience({
     setGameLost(isLost)
     setGameEnded(true)
   }
-
   //Game is ended if all piles are inactive except for the king pile
   const checkIfGameWon = (pileNumber: number) => {
     const indexes: number[] = []
@@ -80,23 +79,16 @@ export default function ClockPatience({
     <div>
       <div className="circle-container" key={deckId}>
         {clockPiles.map((pileCards: Card[], i) => {
-          let pileType: string = ''
-          switch (i) {
-            case 0:
-              pileType = 'king'
-              break
-            case 1:
-              pileType = 'ace'
-              break
-            case 11:
-              pileType = 'jack'
-              break
-            case 12:
-              pileType = 'queen'
-              break
-            default:
-              pileType = `${i}`
-          }
+          const pileType: string =
+            i === 0
+              ? 'king'
+              : i === 1
+                ? 'ace'
+                : i === 11
+                  ? 'jack'
+                  : i === 12
+                    ? 'queen'
+                    : `${i}`
           return (
             <div key={`pile${i}-${deckId}`}>
               <ClockPile
