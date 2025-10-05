@@ -18,16 +18,19 @@ export default function ClockPatience({
   const [activePiles, setActivePiles] = useState<boolean[]>(
     Array(13).fill(true),
   )
+  const [openCard, setOpenCard] = useState<Card | null>(null)
+  const [currentPile, setCurrentPile] = useState<string | null>(null)
   const [isHidden, setisHidden] = useState<boolean>(false)
   const [gameLost, setGameLost] = useState<boolean>(false)
   const [gameEnded, setGameEnded] = useState<boolean>(false)
-  const [openCard, setOpenCard] = useState<Card | null>(null)
 
   const handlePileClick = (
+    pileType: string,
     pileNumber: number,
     card: Card,
     pileIsActive: boolean,
   ) => {
+    setCurrentPile(pileType)
     setOpenCard(card)
     setisHidden(false)
     if (!pileIsActive) {
@@ -56,23 +59,18 @@ export default function ClockPatience({
     setGameLost(isLost)
     setGameEnded(true)
   }
+
   //Game is ended if all piles are inactive except for the king pile
   const checkIfGameWon = (pileNumber: number) => {
     const indexes: number[] = []
-    //Get indexes of all active piles
     activePiles.forEach((value, i) => {
       if (value === true) {
         indexes.push(i)
       }
     })
-    //Remove indexes that match the king's pile (0) and the current pile
-    //Remove current pile index because state hasn't updated yet to show it is inactive
-    const filteredIndexes = indexes.filter(
-      (num) => num != 0 && num != pileNumber,
-    )
-    if (filteredIndexes.length == 0) {
-      setGameEnded(true)
-    }
+    indexes.filter((num) => num != 0 && num != pileNumber).length === 0
+      ? setGameEnded(true)
+      : null
   }
 
   return (
@@ -102,8 +100,10 @@ export default function ClockPatience({
             </div>
           )
         })}
+        {!isHidden && openCard && currentPile && (
+          <DraggableCard openCard={openCard} pileType={currentPile} />
+        )}
       </div>
-      {!isHidden && openCard && <DraggableCard openCard={openCard} />}
       {gameEnded && (
         <GameEndMessage gameLost={gameLost} resetGame={handleResetGame} />
       )}

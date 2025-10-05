@@ -8,6 +8,7 @@ router.get('/new-deck', async (req, res) => {
   try {
     //Initiate deck and draw all 52 cards
     const newDeck: DrawnCards = await doc.drawCards(52)
+    console.log(newDeck.cards)
     newDeck.deck_id && newDeck.cards
       ? res.status(200).json(newDeck as DrawnCards)
       : res.status(500).json({ message: 'Something went wrong' })

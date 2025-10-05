@@ -2,9 +2,10 @@ import { Card } from '../../models/deck.ts'
 
 interface Props {
   openCard: Card
+  pileType: string
 }
 
-export default function DraggableCard({ openCard }: Props) {
+export default function DraggableCard({ openCard, pileType }: Props) {
   const handleDrag = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault()
   }
@@ -21,7 +22,7 @@ export default function DraggableCard({ openCard }: Props) {
 
   return (
     <div
-      className={`draggablediv open-card`}
+      className={`place-${pileType} circle-item draggablediv glow-blue`}
       draggable="true"
       onDrag={handleDrag}
       onDragStart={handleDragStart}

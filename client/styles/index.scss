@@ -36,8 +36,7 @@ main {
   display: inline-block;
   position: relative;
   width: 400px;
-  height: 600px;
-  padding: 30px 400px;
+  height: 800px;
   border-radius: 50%;
   margin: auto;
   text-align: center;
@@ -64,15 +63,6 @@ main {
   height: 120px;
 }
 
-.open-card {
-  display: inline-block;
-  vertical-align: 1200%;
-}
-
-.open-card img {
-  max-width: 150px;
-}
-
 .card {
   position: fixed; 
   bottom: 0; 
@@ -84,10 +74,6 @@ main {
   max-width: 100%;
   max-height: 100%;
   overflow: hidden;
-}
-
-.dragging {
-  opacity: 0.5;
 }
 
 .stacked-cards {
@@ -123,10 +109,24 @@ main {
 }
 
 .dropzone {
-  z-index: 10;
-  position: relative; 
-  width: 90px;
-  height: 120px;
+    z-index: 10;
+    position: relative;
+    top: -20px;
+    width: 130px;
+    height: 170px;
+    left: -20px;
+}
+
+.draggablediv {
+  max-width: 90px; 
+  max-height: 120px;
+  position: relative;
+}
+
+.draggablediv img {
+  max-width: 100%;
+  max-height: 100%;
+  overflow: hidden;
 }
 
 .alert-message {
