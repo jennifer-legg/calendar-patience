@@ -31,11 +31,7 @@ export default function ClockPile({
   const [buttonIsClickable, setButtonClickable] = useState<boolean>(
     pileType === 'king' ? true : false,
   )
-  const [facedownCards, setFaceDownCards] = useState<Card[]>(
-    pileCards.map((card: Card) => {
-      return { ...card }
-    }),
-  )
+  const [facedownCards, setFaceDownCards] = useState<Card[]>(pileCards)
 
   const handleUpdatePile = (card: Card) => {
     setButtonClickable(true)

@@ -121,6 +121,7 @@ main {
   max-width: 90px; 
   max-height: 120px;
   position: relative;
+  top: 42%;
 }
 
 .draggablediv img {
@@ -130,15 +131,27 @@ main {
 }
 
 .alert-message {
-  z-index: 100;
+  z-index: 2;
   color: white;
-  height: 100px;
-  width: 300px;
+  height: 300px;
+  width: 250px;
   position: absolute;
-  top: 400px;
-  right: 1000px;
+  top: 215px;
+  right: 50px;
   padding: 20px;
   text-align: center;
+  border-radius: 10px;
+}
+
+.alert-message img {
+  width: 75%
+}
+
+.alert-message button {
+  background-color: white;
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
 }
 
 .glow-blue {
@@ -153,12 +166,20 @@ main {
   filter: sepia(100%) hue-rotate(180deg) saturate(250%)
 }
 
-.red-bg {
-  background-color: rgb(72, 8, 22);
+.grey-bg {
+  background-color: rgb(70, 68, 68);
+}
+
+.dice-image {
+  background-image: url('/public/images/dice.svg');
+  background-repeat: no-repeat;
+  width: 100%;
+  overflow: hidden;
+  background-position: center center;
 }
 
 .green-bg {
-  background-color: rgb(10, 47, 24);
+  background-color: rgb(20, 122, 57);
 }
 
 .place-king { transform: rotate(30deg) rotate(-30deg); }

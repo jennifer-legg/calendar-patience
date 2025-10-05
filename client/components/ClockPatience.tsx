@@ -103,10 +103,10 @@ export default function ClockPatience({
         {!isHidden && openCard && currentPile && (
           <DraggableCard openCard={openCard} pileType={currentPile} />
         )}
+        {gameEnded && (
+          <GameEndMessage gameLost={gameLost} resetGame={handleResetGame} />
+        )}
       </div>
-      {gameEnded && (
-        <GameEndMessage gameLost={gameLost} resetGame={handleResetGame} />
-      )}
     </div>
   )
 }
