@@ -40,7 +40,7 @@ export default function ClockPatience({
     }
   }
 
-  const hideOpenCard = (isHidden: boolean) => {
+  const hideDroppableCard = (isHidden: boolean) => {
     setisHidden(isHidden)
   }
 
@@ -103,7 +103,7 @@ export default function ClockPatience({
                 pileNumber={i}
                 pileType={pileType}
                 handlePileClick={handlePileClick}
-                hideOpenCard={hideOpenCard}
+                hideDroppableCard={hideDroppableCard}
                 gameLost={handleGameLost}
                 pileCards={pileCards}
               />
