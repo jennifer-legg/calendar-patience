@@ -76,7 +76,7 @@ export default function ClockPile({
       <div className="stacked-cards">
         {buttonIsVisible && (
           <button
-            className={`card-button card ${buttonIsClickable ? 'glow-blue' : 'glow-black'}`}
+            className={`card-button card ${buttonIsClickable ? 'glow-blue' : 'glow-black'} rounded-corner-tiny`}
             onClick={handleButtonClick}
           >
             <CardBack imgGlows={buttonIsClickable} />

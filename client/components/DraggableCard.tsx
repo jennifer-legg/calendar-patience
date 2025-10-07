@@ -22,13 +22,14 @@ export default function DraggableCard({ openCard, pileType }: Props) {
 
   return (
     <div
-      className={`place-${pileType} circle-item draggablediv glow-blue`}
+      className={`place-${pileType} circle-item draggablediv `}
       draggable="true"
       onDrag={handleDrag}
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
     >
       <img
+        className="glow-blue rounded-corner-tiny"
         draggable="false"
         src={openCard.image}
         alt={`${openCard.value} of ${openCard.suit}`}
