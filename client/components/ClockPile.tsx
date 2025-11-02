@@ -8,6 +8,7 @@ interface Props {
   pileNumber: number
   pileType: string
   handlePileClick: (
+    pileType: string,
     pileNumber: number,
     card: Card,
     pileIsActive: boolean,
@@ -30,11 +31,7 @@ export default function ClockPile({
   const [buttonIsClickable, setButtonClickable] = useState<boolean>(
     pileType === 'king' ? true : false,
   )
-  const [facedownCards, setFaceDownCards] = useState<Card[]>(
-    pileCards.map((card: Card) => {
-      return { ...card }
-    }),
-  )
+  const [facedownCards, setFaceDownCards] = useState<Card[]>(pileCards)
 
   const handleUpdatePile = (card: Card) => {
     setButtonClickable(true)
@@ -51,7 +48,12 @@ export default function ClockPile({
       const currentCard: Card = { ...facedownCards[0] }
       const remainingCards = [...facedownCards.slice(1)]
       setFaceDownCards(remainingCards)
-      handlePileClick(pileNumber, currentCard, remainingCards.length > 0)
+      handlePileClick(
+        pileType,
+        pileNumber,
+        currentCard,
+        remainingCards.length > 0,
+      )
       if (faceUpCards.length >= 4 || facedownCards.length == 0) {
         setButtonIsVisible(false)
       }
@@ -74,7 +76,7 @@ export default function ClockPile({
       <div className="stacked-cards">
         {buttonIsVisible && (
           <button
-            className={`card-button card ${buttonIsClickable ? 'glow-blue' : 'glow-black'}`}
+            className={`card-button card ${buttonIsClickable ? 'glow-blue' : 'glow-black'} rounded-corner-tiny`}
             onClick={handleButtonClick}
           >
             <CardBack imgGlows={buttonIsClickable} />

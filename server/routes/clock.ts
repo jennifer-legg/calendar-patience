@@ -17,19 +17,4 @@ router.get('/new-deck', async (req, res) => {
   }
 })
 
-// router.get('/:deckId/draw-card/:pile', async (req, res) => {
-//   const { deckId, pile } = req.params
-//   try {
-//     //Draw a card from pile
-//     const drawnCards: DrawnFromPile = await doc.drawFromPile(deckId, pile)
-//     //Pass the card to the front end
-//     const card = drawnCards.cards[0]
-//     console.log(card, deckId)
-//     res.status(200).json(card)
-//   } catch (error) {
-//     console.log(error)
-//     res.status(500).json({ message: 'Something went wrong' })
-//   }
-// })
-
 export default router
