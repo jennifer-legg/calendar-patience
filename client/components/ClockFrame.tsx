@@ -1,9 +1,12 @@
 import { useNewDeck } from '../hooks/useDeck.ts'
 import ClockPatience from './ClockPatience.tsx'
 import type { Card } from '../../models/deck.ts'
+import { useState } from 'react'
+import ClockRules from './ClockRules.tsx'
 
 export default function ClockFrame() {
   const { data, isError, isPending, error, refetch, isFetching } = useNewDeck()
+  const [rulesAreVisible, setRulesVisible] = useState(false)
 
   if (isPending || isFetching) {
     return <p>Loading...</p>
@@ -31,9 +34,14 @@ export default function ClockFrame() {
     refetch()
   }
 
+  const handleClick = () => {
+    setRulesVisible(rulesAreVisible ? false : true)
+  }
+
   return (
     <main>
-      <h2>Calendar Patience</h2>
+      <button onClick={handleClick}>Show the rules</button>
+      {rulesAreVisible && <ClockRules />}
       <ClockPatience
         deckId={deckId}
         refreshDeck={refreshDeck}

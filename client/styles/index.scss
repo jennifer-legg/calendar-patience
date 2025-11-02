@@ -172,9 +172,9 @@ main {
 }
 
 .dice-image {
-  background-image: url('/public/images/dice.svg');
+  background-image: url('/images/dice.svg');
   background-repeat: no-repeat;
-  max-width: 100%;
+  background-size: 200px;
   overflow: hidden;
   background-position: center center;
 }
