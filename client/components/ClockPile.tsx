@@ -57,6 +57,10 @@ export default function ClockPile({
       if (faceUpCards.length >= 4 || facedownCards.length == 0) {
         setButtonIsVisible(false)
       }
+      console.log(pileType)
+      if (pileType === 'king' && faceUpCards.length == 3) {
+        setButtonIsVisible(false)
+      }
       setButtonClickable(false)
     }
   }
@@ -82,6 +86,15 @@ export default function ClockPile({
             <CardBack imgGlows={buttonIsClickable} />
           </button>
         )}
+        {facedownCards.length > 0 &&
+          facedownCards.map(
+            (card, index) =>
+              index != 0 && (
+                <div className="card" key={card.code}>
+                  <CardBack imgGlows={false} />
+                </div>
+              ),
+          )}
         {faceUpCards.length > 0 && (
           <>
             {faceUpCards.map((card: Card) => (
