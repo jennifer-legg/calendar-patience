@@ -40,7 +40,9 @@ export default function ClockFrame() {
 
   return (
     <main>
-      <button onClick={handleClick}>Show the rules</button>
+      <button onClick={handleClick}>
+        {rulesAreVisible ? `Hide the rules` : `Show the rules`}
+      </button>
       {rulesAreVisible && <ClockRules />}
       <ClockPatience
         deckId={deckId}
