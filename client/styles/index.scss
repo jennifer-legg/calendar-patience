@@ -90,27 +90,27 @@ main {
 }
 
 .card:nth-child(2) {
-  bottom: 15px; 
+  bottom: 20px; 
   z-index: 4;
 }
 
 .card:nth-child(3) {
-  bottom: 30px; 
+  bottom: 40px; 
   z-index: 3;
 }
 
 .card:nth-child(4) {
-  bottom: 45px; 
+  bottom: 60px; 
   z-index: 2;
 }
 
 .card:nth-child(5) {
-  bottom: 60px; 
+  bottom: 80px; 
   z-index: 1;
 }
 
 .card:nth-child(6) {
-  bottom: 75px; 
+  bottom: 100px; 
   z-index: 0;
 }
 
@@ -173,16 +173,26 @@ main {
 }
 
 .grey-bg {
-  background-color: rgb(70, 68, 68);
+  background-color: rgb(69, 68, 68);
 }
 
-.dice-image {
-  background-image: url('/images/dice.svg');
-  background-repeat: no-repeat;
-  background-size: 200px;
-  overflow: hidden;
-  background-position: center center;
+.dice-container {
+  position: relative;
 }
+
+.cross-image-front {
+  position: absolute;
+  z-index: 1;
+}
+
+
+// .dice-image {
+//   background-image: url('/images/dice.svg');
+//   background-repeat: no-repeat;
+//   background-size: 200px;
+//   overflow: hidden;
+//   background-position: center center;
+// }
 
 .rounded-corner-tiny {
   border-radius: 2px;
