@@ -1,9 +1,8 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import type { Card } from '../../models/deck'
 import CardBack from './CardBack'
 import CardFace from './CardFace'
 import DropZone from './DropZone'
-import { preload } from 'react-dom'
 
 interface Props {
   pileNumber: number
@@ -27,13 +26,18 @@ export default function ClockPile({
   gameLost,
   pileCards,
 }: Props) {
+  useEffect(() => {
+    pileCards.forEach((card) => {
+      const img = new Image()
+      img.src = card.image
+    })
+  }, [pileCards])
   const [faceUpCards, setFaceUpCards] = useState<Card[]>([])
   const [buttonIsVisible, setButtonIsVisible] = useState<boolean>(true)
   const [buttonIsClickable, setButtonClickable] = useState<boolean>(
     pileType === 'king' ? true : false,
   )
   const [facedownCards, setFaceDownCards] = useState<Card[]>(pileCards)
-  pileCards.forEach((card) => preload(card.image, { as: 'image' }))
 
   const handleUpdatePile = (card: Card) => {
     setButtonClickable(true)
@@ -59,7 +63,6 @@ export default function ClockPile({
       if (faceUpCards.length >= 4 || facedownCards.length == 0) {
         setButtonIsVisible(false)
       }
-      console.log(pileType)
       if (pileType === 'king' && faceUpCards.length == 3) {
         setButtonIsVisible(false)
       }
