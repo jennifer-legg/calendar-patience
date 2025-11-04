@@ -3,6 +3,7 @@ import type { Card } from '../../models/deck'
 import CardBack from './CardBack'
 import CardFace from './CardFace'
 import DropZone from './DropZone'
+import { preload } from 'react-dom'
 
 interface Props {
   pileNumber: number
@@ -32,6 +33,7 @@ export default function ClockPile({
     pileType === 'king' ? true : false,
   )
   const [facedownCards, setFaceDownCards] = useState<Card[]>(pileCards)
+  pileCards.forEach((card) => preload(card.image, { as: 'image' }))
 
   const handleUpdatePile = (card: Card) => {
     setButtonClickable(true)
