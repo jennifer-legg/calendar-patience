@@ -1,34 +1,20 @@
-# Boilerplate: Fullstack with Sass
+# Calendar-patience
 
 ## Setup
 
-### What's included
+### The project so far
 
-This repo includes:
+This project is a single page online card game. It uses react components and drag and drop functionality, along with the [Deck of Cards API](https://deckofcardsapi.com/) (to create the initial deck and to display the images of the face and back of the cards).
 
-* a single, simple API endpoint (`/api/v1/fruits`)
-* a single React component (`<App />`)
-* basic routing setup (`routes.tsx`)
-* an example database module (`server/db/fruits.js`)
-* an API client module (`client/apis/fruits.js`)
-* configuration for Vitest and testing library
-* configuration for server-side debugging in VS Code
-* configuration for preprocessing Sass
+### Next steps
+
+I am currently creating and adding database functionality and user login, so that the player can save a game to come back to or check how many wins or losses they have overall.
 
 ### Installation
 
-#### **From the Github UI**
-
-See the instructions [here](https://docs.github.com/en/free-pro-team@latest/github/creating-cloning-and-archiving-repositories/creating-a-repository-from-a-template) to use Github's feature to create a new repo from a template.
-
 ```
-git clone [your-project-ssh-address]
-cd [your-project-name]
 npm install # to install dependencies
 npm run dev # to start the dev server
 ```
 
 You can find the server running on [http://localhost:3000](http://localhost:3000) and the client running on [http://localhost:5173](http://localhost:5173).
-
----
-[Provide feedback on this repo](https://docs.google.com/forms/d/e/1FAIpQLSfw4FGdWkLwMLlUaNQ8FtP2CTJdGDUv6Xoxrh19zIrJSkvT4Q/viewform?usp=pp_url&entry.1958421517=boilerplate-fullstack)
