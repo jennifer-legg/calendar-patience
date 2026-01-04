@@ -14,6 +14,8 @@ I am currently creating and adding database functionality and user login, so tha
 
 ```
 npm install # to install dependencies
+npm run knex migrate:latest # to create the database
+npm run knex seed:run # to create the seeds for the database
 npm run dev # to start the dev server
 ```
 
