@@ -6,7 +6,7 @@ export function up(knex) {
     table.integer('high_score')
     table.integer('losses')
     table
-      .integer('user_id')
+      .string('user_id')
       .unique()
       .references('users.id')
       .notNullable()
