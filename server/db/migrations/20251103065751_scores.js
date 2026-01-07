@@ -1,7 +1,3 @@
-/**
- * @param { import("knex").Knex } knex
- * @returns { Promise<void> }
- */
 export function up(knex) {
   return knex.schema.createTable('scores', (table) => {
     table.increments('id').primary()
@@ -10,7 +6,7 @@ export function up(knex) {
     table.integer('high_score')
     table.integer('losses')
     table
-      .integer('user_id')
+      .string('user_id')
       .unique()
       .references('users.id')
       .notNullable()
@@ -19,10 +15,6 @@ export function up(knex) {
   })
 }
 
-/**
- * @param { import("knex").Knex } knex
- * @returns { Promise<void> }
- */
 export function down(knex) {
   return knex.schema.dropTable('scores')
 }
