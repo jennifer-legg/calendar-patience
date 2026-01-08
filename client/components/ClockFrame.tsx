@@ -2,17 +2,17 @@ import { useState } from 'react'
 import ClockRules from './ClockRules.tsx'
 import { useParams } from 'react-router'
 import NewGame from './NewGame.tsx'
+import SavedGame from './SavedGame.tsx'
 
 export default function ClockFrame() {
   const [rulesAreVisible, setRulesVisible] = useState(false)
-  const { type } = useParams()
-  console.log(type)
+  const { gameStatus } = useParams()
 
   const handleClick = () => {
     setRulesVisible(rulesAreVisible ? false : true)
   }
 
-  if (!type) {
+  if (!gameStatus) {
     return <p>Error loading game</p>
   }
 
@@ -22,7 +22,8 @@ export default function ClockFrame() {
         {rulesAreVisible ? `Hide the rules` : `Show the rules`}
       </button>
       {rulesAreVisible && <ClockRules />}
-      {type === 'newGame' && <NewGame />}
+      {gameStatus === 'newGame' && <NewGame />}
+      {gameStatus === 'saved' && <SavedGame />}
     </main>
   )
 }
