@@ -5,11 +5,12 @@ import { useState } from 'react'
 import type { Card } from '../../models/deck.ts'
 import { Pile } from '../../models/savedGame.ts'
 import SaveGameButton from './SaveGameButton.tsx'
+import { useNavigate } from 'react-router'
 
 interface Props {
   deckId: string
   clockPiles: Card[][]
-  refreshDeck: () => void
+  refreshDeck?: () => void
 }
 
 export default function ClockPatience({
@@ -17,6 +18,7 @@ export default function ClockPatience({
   refreshDeck,
   clockPiles,
 }: Props) {
+  const navigate = useNavigate()
   const [activePiles, setActivePiles] = useState<boolean[]>(
     Array(13).fill(true),
   )
@@ -80,10 +82,10 @@ export default function ClockPatience({
 
   const handleResetGame = () => {
     setisHidden(true)
-    refreshDeck()
     setGameEnded(false)
     setGameLost(false)
     setActivePiles(Array(13).fill(true))
+    refreshDeck ? refreshDeck() : navigate('/new')
   }
 
   const handleGameLost = (isLost: boolean) => {

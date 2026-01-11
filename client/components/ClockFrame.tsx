@@ -6,7 +6,7 @@ import ClockRules from './ClockRules.tsx'
 interface Props {
   deckId: string
   clockPiles: Card[][]
-  refreshDeck: () => void
+  refreshDeck?: () => void
 }
 
 export default function ClockFrame({ deckId, clockPiles, refreshDeck }: Props) {
