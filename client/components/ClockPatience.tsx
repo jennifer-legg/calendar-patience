@@ -3,6 +3,7 @@ import ClockPile from './ClockPile.tsx'
 import GameEndMessage from './GameEndMessage'
 import { useState } from 'react'
 import type { Card } from '../../models/deck.ts'
+import { Pile } from '../../models/savedGame.ts'
 
 interface Props {
   deckId: string
@@ -18,6 +19,9 @@ export default function ClockPatience({
   const [activePiles, setActivePiles] = useState<boolean[]>(
     Array(13).fill(true),
   )
+  const [pilesSaveStatus, setPileSaveStatus] = useState<(Pile | null)[]>(
+    Array(13).fill(null),
+  )
   const [openCard, setOpenCard] = useState<Card | null>(null)
   const [currentPile, setCurrentPile] = useState<string | null>(null)
   const [isHidden, setisHidden] = useState<boolean>(false)
@@ -29,8 +33,15 @@ export default function ClockPatience({
     pileNumber: number,
     card: Card,
     pileIsActive: boolean,
+    pileData: Pile,
   ) => {
     setCurrentPile(pileType)
+    console.log(pilesSaveStatus)
+    setPileSaveStatus(
+      pilesSaveStatus.map((item: Pile | null, i) =>
+        i === pileData.pileNumber ? pileData : item,
+      ),
+    )
     setOpenCard(card)
     setisHidden(false)
     if (!pileIsActive) {

@@ -3,6 +3,7 @@ import type { Card } from '../../models/deck'
 import CardBack from './CardBack'
 import CardFace from './CardFace'
 import DropZone from './DropZone'
+import { Pile } from '../../models/savedGame'
 
 interface Props {
   pileNumber: number
@@ -12,6 +13,7 @@ interface Props {
     pileNumber: number,
     card: Card,
     pileIsActive: boolean,
+    pileData: Pile,
   ) => void
   hideDroppableCard: (isHidden: boolean) => void
   gameLost: (isLost: boolean) => void
@@ -59,6 +61,15 @@ export default function ClockPile({
         pileNumber,
         currentCard,
         remainingCards.length > 0,
+        {
+          faceupCards: faceUpCards,
+          facedownCards: facedownCards,
+          buttonIsClickable: buttonIsClickable,
+          buttonIsVisible: buttonIsVisible,
+          pileNumber: pileNumber,
+          pileType: pileType,
+          pileCards: pileCards,
+        },
       )
       if (faceUpCards.length >= 4 || facedownCards.length == 0) {
         setButtonIsVisible(false)
