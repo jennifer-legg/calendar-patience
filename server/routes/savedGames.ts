@@ -7,6 +7,7 @@ const router = Router()
 router.post('/', async (req, res) => {
   try {
     const savedGame: GameData = req.body
+    console.log(savedGame)
     const game = await db.addNewSavedGame(savedGame)
     game[0] ? res.sendStatus(200) : res.sendStatus(500)
   } catch (error) {

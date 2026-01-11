@@ -57,7 +57,6 @@ export default function ClockPatience({
     pileData: Pile,
   ) => {
     setCurrentPile(pileType)
-    console.log(pilesSaveStatus)
     setPileSaveStatus(
       pilesSaveStatus.map((item: Pile, i) =>
         i === pileData.pileNumber ? pileData : item,
@@ -116,7 +115,7 @@ export default function ClockPatience({
           gameEnded,
           gameName: 'clock',
           activePiles,
-          userId: 'jen',
+          userId: '1',
           pileData: pilesSaveStatus,
         }}
       />

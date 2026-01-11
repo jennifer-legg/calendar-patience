@@ -9,5 +9,5 @@ export async function getSavedGame() {
 }
 
 export async function saveGame(gameData: GameData | Game): Promise<void> {
-  request.post(`${rootURL}/saveGame`).send({ gameData })
+  await request.post(`${rootURL}/savedGames`).send(gameData)
 }
