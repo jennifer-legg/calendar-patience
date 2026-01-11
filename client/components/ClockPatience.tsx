@@ -3,6 +3,8 @@ import ClockPile from './ClockPile.tsx'
 import GameEndMessage from './GameEndMessage'
 import { useState } from 'react'
 import type { Card } from '../../models/deck.ts'
+import { Pile } from '../../models/savedGame.ts'
+import SaveGameButton from './SaveGameButton.tsx'
 
 interface Props {
   deckId: string
@@ -18,6 +20,29 @@ export default function ClockPatience({
   const [activePiles, setActivePiles] = useState<boolean[]>(
     Array(13).fill(true),
   )
+  const [pilesSaveStatus, setPileSaveStatus] = useState<Pile[]>(
+    clockPiles.map((pile, i) => {
+      const pileType: string =
+        i === 0
+          ? 'king'
+          : i === 1
+            ? 'ace'
+            : i === 11
+              ? 'jack'
+              : i === 12
+                ? 'queen'
+                : `${i}`
+      return {
+        pileType,
+        pileCards: pile,
+        facedownCards: pile,
+        faceupCards: null,
+        buttonIsClickable: pileType === 'king',
+        buttonIsVisible: false,
+        pileNumber: i,
+      }
+    }),
+  )
   const [openCard, setOpenCard] = useState<Card | null>(null)
   const [currentPile, setCurrentPile] = useState<string | null>(null)
   const [isHidden, setisHidden] = useState<boolean>(false)
@@ -29,8 +54,14 @@ export default function ClockPatience({
     pileNumber: number,
     card: Card,
     pileIsActive: boolean,
+    pileData: Pile,
   ) => {
     setCurrentPile(pileType)
+    setPileSaveStatus(
+      pilesSaveStatus.map((item: Pile, i) =>
+        i === pileData.pileNumber ? pileData : item,
+      ),
+    )
     setOpenCard(card)
     setisHidden(false)
     if (!pileIsActive) {
@@ -75,6 +106,19 @@ export default function ClockPatience({
 
   return (
     <div>
+      <SaveGameButton
+        gameData={{
+          openCard,
+          currentPile,
+          isHidden,
+          gameLost,
+          gameEnded,
+          gameName: 'clock',
+          activePiles,
+          userId: '1',
+          pileData: pilesSaveStatus,
+        }}
+      />
       <div className="circle-container" key={deckId}>
         {clockPiles.map((pileCards: Card[], i) => {
           const pileType: string =

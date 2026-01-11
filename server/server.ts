@@ -3,6 +3,7 @@ import * as Path from 'node:path'
 
 import deckOfCards from './routes/clock.ts'
 import userRoutes from './routes/users.ts'
+import savedGames from './routes/savedGames.ts'
 
 const server = express()
 
@@ -10,6 +11,7 @@ server.use(express.json())
 
 server.use('/api/v1/clock', deckOfCards)
 server.use('/api/v1/users', userRoutes)
+server.use('/api/v1/savedGames', savedGames)
 
 if (process.env.NODE_ENV === 'production') {
   server.use(express.static(Path.resolve('public')))

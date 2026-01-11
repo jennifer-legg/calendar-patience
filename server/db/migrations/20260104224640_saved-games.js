@@ -4,6 +4,7 @@ export function up(knex) {
     table.string('game_name')
     table.timestamp('date').defaultTo(knex.fn.now())
     table.json('pile_data')
+    table.json('active_piles')
     table.string('current_pile')
     table.string('open_card')
     table.boolean('is_hidden')
