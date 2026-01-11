@@ -4,8 +4,8 @@ export interface GameData {
   gameName: string
   activePiles: boolean[]
   pileData: Pile[]
-  currentPile: number
-  openCard: string
+  currentPile: string | null
+  openCard: Card | null
   isHidden: boolean
   gameLost: boolean
   gameEnded: boolean
@@ -21,7 +21,7 @@ export interface Pile {
   pileNumber: number
   pileType: string
   pileCards: Card[]
-  faceupCards: Card[]
+  faceupCards: Card[] | null
   facedownCards: Card[]
   buttonIsVisible: boolean
   buttonIsClickable: boolean
