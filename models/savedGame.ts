@@ -17,6 +17,12 @@ export interface Game extends GameData {
   date: string
 }
 
+export interface SaveOverview {
+  gameName: string
+  id: number
+  date: string
+}
+
 export interface Pile {
   pileNumber: number
   pileType: string

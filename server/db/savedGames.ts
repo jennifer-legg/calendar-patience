@@ -15,6 +15,19 @@ const gameSelect = [
   'user_id as userId',
 ]
 
+export async function getOverviewByUserId(userId: string) {
+  return connection('saved_games')
+    .where({ user_id: userId })
+    .select('id', 'game_name as gameName', 'date')
+}
+
+export async function getSavedGame(id: number) {
+  return connection('saved_games')
+    .where({ id })
+    .select(...gameSelect)
+    .first()
+}
+
 export async function addNewSavedGame(newSave: GameData) {
   return connection('saved_games')
     .insert({

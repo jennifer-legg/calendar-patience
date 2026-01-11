@@ -4,6 +4,33 @@ import { GameData } from '../../models/savedGame.ts'
 
 const router = Router()
 
+router.get('/overview/:userId', async (req, res) => {
+  try {
+    const { userId } = req.params
+    console.log(userId)
+    const overview = await db.getOverviewByUserId(userId)
+    overview[0] ? res.json(overview) : res.sendStatus(500)
+  } catch (error) {
+    console.log(
+      error instanceof Error ? error.message : 'Error getting overview',
+    )
+    res.status(500).json({ message: 'Something went wrong' })
+  }
+})
+
+router.get('/game/:id', async (req, res) => {
+  try {
+    const { id } = req.params
+    const game = await db.getSavedGame(Number(id))
+    game ? res.json(game) : res.sendStatus(500)
+  } catch (error) {
+    console.log(
+      error instanceof Error ? error.message : 'Error getting saved game',
+    )
+    res.status(500).json({ message: 'Something went wrong' })
+  }
+})
+
 router.post('/', async (req, res) => {
   try {
     const savedGame: GameData = req.body
@@ -11,7 +38,7 @@ router.post('/', async (req, res) => {
     game[0] ? res.sendStatus(200) : res.sendStatus(500)
   } catch (error) {
     console.log(
-      error instanceof Error ? error.message : 'Error adding new user',
+      error instanceof Error ? error.message : 'Error adding new save',
     )
     res.status(500).json({ message: 'Something went wrong' })
   }
