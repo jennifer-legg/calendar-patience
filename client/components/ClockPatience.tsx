@@ -3,7 +3,7 @@ import ClockPile from './ClockPile.tsx'
 import GameEndMessage from './GameEndMessage'
 import { useState } from 'react'
 import type { Card } from '../../models/deck.ts'
-import { Pile } from '../../models/savedGame.ts'
+import { Game, Pile } from '../../models/savedGame.ts'
 import SaveGameButton from './SaveGameButton.tsx'
 import { useNavigate } from 'react-router'
 
@@ -11,45 +11,59 @@ interface Props {
   deckId: string
   clockPiles: Card[][]
   refreshDeck?: () => void
+  savedGameData?: Game
 }
 
 export default function ClockPatience({
   deckId,
   refreshDeck,
   clockPiles,
+  savedGameData,
 }: Props) {
   const navigate = useNavigate()
   const [activePiles, setActivePiles] = useState<boolean[]>(
-    Array(13).fill(true),
+    savedGameData ? savedGameData.activePiles : Array(13).fill(true),
   )
   const [pilesSaveStatus, setPileSaveStatus] = useState<Pile[]>(
-    clockPiles.map((pile, i) => {
-      const pileType: string =
-        i === 0
-          ? 'king'
-          : i === 1
-            ? 'ace'
-            : i === 11
-              ? 'jack'
-              : i === 12
-                ? 'queen'
-                : `${i}`
-      return {
-        pileType,
-        pileCards: pile,
-        facedownCards: pile,
-        faceupCards: null,
-        buttonIsClickable: pileType === 'king',
-        buttonIsVisible: false,
-        pileNumber: i,
-      }
-    }),
+    savedGameData
+      ? savedGameData.pileData
+      : clockPiles.map((pile, i) => {
+          const pileType: string =
+            i === 0
+              ? 'king'
+              : i === 1
+                ? 'ace'
+                : i === 11
+                  ? 'jack'
+                  : i === 12
+                    ? 'queen'
+                    : `${i}`
+          return {
+            pileType,
+            pileCards: pile,
+            facedownCards: pile,
+            faceupCards: null,
+            buttonIsClickable: pileType === 'king',
+            buttonIsVisible: false,
+            pileNumber: i,
+          }
+        }),
   )
-  const [openCard, setOpenCard] = useState<Card | null>(null)
-  const [currentPile, setCurrentPile] = useState<string | null>(null)
-  const [isHidden, setisHidden] = useState<boolean>(false)
-  const [gameLost, setGameLost] = useState<boolean>(false)
-  const [gameEnded, setGameEnded] = useState<boolean>(false)
+  const [openCard, setOpenCard] = useState<Card | null>(
+    savedGameData ? savedGameData.openCard : null,
+  )
+  const [currentPile, setCurrentPile] = useState<string | null>(
+    savedGameData ? savedGameData.currentPile : null,
+  )
+  const [isHidden, setisHidden] = useState<boolean>(
+    savedGameData ? savedGameData.isHidden : false,
+  )
+  const [gameLost, setGameLost] = useState<boolean>(
+    savedGameData ? savedGameData.gameLost : false,
+  )
+  const [gameEnded, setGameEnded] = useState<boolean>(
+    savedGameData ? savedGameData.gameEnded : false,
+  )
 
   const handlePileClick = (
     pileType: string,

@@ -1,6 +1,6 @@
 import connection from './connection'
 
-import { GameData } from '../../models/savedGame.ts'
+import { GameData, Game } from '../../models/savedGame.ts'
 
 const gameSelect = [
   'id',
@@ -12,6 +12,7 @@ const gameSelect = [
   'is_hidden as isHidden',
   'game_lost as gameLost',
   'game_ended as gameEnded',
+  'active_piles as activePiles',
   'user_id as userId',
 ]
 
@@ -21,11 +22,22 @@ export async function getOverviewByUserId(userId: string) {
     .select('id', 'game_name as gameName', 'date')
 }
 
-export async function getSavedGame(id: number) {
-  return connection('saved_games')
+export async function getSavedGame(id: number): Promise<Game | undefined> {
+  const response = await connection('saved_games')
     .where({ id })
     .select(...gameSelect)
     .first()
+
+  if (response) {
+    try {
+      const pileData = JSON.parse(response.pileData)
+      const activePiles = JSON.parse(response.activePiles)
+      return { ...response, pileData: pileData, activePiles: activePiles }
+    } catch (err) {
+      console.log(err instanceof Error ? err.message : 'error parsing json')
+    }
+  }
+  return undefined
 }
 
 export async function addNewSavedGame(newSave: GameData) {

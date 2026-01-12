@@ -1,6 +1,7 @@
 import { useParams } from 'react-router'
 import { useGetSavedGame } from '../hooks/useSaveGame'
 import ClockFrame from './ClockFrame'
+import { Card } from '../../models/deck'
 
 export default function SavedGame() {
   const { id } = useParams()
@@ -14,9 +15,11 @@ export default function SavedGame() {
     return <p>Error retrieving saved game</p>
   }
 
+  const clockPiles: Card[][] = data.pileData.map((pile) => pile.pileCards)
+
   return (
     <>
-      <ClockFrame deckId={id} clockPiles={data} />
+      <ClockFrame deckId={id} savedGameData={data} clockPiles={clockPiles} />
     </>
   )
 }
