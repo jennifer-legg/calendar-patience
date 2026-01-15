@@ -44,7 +44,7 @@ export default function ClockPatience({
             facedownCards: pile,
             faceupCards: [],
             buttonIsClickable: pileType === 'king',
-            buttonIsVisible: false,
+            buttonIsVisible: true,
             pileNumber: i,
           }
         }),

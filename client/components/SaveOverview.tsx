@@ -8,7 +8,7 @@ export default function SaveOverview() {
     return <p>Loading...</p>
   }
 
-  if (isError || !data) {
+  if (isError || !data || !data[0]) {
     return (
       <div>
         <p>No saved games found</p>

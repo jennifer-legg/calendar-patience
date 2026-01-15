@@ -10,6 +10,5 @@ export default function SaveGameButton({ gameData }: Props) {
   const handleSave = () => {
     saveGame.mutate(gameData)
   }
-
   return <button onClick={handleSave}>Save Game</button>
 }
