@@ -16,3 +16,7 @@ export async function getSaveOverviewByUserId(userId: string) {
 export async function saveGame(gameData: GameData | Game): Promise<void> {
   await request.post(`${rootURL}/savedGames`).send(gameData)
 }
+
+export async function deleteSavedGame(saveId: number): Promise<void> {
+  await request.delete(`${rootURL}/savedGames`).send({ saveId })
+}

@@ -14,10 +14,14 @@ export function useGetSavedGame(id: number) {
 }
 
 export function useGetSaveOverviewByUserId(userId: string) {
-  return useQuery({
+  const query = useQuery({
     queryKey: ['overview'],
     queryFn: () => API.getSaveOverviewByUserId(userId),
   })
+  return {
+    ...query,
+    deleteSavedGame: useDeleteSavedGame(),
+  }
 }
 
 export function useSaveGameMutation<TData = unknown, TVariables = unknown>(
@@ -37,4 +41,8 @@ export function useSaveGameMutation<TData = unknown, TVariables = unknown>(
 
 export function useAddSave() {
   return useSaveGameMutation(API.saveGame)
+}
+
+export function useDeleteSavedGame() {
+  return useSaveGameMutation(API.deleteSavedGame)
 }

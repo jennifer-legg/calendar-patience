@@ -7,7 +7,6 @@ const router = Router()
 router.get('/overview/:userId', async (req, res) => {
   try {
     const { userId } = req.params
-    console.log(userId)
     const overview = await db.getOverviewByUserId(userId)
     overview[0] ? res.json(overview) : res.sendStatus(500)
   } catch (error) {
@@ -40,6 +39,18 @@ router.post('/', async (req, res) => {
     console.log(
       error instanceof Error ? error.message : 'Error adding new save',
     )
+    res.status(500).json({ message: 'Something went wrong' })
+  }
+})
+
+router.delete('/', async (req, res) => {
+  try {
+    const { saveId } = req.body
+    console.log(saveId)
+    const isDeleted = await db.deleteSavedGame(saveId)
+    isDeleted ? res.sendStatus(200) : res.sendStatus(500)
+  } catch (error) {
+    console.log(error instanceof Error ? error.message : 'Error deleting save')
     res.status(500).json({ message: 'Something went wrong' })
   }
 })

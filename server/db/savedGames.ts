@@ -22,6 +22,10 @@ export async function getOverviewByUserId(userId: string) {
     .select('id', 'game_name as gameName', 'date')
 }
 
+export async function deleteSavedGame(saveId: number) {
+  return connection('saved_games').where({ id: saveId }).del()
+}
+
 export async function getSavedGame(id: number): Promise<Game | undefined> {
   const response = await connection('saved_games')
     .where({ id })

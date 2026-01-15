@@ -2,7 +2,8 @@ import { useGetSaveOverviewByUserId } from '../hooks/useSaveGame'
 import { Link } from 'react-router'
 
 export default function SaveOverview() {
-  const { data, isError, isPending } = useGetSaveOverviewByUserId('1')
+  const { data, isError, isPending, deleteSavedGame } =
+    useGetSaveOverviewByUserId('1')
 
   if (isPending) {
     return <p>Loading...</p>
@@ -21,6 +22,10 @@ export default function SaveOverview() {
     return { ...item, date: saveDate.toLocaleString() }
   })
 
+  const handleDelete = (saveId: number) => {
+    deleteSavedGame.mutate(saveId)
+  }
+
   return (
     <div>
       <h2>Your saved games</h2>
@@ -28,6 +33,7 @@ export default function SaveOverview() {
         {gameOverview.map((item) => (
           <li key={item.id}>
             <Link to={`/save/${item.id}`}>{item.date}</Link>
+            <button onClick={() => handleDelete(item.id)}>Delete</button>
           </li>
         ))}
       </ul>
