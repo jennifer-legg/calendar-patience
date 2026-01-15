@@ -13,20 +13,23 @@ interface Props {
     pileNumber: number,
     card: Card,
     pileIsActive: boolean,
-    pileData: Pile,
   ) => void
-  hideDroppableCard: (isHidden: boolean) => void
+  hideOpenCard: (isHidden: boolean) => void
   gameLost: (isLost: boolean) => void
   pileCards: Card[]
+  savedPileData: Pile | undefined
+  savePile: (updatedPile: Pile) => void
 }
 
 export default function ClockPile({
   pileNumber,
   pileType,
   handlePileClick,
-  hideDroppableCard,
+  hideOpenCard,
   gameLost,
   pileCards,
+  savedPileData,
+  savePile,
 }: Props) {
   useEffect(() => {
     pileCards.forEach((card) => {
@@ -34,21 +37,41 @@ export default function ClockPile({
       img.src = card.image
     })
   }, [pileCards])
-  const [faceUpCards, setFaceUpCards] = useState<Card[]>([])
-  const [buttonIsVisible, setButtonIsVisible] = useState<boolean>(true)
-  const [buttonIsClickable, setButtonClickable] = useState<boolean>(
-    pileType === 'king' ? true : false,
+  const [faceupCards, setFaceUpCards] = useState<Card[]>(
+    savedPileData ? savedPileData.faceupCards : [],
   )
-  const [facedownCards, setFaceDownCards] = useState<Card[]>(pileCards)
+  const [buttonIsVisible, setButtonIsVisible] = useState<boolean>(
+    savedPileData ? savedPileData.buttonIsVisible : true,
+  )
+  const [buttonIsClickable, setButtonClickable] = useState<boolean>(
+    savedPileData
+      ? savedPileData.buttonIsClickable
+      : pileType === 'king'
+        ? true
+        : false,
+  )
+  const [facedownCards, setFaceDownCards] = useState<Card[]>(
+    savedPileData ? savedPileData.facedownCards : pileCards,
+  )
 
   const handleUpdatePile = (card: Card) => {
     setButtonClickable(true)
-    setFaceUpCards([...faceUpCards, card])
-    hideDroppableCard(true)
-    if (pileType === 'king' && faceUpCards.length >= 3) {
+    setFaceUpCards([...faceupCards, card])
+    hideOpenCard(true)
+    if (pileType === 'king' && faceupCards.length >= 3) {
       setButtonIsVisible(false)
       gameLost(true)
     }
+    savePile({
+      faceupCards: [...faceupCards, card],
+      facedownCards,
+      buttonIsClickable: true,
+      buttonIsVisible:
+        pileType === 'king' && faceupCards.length >= 3 ? false : true,
+      pileNumber,
+      pileType,
+      pileCards,
+    })
   }
 
   const handleButtonClick = () => {
@@ -61,23 +84,28 @@ export default function ClockPile({
         pileNumber,
         currentCard,
         remainingCards.length > 0,
-        {
-          faceupCards: faceUpCards,
-          facedownCards: facedownCards,
-          buttonIsClickable: buttonIsClickable,
-          buttonIsVisible: buttonIsVisible,
-          pileNumber: pileNumber,
-          pileType: pileType,
-          pileCards: pileCards,
-        },
       )
-      if (faceUpCards.length >= 4 || facedownCards.length == 0) {
+      if (faceupCards.length >= 4 || facedownCards.length == 0) {
         setButtonIsVisible(false)
       }
-      if (pileType === 'king' && faceUpCards.length == 3) {
+      if (pileType === 'king' && faceupCards.length == 3) {
         setButtonIsVisible(false)
       }
       setButtonClickable(false)
+      savePile({
+        faceupCards,
+        facedownCards: remainingCards,
+        buttonIsClickable: false,
+        buttonIsVisible:
+          faceupCards.length >= 4 ||
+          facedownCards.length == 0 ||
+          (pileType === 'king' && faceupCards.length == 3)
+            ? false
+            : true,
+        pileNumber,
+        pileType,
+        pileCards,
+      })
     }
   }
 
@@ -111,9 +139,9 @@ export default function ClockPile({
                 </div>
               ),
           )}
-        {faceUpCards.length > 0 && (
+        {faceupCards.length > 0 && (
           <>
-            {faceUpCards.map((card: Card) => (
+            {faceupCards.map((card: Card) => (
               <CardFace key={`${card.code}`} card={card} />
             ))}
           </>

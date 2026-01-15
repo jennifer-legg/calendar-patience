@@ -17,11 +17,17 @@ export interface Game extends GameData {
   date: string
 }
 
+export interface SaveOverview {
+  gameName: string
+  id: number
+  date: string
+}
+
 export interface Pile {
   pileNumber: number
   pileType: string
   pileCards: Card[]
-  faceupCards: Card[] | null
+  faceupCards: Card[]
   facedownCards: Card[]
   buttonIsVisible: boolean
   buttonIsClickable: boolean
