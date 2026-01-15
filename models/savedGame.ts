@@ -27,7 +27,7 @@ export interface Pile {
   pileNumber: number
   pileType: string
   pileCards: Card[]
-  faceupCards: Card[] | null
+  faceupCards: Card[]
   facedownCards: Card[]
   buttonIsVisible: boolean
   buttonIsClickable: boolean

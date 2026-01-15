@@ -42,7 +42,7 @@ export default function ClockPatience({
             pileType,
             pileCards: pile,
             facedownCards: pile,
-            faceupCards: null,
+            faceupCards: [],
             buttonIsClickable: pileType === 'king',
             buttonIsVisible: false,
             pileNumber: i,
@@ -70,14 +70,8 @@ export default function ClockPatience({
     pileNumber: number,
     card: Card,
     pileIsActive: boolean,
-    pileData: Pile,
   ) => {
     setCurrentPile(pileType)
-    setPileSaveStatus(
-      pilesSaveStatus.map((item: Pile, i) =>
-        i === pileData.pileNumber ? pileData : item,
-      ),
-    )
     setOpenCard(card)
     setisHidden(false)
     if (!pileIsActive) {
@@ -88,6 +82,14 @@ export default function ClockPatience({
         ),
       )
     }
+  }
+
+  const handlePileSaveData = (pile: Pile) => {
+    setPileSaveStatus(
+      pilesSaveStatus.map((item: Pile, i) =>
+        i === pile.pileNumber ? pile : item,
+      ),
+    )
   }
 
   const hideDroppableCard = (isHidden: boolean) => {
@@ -121,7 +123,7 @@ export default function ClockPatience({
   }
 
   return (
-    <div>
+    <>
       <SaveGameButton
         gameData={{
           openCard,
@@ -135,38 +137,42 @@ export default function ClockPatience({
           pileData: pilesSaveStatus,
         }}
       />
-      <div className="circle-container" key={deckId}>
-        {clockPiles.map((pileCards: Card[], i) => {
-          const pileType: string =
-            i === 0
-              ? 'king'
-              : i === 1
-                ? 'ace'
-                : i === 11
-                  ? 'jack'
-                  : i === 12
-                    ? 'queen'
-                    : `${i}`
-          return (
-            <div key={`pile${i}-${deckId}`}>
-              <ClockPile
-                pileNumber={i}
-                pileType={pileType}
-                handlePileClick={handlePileClick}
-                hideDroppableCard={hideDroppableCard}
-                gameLost={handleGameLost}
-                pileCards={pileCards}
-              />
-            </div>
-          )
-        })}
-        {!isHidden && openCard && currentPile && (
-          <DraggableCard openCard={openCard} pileType={currentPile} />
-        )}
-        {gameEnded && (
-          <GameEndMessage gameLost={gameLost} resetGame={handleResetGame} />
-        )}
+      <div>
+        <div className="circle-container" key={deckId}>
+          {clockPiles.map((pileCards: Card[], i) => {
+            const pileType: string =
+              i === 0
+                ? 'king'
+                : i === 1
+                  ? 'ace'
+                  : i === 11
+                    ? 'jack'
+                    : i === 12
+                      ? 'queen'
+                      : `${i}`
+            return (
+              <div key={`pile${i}-${deckId}`}>
+                <ClockPile
+                  pileNumber={i}
+                  pileType={pileType}
+                  handlePileClick={handlePileClick}
+                  hideDroppableCard={hideDroppableCard}
+                  gameLost={handleGameLost}
+                  pileCards={pileCards}
+                  savedPileData={savedGameData?.pileData[i]}
+                  savePile={handlePileSaveData}
+                />
+              </div>
+            )
+          })}
+          {!isHidden && openCard && currentPile && (
+            <DraggableCard openCard={openCard} pileType={currentPile} />
+          )}
+          {gameEnded && (
+            <GameEndMessage gameLost={gameLost} resetGame={handleResetGame} />
+          )}
+        </div>
       </div>
-    </div>
+    </>
   )
 }
