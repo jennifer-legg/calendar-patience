@@ -5,13 +5,7 @@ export function up(knex) {
     table.integer('wins')
     table.integer('high_score')
     table.integer('losses')
-    table
-      .string('user_id')
-      .unique()
-      .references('users.id')
-      .notNullable()
-      .onDelete('CASCADE')
-      .onUpdate('CASCADE')
+    table.string('user_id').unique().notNullable()
   })
 }
 
