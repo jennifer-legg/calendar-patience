@@ -3,9 +3,9 @@ import { Link } from 'react-router'
 
 export default function Home() {
   return (
-    <div>
+    <main>
       <Link to={'new'}>New game</Link>
       <SaveOverview />
-    </div>
+    </main>
   )
 }
