@@ -21,10 +21,12 @@ export default function ClockPatience({
   savedGameData,
 }: Props) {
   const navigate = useNavigate()
+  //activePiles tracks which of the piles still have cards, used to check if game won/lost
   const [activePiles, setActivePiles] = useState<boolean[]>(
     savedGameData ? savedGameData.activePiles : Array(13).fill(true),
   )
-  const [pilesSaveStatus, setPileSaveStatus] = useState<Pile[]>(
+  //pileData status keeps track of all of the piles in order to save the game
+  const [pileData, setPileData] = useState<Pile[]>(
     savedGameData
       ? savedGameData.pileData
       : clockPiles.map((pile, i) => {
@@ -49,12 +51,15 @@ export default function ClockPatience({
           }
         }),
   )
+  //Selected card. Hidden when no card upturned
   const [openCard, setOpenCard] = useState<Card | null>(
     savedGameData ? savedGameData.openCard : null,
   )
+  //Sets which pile is being interacted with
   const [currentPile, setCurrentPile] = useState<string | null>(
     savedGameData ? savedGameData.currentPile : null,
   )
+  //Sets whether the openCard is hidden
   const [isHidden, setisHidden] = useState<boolean>(
     savedGameData ? savedGameData.isHidden : false,
   )
@@ -64,6 +69,8 @@ export default function ClockPatience({
   const [gameEnded, setGameEnded] = useState<boolean>(
     savedGameData ? savedGameData.gameEnded : false,
   )
+
+  console.log(savedGameData?.isHidden)
 
   const handlePileClick = (
     pileType: string,
@@ -84,15 +91,17 @@ export default function ClockPatience({
     }
   }
 
-  const handlePileSaveData = (pile: Pile) => {
-    setPileSaveStatus(
-      pilesSaveStatus.map((item: Pile, i) =>
-        i === pile.pileNumber ? pile : item,
+  //Pile component calls this to update status with pile data for saves
+  const handlePileSaveData = (updatedPile: Pile) => {
+    setPileData(
+      pileData.map((item: Pile, i) =>
+        i === updatedPile.pileNumber ? updatedPile : item,
       ),
     )
   }
 
-  const hideDroppableCard = (isHidden: boolean) => {
+  //When card is 'dropped', pile component calls this to update status and hide open card
+  const hideOpenCard = (isHidden: boolean) => {
     setisHidden(isHidden)
   }
 
@@ -134,7 +143,7 @@ export default function ClockPatience({
           gameName: 'clock',
           activePiles,
           userId: '1',
-          pileData: pilesSaveStatus,
+          pileData,
         }}
       />
       <div>
@@ -156,7 +165,7 @@ export default function ClockPatience({
                   pileNumber={i}
                   pileType={pileType}
                   handlePileClick={handlePileClick}
-                  hideDroppableCard={hideDroppableCard}
+                  hideOpenCard={hideOpenCard}
                   gameLost={handleGameLost}
                   pileCards={pileCards}
                   savedPileData={savedGameData?.pileData[i]}

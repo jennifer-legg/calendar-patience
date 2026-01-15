@@ -14,18 +14,18 @@ interface Props {
     card: Card,
     pileIsActive: boolean,
   ) => void
-  hideDroppableCard: (isHidden: boolean) => void
+  hideOpenCard: (isHidden: boolean) => void
   gameLost: (isLost: boolean) => void
   pileCards: Card[]
   savedPileData: Pile | undefined
-  savePile: (pile: Pile) => void
+  savePile: (updatedPile: Pile) => void
 }
 
 export default function ClockPile({
   pileNumber,
   pileType,
   handlePileClick,
-  hideDroppableCard,
+  hideOpenCard,
   gameLost,
   pileCards,
   savedPileData,
@@ -57,7 +57,7 @@ export default function ClockPile({
   const handleUpdatePile = (card: Card) => {
     setButtonClickable(true)
     setFaceUpCards([...faceupCards, card])
-    hideDroppableCard(true)
+    hideOpenCard(true)
     if (pileType === 'king' && faceupCards.length >= 3) {
       setButtonIsVisible(false)
       gameLost(true)

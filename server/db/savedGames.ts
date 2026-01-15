@@ -33,7 +33,18 @@ export async function getSavedGame(id: number): Promise<Game | undefined> {
       const pileData = JSON.parse(response.pileData)
       const activePiles = JSON.parse(response.activePiles)
       const openCard = JSON.parse(response.openCard)
-      return { ...response, pileData, activePiles, openCard }
+      const isHidden = Boolean(response.isHidden)
+      const gameLost = Boolean(response.gameLost)
+      const gameEnded = Boolean(response.gameEnded)
+      return {
+        ...response,
+        pileData,
+        activePiles,
+        openCard,
+        isHidden,
+        gameLost,
+        gameEnded,
+      }
     } catch (err) {
       console.log(err instanceof Error ? err.message : 'error parsing json')
     }

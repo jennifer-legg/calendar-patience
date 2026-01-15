@@ -31,12 +31,10 @@ export default function NewGame() {
   }
 
   return (
-    <div>
-      <ClockFrame
-        deckId={deckId}
-        refreshDeck={refreshDeck}
-        clockPiles={clockPiles}
-      />
-    </div>
+    <ClockFrame
+      deckId={deckId}
+      refreshDeck={refreshDeck}
+      clockPiles={clockPiles}
+    />
   )
 }
