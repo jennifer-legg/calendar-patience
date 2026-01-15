@@ -1,5 +1,7 @@
 import { useGetSaveOverviewByUserId } from '../hooks/useSaveGame'
 import { Link } from 'react-router'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTrashCan } from '@fortawesome/free-regular-svg-icons'
 
 export default function SaveOverview() {
   const { data, isError, isPending, deleteSavedGame } =
@@ -33,7 +35,12 @@ export default function SaveOverview() {
         {gameOverview.map((item) => (
           <li key={item.id}>
             <Link to={`/save/${item.id}`}>{item.date}</Link>
-            <button onClick={() => handleDelete(item.id)}>Delete</button>
+            <button
+              onClick={() => handleDelete(item.id)}
+              aria-label={`Delete save ${item.date}`}
+            >
+              <FontAwesomeIcon icon={faTrashCan} aria-hidden="true" />
+            </button>
           </li>
         ))}
       </ul>
