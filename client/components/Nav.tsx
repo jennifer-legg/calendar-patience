@@ -1,8 +1,9 @@
-import { Link } from 'react-router'
+import { useNavigate } from 'react-router'
 import { useAuth0 } from '@auth0/auth0-react'
 
 export default function Nav() {
   const { loginWithRedirect, logout, isAuthenticated } = useAuth0()
+  const navigate = useNavigate()
   const handleLogin = () => {
     loginWithRedirect()
   }
@@ -10,10 +11,14 @@ export default function Nav() {
     logout()
   }
 
+  const handleNavigate = (path: string) => {
+    navigate(`${path}`)
+  }
+
   return (
     <nav>
-      <Link to="/">Home</Link>
-      <Link to="/new">New Game</Link>
+      <button onClick={() => handleNavigate('/')}>Home</button>
+      <button onClick={() => handleNavigate('/new')}>New game</button>
       {!isAuthenticated && (
         <button onClick={handleLogin}>Login/Register</button>
       )}

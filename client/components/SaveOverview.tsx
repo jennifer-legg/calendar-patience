@@ -1,20 +1,22 @@
 import { useGetSaveOverviewByUserId } from '../hooks/useSaveGame'
 import { Link } from 'react-router'
+import { useAuth0 } from '@auth0/auth0-react'
 
-export default function SaveOverview() {
+interface Props {
+  userId: string
+}
+
+export default function SaveOverview({ userId }: Props) {
   const { data, isError, isPending, deleteSavedGame } =
-    useGetSaveOverviewByUserId('1')
+    useGetSaveOverviewByUserId(userId)
+  const { getAccessTokenSilently } = useAuth0()
 
   if (isPending) {
     return <p>Loading...</p>
   }
 
   if (isError || !data || !data[0]) {
-    return (
-      <div>
-        <p>No saved games found</p>
-      </div>
-    )
+    return <p>No saved games found</p>
   }
 
   const gameOverview = data.map((item) => {
@@ -22,21 +24,23 @@ export default function SaveOverview() {
     return { ...item, date: saveDate.toLocaleString() }
   })
 
-  const handleDelete = (saveId: number) => {
-    deleteSavedGame.mutate(saveId)
+  const handleDelete = async (saveId: number) => {
+    try {
+      const token = await getAccessTokenSilently()
+      deleteSavedGame.mutate({ saveId, token })
+    } catch (err) {
+      console.log('Error authenticating ')
+    }
   }
 
   return (
-    <div>
-      <h2>Your saved games</h2>
-      <ul>
-        {gameOverview.map((item) => (
-          <li key={item.id}>
-            <Link to={`/save/${item.id}`}>{item.date}</Link>
-            <button onClick={() => handleDelete(item.id)}>Delete</button>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <ul>
+      {gameOverview.map((item) => (
+        <li key={item.id}>
+          <Link to={`/save/${item.id}`}>{item.date}</Link>
+          <button onClick={() => handleDelete(item.id)}>Delete</button>
+        </li>
+      ))}
+    </ul>
   )
 }

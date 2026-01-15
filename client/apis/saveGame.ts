@@ -17,6 +17,17 @@ export async function saveGame(gameData: GameData | Game): Promise<void> {
   await request.post(`${rootURL}/savedGames`).send(gameData)
 }
 
-export async function deleteSavedGame(saveId: number): Promise<void> {
-  await request.delete(`${rootURL}/savedGames`).send({ saveId })
+interface DeleteSaveParameters {
+  saveId: number
+  token: string
+}
+
+export async function deleteSavedGame({
+  saveId,
+  token,
+}: DeleteSaveParameters): Promise<void> {
+  await request
+    .delete(`${rootURL}/savedGames`)
+    .set('Authorization', `Bearer ${token}`)
+    .send({ saveId, token })
 }
