@@ -5,18 +5,35 @@ import {
   MutationFunction,
 } from '@tanstack/react-query'
 import * as API from '../apis/saveGame.ts'
+import { useAuth0 } from '@auth0/auth0-react'
 
 export function useGetSavedGame(id: number) {
+  const { getAccessTokenSilently } = useAuth0()
   return useQuery({
     queryKey: ['savedGame'],
-    queryFn: () => API.getSavedGame(id),
+    queryFn: async () => {
+      try {
+        const token = await getAccessTokenSilently()
+        return API.getSavedGame(id, token)
+      } catch (err) {
+        console.log('Authorization error')
+      }
+    },
   })
 }
 
-export function useGetSaveOverviewByUserId(userId: string) {
+export function useGetSaveOverviewByUserId() {
+  const { getAccessTokenSilently } = useAuth0()
   const query = useQuery({
     queryKey: ['overview'],
-    queryFn: () => API.getSaveOverviewByUserId(userId),
+    queryFn: async () => {
+      try {
+        const token = await getAccessTokenSilently()
+        return API.getSaveOverviewByUserId(token)
+      } catch (err) {
+        console.log('Authorization error')
+      }
+    },
   })
   return {
     ...query,
