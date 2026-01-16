@@ -3,13 +3,17 @@ import { Game, GameData, SaveOverview } from '../../models/savedGame'
 
 const rootURL = new URL(`/api/v1`, document.baseURI)
 
-export async function getSavedGame(id: number) {
-  const response = await request.get(`${rootURL}/savedGames/game/${id}`)
+export async function getSavedGame(id: number, token: string) {
+  const response = await request
+    .get(`${rootURL}/savedGames/game/${id}`)
+    .set('Authorization', `Bearer ${token}`)
   return response.body as Game
 }
 
-export async function getSaveOverviewByUserId(userId: string) {
-  const response = await request.get(`${rootURL}/savedGames/overview/${userId}`)
+export async function getSaveOverviewByUserId(token: string) {
+  const response = await request
+    .get(`${rootURL}/savedGames/overview`)
+    .set('Authorization', `Bearer ${token}`)
   return response.body as SaveOverview[]
 }
 

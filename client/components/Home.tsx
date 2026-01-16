@@ -3,7 +3,7 @@ import { Link } from 'react-router'
 import { useAuth0 } from '@auth0/auth0-react'
 
 export default function Home() {
-  const { isAuthenticated, user, isLoading } = useAuth0()
+  const { isAuthenticated, isLoading } = useAuth0()
 
   return (
     <main>
@@ -12,9 +12,7 @@ export default function Home() {
         <h2>Your saved games</h2>
         {isLoading && <p>Loading...</p>}
         {!isAuthenticated && <p>Please log in to display saved games</p>}
-        {isAuthenticated && user && user.sub && (
-          <SaveOverview userId={user.sub} />
-        )}
+        {isAuthenticated && <SaveOverview />}
       </div>
     </main>
   )

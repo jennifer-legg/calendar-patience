@@ -2,13 +2,9 @@ import { useGetSaveOverviewByUserId } from '../hooks/useSaveGame'
 import { Link } from 'react-router'
 import { useAuth0 } from '@auth0/auth0-react'
 
-interface Props {
-  userId: string
-}
-
-export default function SaveOverview({ userId }: Props) {
+export default function SaveOverview() {
   const { data, isError, isPending, deleteSavedGame } =
-    useGetSaveOverviewByUserId(userId)
+    useGetSaveOverviewByUserId()
   const { getAccessTokenSilently } = useAuth0()
 
   if (isPending) {

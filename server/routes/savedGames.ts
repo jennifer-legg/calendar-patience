@@ -5,10 +5,14 @@ import checkJwt, { JwtRequest } from '../auth0.ts'
 
 const router = Router()
 
-router.get('/overview/:userId', async (req, res) => {
+router.get('/overview', checkJwt, async (req: JwtRequest, res) => {
+  const auth0Id = req.auth?.sub
+  if (!auth0Id) {
+    console.error('No auth0Id')
+    return res.status(401).send('Unauthorized')
+  }
   try {
-    const { userId } = req.params
-    const overview = await db.getOverviewByUserId(userId)
+    const overview = await db.getOverviewByUserId(auth0Id)
     overview[0] ? res.json(overview) : res.sendStatus(500)
   } catch (error) {
     console.log(
@@ -18,9 +22,18 @@ router.get('/overview/:userId', async (req, res) => {
   }
 })
 
-router.get('/game/:id', async (req, res) => {
+router.get('/game/:id', checkJwt, async (req: JwtRequest, res) => {
+  const { id } = req.params
+  const auth0Id = req.auth?.sub
+  if (!id) {
+    console.error('No game id provided')
+    return res.status(400).send('Bad request')
+  }
+  if (!auth0Id) {
+    console.error('No auth0Id')
+    return res.status(401).send('Unauthorized')
+  }
   try {
-    const { id } = req.params
     const game = await db.getSavedGame(Number(id))
     game ? res.json(game) : res.sendStatus(500)
   } catch (error) {
