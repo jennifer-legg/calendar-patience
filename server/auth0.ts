@@ -4,8 +4,7 @@ import { ParamsDictionary } from 'express-serve-static-core'
 import { JwtPayload } from 'jsonwebtoken'
 import jwks from 'jwks-rsa'
 
-// TODO: set the domain and audience (API Identifier)
-const domain = 'https://https://karengo-2025-jen.au.auth0.com'
+const domain = 'https://karengo-2025-jen.au.auth0.com'
 const audience = 'https://clock/api'
 
 const checkJwt = jwt({

@@ -7,12 +7,18 @@ interface Props {
 }
 
 export default function SaveGameButton({ gameData }: Props) {
-  const { user, isAuthenticated } = useAuth0()
+  const { user, isAuthenticated, getAccessTokenSilently } = useAuth0()
   const saveGame = useAddSave()
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (user && user.sub) {
-      saveGame.mutate({ ...gameData, userId: user.sub })
+      try {
+        const token = await getAccessTokenSilently()
+        const gameToSave: GameData | Game = { ...gameData, userId: user.sub }
+        saveGame.mutate({ gameToSave, token })
+      } catch (err) {
+        console.log('Unable to save game')
+      }
     }
   }
 

@@ -13,8 +13,19 @@ export async function getSaveOverviewByUserId(userId: string) {
   return response.body as SaveOverview[]
 }
 
-export async function saveGame(gameData: GameData | Game): Promise<void> {
-  await request.post(`${rootURL}/savedGames`).send(gameData)
+interface SaveParameters {
+  gameToSave: GameData | Game
+  token: string
+}
+
+export async function saveGame({
+  gameToSave,
+  token,
+}: SaveParameters): Promise<void> {
+  await request
+    .post(`${rootURL}/savedGames`)
+    .set('Authorization', `Bearer ${token}`)
+    .send(gameToSave)
 }
 
 interface DeleteSaveParameters {
@@ -29,5 +40,5 @@ export async function deleteSavedGame({
   await request
     .delete(`${rootURL}/savedGames`)
     .set('Authorization', `Bearer ${token}`)
-    .send({ saveId, token })
+    .send({ saveId })
 }
