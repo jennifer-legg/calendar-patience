@@ -138,7 +138,6 @@ export default function ClockPatience({
           isHidden,
           gameLost,
           gameEnded,
-          gameName: 'clock',
           activePiles,
           userId: '1',
           pileData,
