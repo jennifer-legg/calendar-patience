@@ -1,7 +1,6 @@
 import { Card } from './deck'
 
 export interface GameData {
-  gameName: string
   activePiles: boolean[]
   pileData: Pile[]
   currentPile: string | null
@@ -14,13 +13,12 @@ export interface GameData {
 
 export interface Game extends GameData {
   id: number
-  date: string
 }
 
 export interface SaveOverview {
-  gameName: string
   id: number
-  date: string
+  createdAt: string
+  updatedAt: string
 }
 
 export interface Pile {

@@ -1,8 +1,7 @@
 export function up(knex) {
   return knex.schema.createTable('saved_games', (table) => {
     table.increments('id').primary()
-    table.string('game_name')
-    table.timestamp('date').defaultTo(knex.fn.now())
+    table.timestamps(true, true)
     table.json('pile_data')
     table.json('active_piles')
     table.string('current_pile')
