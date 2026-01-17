@@ -2,7 +2,7 @@ import express from 'express'
 import * as Path from 'node:path'
 
 import deckOfCards from './routes/clock.ts'
-import userRoutes from './routes/users.ts'
+import scoreRoutes from './routes/scores.ts'
 import savedGames from './routes/savedGames.ts'
 
 const server = express()
@@ -10,7 +10,7 @@ const server = express()
 server.use(express.json())
 
 server.use('/api/v1/clock', deckOfCards)
-server.use('/api/v1/users', userRoutes)
+server.use('/api/v1/scores', scoreRoutes)
 server.use('/api/v1/savedGames', savedGames)
 
 if (process.env.NODE_ENV === 'production') {
