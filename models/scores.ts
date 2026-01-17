@@ -1,9 +1,6 @@
-export interface ScoreData {
-  userId: number
-  wins?: number
-  losses?: number
-}
-
-export interface Scores extends ScoreData {
+export interface Scores {
+  userId: string
+  wins: number
+  losses: number
   id: number
 }

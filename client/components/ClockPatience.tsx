@@ -6,6 +6,8 @@ import type { Card } from '../../models/deck.ts'
 import { Game, Pile } from '../../models/savedGame.ts'
 import SaveGameButton from './SaveGameButton.tsx'
 import { useNavigate } from 'react-router'
+import { useAddScores } from '../hooks/useScores.ts'
+import { useAuth0 } from '@auth0/auth0-react'
 
 interface Props {
   deckId: string
@@ -21,6 +23,8 @@ export default function ClockPatience({
   savedGameData,
 }: Props) {
   const navigate = useNavigate()
+  const addScore = useAddScores()
+  const { getAccessTokenSilently } = useAuth0()
   //activePiles tracks which of the piles still have cards, used to check if game won/lost
   const [activePiles, setActivePiles] = useState<boolean[]>(
     savedGameData ? savedGameData.activePiles : Array(13).fill(true),
@@ -114,6 +118,16 @@ export default function ClockPatience({
   const handleGameLost = (isLost: boolean) => {
     setGameLost(isLost)
     setGameEnded(true)
+    handleAddScores(isLost)
+  }
+
+  const handleAddScores = async (isLost: boolean) => {
+    try {
+      const token = await getAccessTokenSilently()
+      addScore.mutate({ token, gameLost: isLost })
+    } catch (err) {
+      console.log('Error saving score')
+    }
   }
 
   //Game is ended if all piles are inactive except for the king pile
@@ -124,9 +138,10 @@ export default function ClockPatience({
         indexes.push(i)
       }
     })
-    indexes.filter((num) => num != 0 && num != pileNumber).length === 0
-      ? setGameEnded(true)
-      : null
+    if (indexes.filter((num) => num != 0 && num != pileNumber).length === 0) {
+      setGameEnded(true)
+      handleAddScores(gameLost)
+    }
   }
 
   return (

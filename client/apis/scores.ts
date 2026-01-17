@@ -8,3 +8,18 @@ export async function getScoreByUserId(token: string) {
     .set('Authorization', `Bearer ${token}`)
   return response.body as Scores
 }
+
+interface AddScoreParameters {
+  gameLost: boolean
+  token: string
+}
+
+export async function addScores({
+  gameLost,
+  token,
+}: AddScoreParameters): Promise<void> {
+  await request
+    .post(`${rootURL}/scores`)
+    .set('Authorization', `Bearer ${token}`)
+    .send({ gameLost })
+}
