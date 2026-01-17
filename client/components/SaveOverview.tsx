@@ -16,7 +16,7 @@ export default function SaveOverview() {
   }
 
   const gameOverview = data.map((item) => {
-    const saveDate = new Date(item.date)
+    const saveDate = new Date(item.updatedAt ? item.updatedAt : item.createdAt)
     return { ...item, date: saveDate.toLocaleString() }
   })
 

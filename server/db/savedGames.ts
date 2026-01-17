@@ -5,7 +5,6 @@ import { GameData, Game } from '../../models/savedGame.ts'
 const gameSelect = [
   'id',
   'game_name as gameName',
-  'date',
   'pile_data as pileData',
   'current_pile as currentPile',
   'open_card as openCard',
@@ -19,7 +18,12 @@ const gameSelect = [
 export async function getOverviewByUserId(userId: string) {
   return connection('saved_games')
     .where({ user_id: userId })
-    .select('id', 'game_name as gameName', 'date')
+    .select(
+      'id',
+      'game_name as gameName',
+      'created_at as createdAt',
+      'updated_at as updatedAt',
+    )
 }
 
 export async function deleteSavedGame(saveId: number) {
@@ -68,6 +72,22 @@ export async function addNewSavedGame(newSave: GameData) {
       game_ended: newSave.gameEnded,
       user_id: newSave.userId,
       active_piles: JSON.stringify(newSave.activePiles),
+    })
+    .returning([...gameSelect])
+}
+
+export async function editSavedGame(updatedSave: Game) {
+  return connection('saved_games')
+    .where({ id: updatedSave.id })
+    .update({
+      pile_data: JSON.stringify(updatedSave.pileData),
+      current_pile: updatedSave.currentPile,
+      open_card: JSON.stringify(updatedSave.openCard),
+      is_hidden: updatedSave.isHidden,
+      game_lost: updatedSave.gameLost,
+      game_ended: updatedSave.gameEnded,
+      user_id: updatedSave.userId,
+      active_piles: JSON.stringify(updatedSave.activePiles),
     })
     .returning([...gameSelect])
 }

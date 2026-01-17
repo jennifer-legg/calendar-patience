@@ -60,6 +60,10 @@ export function useAddSave() {
   return useSaveGameMutation(API.saveGame)
 }
 
+export function useEditSave() {
+  return useSaveGameMutation(API.editSavedGame)
+}
+
 export function useDeleteSavedGame() {
   return useSaveGameMutation(API.deleteSavedGame)
 }

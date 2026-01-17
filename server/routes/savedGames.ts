@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import * as db from '../db/savedGames.ts'
-import { GameData } from '../../models/savedGame.ts'
+import { GameData, Game } from '../../models/savedGame.ts'
 import checkJwt, { JwtRequest } from '../auth0.ts'
 
 const router = Router()
@@ -57,7 +57,29 @@ router.post('/', checkJwt, async (req: JwtRequest, res) => {
   }
   try {
     const game = await db.addNewSavedGame(savedGame)
-    game[0] ? res.sendStatus(200) : res.sendStatus(500)
+    game[0] ? res.json(game[0]) : res.sendStatus(500)
+  } catch (error) {
+    console.log(
+      error instanceof Error ? error.message : 'Error adding new save',
+    )
+    res.status(500).json({ message: 'Something went wrong' })
+  }
+})
+
+router.patch('/', checkJwt, async (req: JwtRequest, res) => {
+  const savedGame: Game = req.body
+  const auth0Id = req.auth?.sub
+  if (!savedGame) {
+    console.error('No game provided to save')
+    return res.status(400).send('Bad request')
+  }
+  if (!auth0Id) {
+    console.error('No auth0Id')
+    return res.status(401).send('Unauthorized')
+  }
+  try {
+    const game = await db.editSavedGame(savedGame)
+    game[0] ? res.json(game[0]) : res.sendStatus(500)
   } catch (error) {
     console.log(
       error instanceof Error ? error.message : 'Error adding new save',

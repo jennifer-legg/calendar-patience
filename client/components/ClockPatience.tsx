@@ -70,8 +70,6 @@ export default function ClockPatience({
     savedGameData ? savedGameData.gameEnded : false,
   )
 
-  console.log(savedGameData?.isHidden)
-
   const handlePileClick = (
     pileType: string,
     pileNumber: number,
@@ -145,6 +143,7 @@ export default function ClockPatience({
           userId: '1',
           pileData,
         }}
+        {...(savedGameData && { id: savedGameData.id })}
       />
       <div>
         <div className="circle-container" key={deckId}>
