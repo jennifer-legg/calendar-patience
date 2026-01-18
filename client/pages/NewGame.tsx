@@ -2,6 +2,7 @@ import ClockFrame from '../components/ClockFrame.tsx'
 import { useNewDeck } from '../hooks/useDeck.ts'
 import { Card } from '../../models/deck.ts'
 
+//Retrieves a new deck from the Deck of Cards API to create the piles for a new game
 export default function NewGame() {
   const { data, isError, isPending, error, refetch, isFetching } = useNewDeck()
   if (isPending || isFetching) {
