@@ -121,17 +121,19 @@ export default function ClockPatience({
 
   return (
     <>
-      <SaveGameButton
-        gameData={{
-          openCard,
-          currentPile,
-          isHidden,
-          activePiles,
-          userId: '1',
-          pileData,
-        }}
-        {...(savedGameData && { id: savedGameData.id })}
-      />
+      {gameEndStatus === 'ongoing' && (
+        <SaveGameButton
+          gameData={{
+            openCard,
+            currentPile,
+            isHidden,
+            activePiles,
+            userId: '1',
+            pileData,
+          }}
+          {...(savedGameData && { id: savedGameData.id })}
+        />
+      )}
       <div>
         <div className="circle-container" key={deckId}>
           {clockPiles.map((pileCards: Card[], i) => {
