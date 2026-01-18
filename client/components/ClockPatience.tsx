@@ -51,6 +51,7 @@ export default function ClockPatience({
   )
   const [gameEndStatus, setGameEndStatus] = useState<GameEndStatus>('ongoing')
 
+  //Pile component calls this when the pile is clicked
   const handlePileClick = (
     pileType: string,
     pileNumber: number,
@@ -84,6 +85,16 @@ export default function ClockPatience({
     setisHidden(isHidden)
   }
 
+  //Saves whether game is won or lost to database
+  const handleAddScores = async (status: GameEndStatus) => {
+    try {
+      const token = await getAccessTokenSilently()
+      addScore.mutate({ token, status: status })
+    } catch (err) {
+      console.log('Error saving score')
+    }
+  }
+
   const handleResetGame = () => {
     setisHidden(true)
     setGameEndStatus('ongoing')
@@ -96,16 +107,7 @@ export default function ClockPatience({
     handleAddScores('lost')
   }
 
-  const handleAddScores = async (status: GameEndStatus) => {
-    try {
-      const token = await getAccessTokenSilently()
-      addScore.mutate({ token, status: status })
-    } catch (err) {
-      console.log('Error saving score')
-    }
-  }
-
-  //Game is ended if all piles are inactive except for the king pile
+  //Game is won if all piles are inactive except for the king pile
   const checkIfGameWon = (pileNumber: number) => {
     const indexes: number[] = []
     activePiles.forEach((value, i) => {
@@ -128,7 +130,7 @@ export default function ClockPatience({
             currentPile,
             isHidden,
             activePiles,
-            userId: '1',
+            userId: 'empty',
             pileData,
           }}
           {...(savedGameData && { id: savedGameData.id })}
