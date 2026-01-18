@@ -99,7 +99,7 @@ export default function ClockPatience({
   const handleAddScores = async (status: GameEndStatus) => {
     try {
       const token = await getAccessTokenSilently()
-      addScore.mutate({ token, gameEndStatus: status })
+      addScore.mutate({ token, status: status })
     } catch (err) {
       console.log('Error saving score')
     }

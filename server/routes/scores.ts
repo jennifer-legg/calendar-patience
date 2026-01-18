@@ -2,6 +2,7 @@ import { Router } from 'express'
 import * as db from '../db/scores.ts'
 import checkJwt, { JwtRequest } from '../auth0.ts'
 import { Scores } from '../../models/scores.ts'
+import { GameEndStatus } from '../../models/savedGame.ts'
 
 const router = Router()
 
@@ -23,10 +24,9 @@ router.get('/', checkJwt, async (req: JwtRequest, res) => {
 })
 
 router.post('/', checkJwt, async (req: JwtRequest, res) => {
-  const gameLost = req.body.gameLost
-  console.log(req.body, req.body.gameLost)
+  const status: GameEndStatus = req.body.status
   const auth0Id = req.auth?.sub
-  if (gameLost === undefined || gameLost === null) {
+  if (status !== 'won' && status !== 'lost') {
     console.error('No score data provided')
     return res.status(400).send('Bad request')
   }
@@ -35,7 +35,7 @@ router.post('/', checkJwt, async (req: JwtRequest, res) => {
     return res.status(401).send('Unauthorized')
   }
   try {
-    const score = await db.addScores(gameLost, auth0Id)
+    const score = await db.addScores(status, auth0Id)
     score[0] ? res.json(score[0]) : res.sendStatus(500)
   } catch (error) {
     console.log(

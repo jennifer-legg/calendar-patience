@@ -1,5 +1,5 @@
 import connection from './connection'
-
+import type { GameEndStatus } from '../../models/savedGame'
 import { Scores } from '../../models/scores'
 
 const scoreSelect = ['id', 'wins', 'losses', 'user_id as userId']
@@ -13,7 +13,7 @@ export async function getScoreByUserId(
     .first()
 }
 
-export async function addScores(gameLost: boolean, userId: string) {
+export async function addScores(gameEndStatus: GameEndStatus, userId: string) {
   //Search database to see if userId already exists
   const userExists = await connection('scores')
     .where({ user_id: userId })
@@ -21,7 +21,7 @@ export async function addScores(gameLost: boolean, userId: string) {
     .first()
   if (userExists) {
     //Add losses to already existing user scores
-    if (gameLost) {
+    if (gameEndStatus === 'lost') {
       return connection('scores')
         .where({ user_id: userId })
         .update({ losses: userExists.losses + 1 })
@@ -34,7 +34,7 @@ export async function addScores(gameLost: boolean, userId: string) {
         .returning([...scoreSelect])
     }
   } else {
-    if (gameLost) {
+    if (gameEndStatus === 'lost') {
       return connection('scores')
         .insert({ losses: 1, user_id: userId })
         .returning([...scoreSelect])
