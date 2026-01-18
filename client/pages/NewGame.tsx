@@ -1,4 +1,4 @@
-import ClockFrame from './ClockFrame'
+import ClockFrame from '../components/ClockFrame.tsx'
 import { useNewDeck } from '../hooks/useDeck.ts'
 import { Card } from '../../models/deck.ts'
 
