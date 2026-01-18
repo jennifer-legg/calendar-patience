@@ -11,6 +11,8 @@ interface Props {
   savedGameData?: Game
 }
 
+//Component controls whether the rules of the game are visible or hidden
+//and displays the game, whether new or saved
 export default function ClockFrame({
   deckId,
   clockPiles,

@@ -1,10 +1,13 @@
 import { preload } from 'react-dom'
+import { GameEndStatus } from '../../models/savedGame'
+import { useNavigate } from 'react-router'
 
 interface Props {
-  gameLost: boolean
+  gameEndStatus: GameEndStatus
   resetGame: (resetGame: boolean) => void
 }
-export default function GameEndMessage({ gameLost, resetGame }: Props) {
+export default function GameEndMessage({ gameEndStatus, resetGame }: Props) {
+  const navigate = useNavigate()
   const handleClick = () => {
     resetGame(true)
   }
@@ -12,7 +15,7 @@ export default function GameEndMessage({ gameLost, resetGame }: Props) {
   preload('/images/dice.svg', { as: 'image' })
   preload('/images/win.svg', { as: 'image' })
 
-  if (gameLost) {
+  if (gameEndStatus === 'lost') {
     return (
       <div className="alert-message grey-bg">
         <div className="dice-container">
@@ -24,7 +27,12 @@ export default function GameEndMessage({ gameLost, resetGame }: Props) {
           <img src="/images/dice.svg" alt="White dice" />
         </div>
         <p>Game Over. Bad luck, the pack won</p>
-        <button onClick={handleClick}>Play again</button>
+        <button className="game-end-button" onClick={handleClick}>
+          New game
+        </button>
+        <button className="game-end-button" onClick={() => navigate('/')}>
+          Main menu
+        </button>
       </div>
     )
   } else {
@@ -32,7 +40,12 @@ export default function GameEndMessage({ gameLost, resetGame }: Props) {
       <div className="alert-message green-bg">
         <img src="/images/win.svg" alt="Gold winner's trophy" />
         <p>Game Over. You won!</p>
-        <button onClick={handleClick}>Play again</button>
+        <button className="game-end-button" onClick={handleClick}>
+          New game
+        </button>
+        <button className="game-end-button" onClick={() => navigate('/')}>
+          Main menu
+        </button>
       </div>
     )
   }

@@ -3,6 +3,7 @@ import { useGetSavedGame } from '../hooks/useSaveGame'
 import ClockFrame from './ClockFrame'
 import { Card } from '../../models/deck'
 
+//Retrieves a saved game from database to send to the game components
 export default function SavedGame() {
   const { id } = useParams()
   const { data, isPending, isError } = useGetSavedGame(Number(id))

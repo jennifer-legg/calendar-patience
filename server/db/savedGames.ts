@@ -8,8 +8,6 @@ const gameSelect = [
   'current_pile as currentPile',
   'open_card as openCard',
   'is_hidden as isHidden',
-  'game_lost as gameLost',
-  'game_ended as gameEnded',
   'active_piles as activePiles',
   'user_id as userId',
 ]
@@ -35,16 +33,12 @@ export async function getSavedGame(id: number): Promise<Game | undefined> {
       const activePiles = JSON.parse(response.activePiles)
       const openCard = JSON.parse(response.openCard)
       const isHidden = Boolean(response.isHidden)
-      const gameLost = Boolean(response.gameLost)
-      const gameEnded = Boolean(response.gameEnded)
       return {
         ...response,
         pileData,
         activePiles,
         openCard,
         isHidden,
-        gameLost,
-        gameEnded,
       }
     } catch (err) {
       console.log(err instanceof Error ? err.message : 'error parsing json')
@@ -60,8 +54,6 @@ export async function addNewSavedGame(newSave: GameData) {
       current_pile: newSave.currentPile,
       open_card: JSON.stringify(newSave.openCard),
       is_hidden: newSave.isHidden,
-      game_lost: newSave.gameLost,
-      game_ended: newSave.gameEnded,
       user_id: newSave.userId,
       active_piles: JSON.stringify(newSave.activePiles),
     })
@@ -76,8 +68,6 @@ export async function editSavedGame(updatedSave: Game) {
       current_pile: updatedSave.currentPile,
       open_card: JSON.stringify(updatedSave.openCard),
       is_hidden: updatedSave.isHidden,
-      game_lost: updatedSave.gameLost,
-      game_ended: updatedSave.gameEnded,
       user_id: updatedSave.userId,
       active_piles: JSON.stringify(updatedSave.activePiles),
     })

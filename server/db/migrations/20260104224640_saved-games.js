@@ -7,8 +7,6 @@ export function up(knex) {
     table.string('current_pile')
     table.json('open_card')
     table.boolean('is_hidden')
-    table.boolean('game_lost')
-    table.boolean('game_ended')
     table.string('user_id').notNullable()
   })
 }

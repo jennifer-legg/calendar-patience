@@ -1,8 +1,8 @@
 /* eslint-disable react/jsx-key */
 import { createRoutesFromElements, Route } from 'react-router'
 import App from './components/App'
-import Home from './components/Home'
-import NewGame from './components/NewGame'
+import Home from './pages/Home'
+import NewGame from './pages/NewGame'
 import SavedGame from './components/SavedGame'
 
 const routes = createRoutesFromElements(
