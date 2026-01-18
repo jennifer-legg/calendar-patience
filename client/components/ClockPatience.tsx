@@ -8,6 +8,8 @@ import SaveGameButton from './SaveGameButton.tsx'
 import { useNavigate } from 'react-router'
 import { useAddScores } from '../hooks/useScores.ts'
 import { useAuth0 } from '@auth0/auth0-react'
+import { createBeginningPileData } from '../helpers/util.ts'
+import type { GameEndStatus } from '../../models/savedGame.ts'
 
 interface Props {
   deckId: string
@@ -33,27 +35,7 @@ export default function ClockPatience({
   const [pileData, setPileData] = useState<Pile[]>(
     savedGameData
       ? savedGameData.pileData
-      : clockPiles.map((pile, i) => {
-          const pileType: string =
-            i === 0
-              ? 'king'
-              : i === 1
-                ? 'ace'
-                : i === 11
-                  ? 'jack'
-                  : i === 12
-                    ? 'queen'
-                    : `${i}`
-          return {
-            pileType,
-            pileCards: pile,
-            facedownCards: pile,
-            faceupCards: [],
-            buttonIsClickable: pileType === 'king',
-            buttonIsVisible: true,
-            pileNumber: i,
-          }
-        }),
+      : createBeginningPileData(clockPiles),
   )
   //Selected card. Hidden when no card upturned
   const [openCard, setOpenCard] = useState<Card | null>(
@@ -67,12 +49,7 @@ export default function ClockPatience({
   const [isHidden, setisHidden] = useState<boolean>(
     savedGameData ? savedGameData.isHidden : false,
   )
-  const [gameLost, setGameLost] = useState<boolean>(
-    savedGameData ? savedGameData.gameLost : false,
-  )
-  const [gameEnded, setGameEnded] = useState<boolean>(
-    savedGameData ? savedGameData.gameEnded : false,
-  )
+  const [gameEndStatus, setGameEndStatus] = useState<GameEndStatus>('ongoing')
 
   const handlePileClick = (
     pileType: string,
@@ -109,22 +86,20 @@ export default function ClockPatience({
 
   const handleResetGame = () => {
     setisHidden(true)
-    setGameEnded(false)
-    setGameLost(false)
+    setGameEndStatus('ongoing')
     setActivePiles(Array(13).fill(true))
     refreshDeck ? refreshDeck() : navigate('/new')
   }
 
-  const handleGameLost = (isLost: boolean) => {
-    setGameLost(isLost)
-    setGameEnded(true)
-    handleAddScores(isLost)
+  const handleGameLost = () => {
+    setGameEndStatus('lost')
+    handleAddScores('lost')
   }
 
-  const handleAddScores = async (isLost: boolean) => {
+  const handleAddScores = async (status: GameEndStatus) => {
     try {
       const token = await getAccessTokenSilently()
-      addScore.mutate({ token, gameLost: isLost })
+      addScore.mutate({ token, gameEndStatus: status })
     } catch (err) {
       console.log('Error saving score')
     }
@@ -139,8 +114,8 @@ export default function ClockPatience({
       }
     })
     if (indexes.filter((num) => num != 0 && num != pileNumber).length === 0) {
-      setGameEnded(true)
-      handleAddScores(gameLost)
+      setGameEndStatus('won')
+      handleAddScores('won')
     }
   }
 
@@ -151,8 +126,6 @@ export default function ClockPatience({
           openCard,
           currentPile,
           isHidden,
-          gameLost,
-          gameEnded,
           activePiles,
           userId: '1',
           pileData,
@@ -179,7 +152,7 @@ export default function ClockPatience({
                   pileType={pileType}
                   handlePileClick={handlePileClick}
                   hideOpenCard={hideOpenCard}
-                  gameLost={handleGameLost}
+                  updateGameLost={handleGameLost}
                   pileCards={pileCards}
                   savedPileData={savedGameData?.pileData[i]}
                   savePile={handlePileSaveData}
@@ -190,8 +163,11 @@ export default function ClockPatience({
           {!isHidden && openCard && currentPile && (
             <DraggableCard openCard={openCard} pileType={currentPile} />
           )}
-          {gameEnded && (
-            <GameEndMessage gameLost={gameLost} resetGame={handleResetGame} />
+          {gameEndStatus !== 'ongoing' && (
+            <GameEndMessage
+              gameEndStatus={gameEndStatus}
+              resetGame={handleResetGame}
+            />
           )}
         </div>
       </div>

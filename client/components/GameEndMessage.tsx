@@ -1,10 +1,11 @@
 import { preload } from 'react-dom'
+import { GameEndStatus } from '../../models/savedGame'
 
 interface Props {
-  gameLost: boolean
+  gameEndStatus: GameEndStatus
   resetGame: (resetGame: boolean) => void
 }
-export default function GameEndMessage({ gameLost, resetGame }: Props) {
+export default function GameEndMessage({ gameEndStatus, resetGame }: Props) {
   const handleClick = () => {
     resetGame(true)
   }
@@ -12,7 +13,7 @@ export default function GameEndMessage({ gameLost, resetGame }: Props) {
   preload('/images/dice.svg', { as: 'image' })
   preload('/images/win.svg', { as: 'image' })
 
-  if (gameLost) {
+  if (gameEndStatus === 'lost') {
     return (
       <div className="alert-message grey-bg">
         <div className="dice-container">
