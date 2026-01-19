@@ -7,15 +7,15 @@ import Modal from './Modal'
 interface Props {
   gameData: GameData | Game
   id?: number
+  setGameId: (id: number) => void
 }
 
 //If the game is a new game (without an id) this component will save to db as new item.
 //If the game is a previously saved game (has an id) the user has an option to
 //save as a new save or save over top. Save over top= edit/update database. New save=
 // remove id, save to db as new item
-export default function SaveGameButton({ gameData, id }: Props) {
+export default function SaveGameButton({ gameData, id, setGameId }: Props) {
   const { user, isAuthenticated, getAccessTokenSilently } = useAuth0()
-  const [gameId, setGameId] = useState<number | null>(id ? id : null)
   const [saveStatusMsg, setSaveStatusMsg] = useState<string>('')
   const [modalIsOpen, setModalOpen] = useState<boolean>(false)
   const saveGame = useAddSave()
@@ -55,10 +55,10 @@ export default function SaveGameButton({ gameData, id }: Props) {
   }
 
   const handleEdit = async () => {
-    if (user && user.sub && gameId) {
+    if (user && user.sub && id) {
       try {
         const token = await getAccessTokenSilently()
-        const gameToSave: Game = { ...gameData, userId: user.sub, id: gameId }
+        const gameToSave: Game = { ...gameData, userId: user.sub, id }
         editSave.mutate({ gameToSave, token }, mutationOptions)
       } catch (err) {
         console.log('Unable to save game')
@@ -88,10 +88,10 @@ export default function SaveGameButton({ gameData, id }: Props) {
   if (isAuthenticated && user && user.sub) {
     return (
       <>
-        {!gameId && <button onClick={handleNewSave}>Save Game</button>}
+        {!id && <button onClick={handleNewSave}>Save Game</button>}
         {/* The button below is only visible if game has already been saved (has id). 
         It removes the id and saves the game as a new game */}
-        {gameId && (
+        {id && (
           <>
             {' '}
             <button onClick={handleEdit}>Save Game</button>

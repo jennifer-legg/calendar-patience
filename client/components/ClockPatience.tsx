@@ -17,6 +17,7 @@ interface Props {
   clockPiles: Card[][]
   refreshDeck?: () => void
   savedGameData?: Game
+  handleDeleteSave: (id: number) => void
 }
 
 export default function ClockPatience({
@@ -24,6 +25,7 @@ export default function ClockPatience({
   refreshDeck,
   clockPiles,
   savedGameData,
+  handleDeleteSave,
 }: Props) {
   const navigate = useNavigate()
   const addScore = useAddScores()
@@ -37,6 +39,9 @@ export default function ClockPatience({
     savedGameData
       ? savedGameData.pileData
       : createBeginningPileData(clockPiles),
+  )
+  const [savedGameId, setSavedGameId] = useState<number | null>(
+    savedGameData ? savedGameData.id : null,
   )
   //Selected card. Hidden when no card upturned
   const [openCard, setOpenCard] = useState<Card | null>(
@@ -108,6 +113,9 @@ export default function ClockPatience({
     setGameEndStatus('lost')
     handleAddScores('lost')
     setModalOpen(true)
+    if (savedGameId) {
+      handleDeleteSave(savedGameId)
+    }
   }
 
   //Game is won if all piles are inactive except for the king pile
@@ -118,10 +126,14 @@ export default function ClockPatience({
         indexes.push(i)
       }
     })
+    //If true, game is won
     if (indexes.filter((num) => num != 0 && num != pileNumber).length === 0) {
       setGameEndStatus('won')
       handleAddScores('won')
       setModalOpen(true)
+      if (savedGameId) {
+        handleDeleteSave(savedGameId)
+      }
     }
   }
 
@@ -137,7 +149,8 @@ export default function ClockPatience({
             userId: 'empty',
             pileData,
           }}
-          {...(savedGameData && { id: savedGameData.id })}
+          {...(savedGameId && { id: savedGameId })}
+          setGameId={setSavedGameId}
         />
       )}
       <div>
