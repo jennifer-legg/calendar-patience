@@ -10,6 +10,7 @@ import { useAddScores } from '../hooks/useScores.ts'
 import { useAuth0 } from '@auth0/auth0-react'
 import { createBeginningPileData } from '../helpers/util.ts'
 import type { GameEndStatus } from '../../models/savedGame.ts'
+import Modal from './Modal.tsx'
 
 interface Props {
   deckId: string
@@ -50,6 +51,7 @@ export default function ClockPatience({
     savedGameData ? savedGameData.isHidden : false,
   )
   const [gameEndStatus, setGameEndStatus] = useState<GameEndStatus>('ongoing')
+  const [modalOpen, setModalOpen] = useState<boolean>(false)
 
   //Pile component calls this when the pile is clicked
   const handlePileClick = (
@@ -105,6 +107,7 @@ export default function ClockPatience({
   const handleGameLost = () => {
     setGameEndStatus('lost')
     handleAddScores('lost')
+    setModalOpen(true)
   }
 
   //Game is won if all piles are inactive except for the king pile
@@ -118,6 +121,7 @@ export default function ClockPatience({
     if (indexes.filter((num) => num != 0 && num != pileNumber).length === 0) {
       setGameEndStatus('won')
       handleAddScores('won')
+      setModalOpen(true)
     }
   }
 
@@ -167,12 +171,18 @@ export default function ClockPatience({
           {!isHidden && openCard && currentPile && (
             <DraggableCard openCard={openCard} pileType={currentPile} />
           )}
-          {gameEndStatus !== 'ongoing' && (
-            <GameEndMessage
-              gameEndStatus={gameEndStatus}
-              resetGame={handleResetGame}
-            />
-          )}
+
+          <Modal
+            open={modalOpen}
+            classes={[
+              'alert-message',
+              `${gameEndStatus === 'won' ? 'green-bg' : 'grey-bg'}`,
+            ]}
+            button1={{ function: handleResetGame, text: 'New game' }}
+            button2={{ function: () => navigate('/'), text: 'Main menu' }}
+            closeModal={() => setModalOpen(false)}
+            content={<GameEndMessage gameEndStatus={gameEndStatus} />}
+          />
         </div>
       </div>
     </>

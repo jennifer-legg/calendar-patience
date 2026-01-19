@@ -2,6 +2,7 @@ import { Game, GameData } from '../../models/savedGame'
 import { useAddSave, useEditSave } from '../hooks/useSaveGame'
 import { useAuth0 } from '@auth0/auth0-react'
 import { useState } from 'react'
+import Modal from './Modal'
 
 interface Props {
   gameData: GameData | Game
@@ -10,11 +11,13 @@ interface Props {
 
 //If the game is a new game (without an id) this component will save to db as new item.
 //If the game is a previously saved game (has an id) the user has an option to
-//save as a new save or save over top.
-//Save over top - edit/update database. New save - remove id, save to db as new item
+//save as a new save or save over top. Save over top= edit/update database. New save=
+// remove id, save to db as new item
 export default function SaveGameButton({ gameData, id }: Props) {
   const { user, isAuthenticated, getAccessTokenSilently } = useAuth0()
   const [gameId, setGameId] = useState<number | null>(id ? id : null)
+  const [saveStatusMsg, setSaveStatusMsg] = useState<string>('')
+  const [modalIsOpen, setModalOpen] = useState<boolean>(false)
   const saveGame = useAddSave()
   const editSave = useEditSave()
 
@@ -27,16 +30,22 @@ export default function SaveGameButton({ gameData, id }: Props) {
         if ('id' in gameToSave) {
           //eslint-disable-next-line
           const { id, ...gameToSaveWithoutId } = gameToSave
-          const newGameId: number = await saveGame.mutateAsync({
-            gameToSave: gameToSaveWithoutId,
-            token,
-          })
+          const newGameId: number = await saveGame.mutateAsync(
+            {
+              gameToSave: gameToSaveWithoutId,
+              token,
+            },
+            mutationOptions,
+          )
           setGameId(newGameId)
         } else {
-          const newGameId: number = await saveGame.mutateAsync({
-            gameToSave,
-            token,
-          })
+          const newGameId: number = await saveGame.mutateAsync(
+            {
+              gameToSave,
+              token,
+            },
+            mutationOptions,
+          )
           setGameId(newGameId)
         }
       } catch (err) {
@@ -50,11 +59,30 @@ export default function SaveGameButton({ gameData, id }: Props) {
       try {
         const token = await getAccessTokenSilently()
         const gameToSave: Game = { ...gameData, userId: user.sub, id: gameId }
-        editSave.mutate({ gameToSave, token })
+        editSave.mutate({ gameToSave, token }, mutationOptions)
       } catch (err) {
         console.log('Unable to save game')
       }
     }
+  }
+
+  const handleSetModalClose = () => {
+    setModalOpen(false)
+  }
+
+  const handleMutationSuccess = () => {
+    setSaveStatusMsg('Save successful')
+    setModalOpen(true)
+  }
+
+  const handleError = () => {
+    setSaveStatusMsg('Message unable to save. Please try again later.')
+    setModalOpen(true)
+  }
+
+  const mutationOptions = {
+    onSuccess: handleMutationSuccess,
+    onError: handleError,
   }
 
   if (isAuthenticated && user && user.sub) {
@@ -70,6 +98,12 @@ export default function SaveGameButton({ gameData, id }: Props) {
             <button onClick={handleNewSave}>New Save</button>{' '}
           </>
         )}
+        <Modal
+          content={<p>{saveStatusMsg}</p>}
+          open={modalIsOpen}
+          closeModal={handleSetModalClose}
+          classes={['grey-bg']}
+        />
       </>
     )
   }

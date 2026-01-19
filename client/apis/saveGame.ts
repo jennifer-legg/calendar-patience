@@ -35,7 +35,6 @@ export async function saveGame({
     .post(`${rootURL}/savedGames`)
     .set('Authorization', `Bearer ${token}`)
     .send(gameToSave)
-  console.log(response.body.id)
   return response.body.id as number
 }
 
@@ -47,7 +46,6 @@ export async function editSavedGame({
     .patch(`${rootURL}/savedGames`)
     .set('Authorization', `Bearer ${token}`)
     .send(gameToSave)
-  console.log(response.body.id)
   return response.body.id as number
 }
 

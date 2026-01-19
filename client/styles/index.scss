@@ -18,6 +18,31 @@ h1 {
   text-align: center;
 }
 
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  //transform to set to center of page
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 5px;
+  //Make sure on top of everything
+  z-index: 1000;
+  border-radius: 10px;
+}
+
+.modal-background-overlay {
+  position: fixed;
+  top: 0;
+  inset: 0;
+  background: rgba(0, 0, 0, .7);
+  z-index: 1000;
+}
+
+.modal-content {
+  padding: 20px;
+}
+
 header {
   grid-column: 1/4;
   grid-row: 1;
@@ -48,10 +73,6 @@ main {
   padding: 0px;
   border: 0px;
   display: block;
-}
-
-.game-end-button {
-  margin-left: 5px;
 }
 
 .circle-item {
@@ -141,16 +162,11 @@ main {
 }
 
 .alert-message {
-  z-index: 2;
-  color: white;
   height: 300px;
   width: 250px;
   position: absolute;
-  top: 215px;
-  right: 50px;
   padding: 20px;
   text-align: center;
-  border-radius: 10px;
 }
 
 .alert-message img {
@@ -158,10 +174,21 @@ main {
 }
 
 .alert-message button {
-  background-color: white;
   padding: 10px;
   border-radius: 5px;
   border: none;
+  margin-left: 5px;
+  text-align: center;
+  font-family: 'Montserrat', sans-serif;
+  
+}
+
+.close-modal {
+  background-color: inherit;
+  color: white;
+  float: right;
+  font-size: large;
+  border: 1px solid white;
 }
 
 .glow-blue {
@@ -178,6 +205,12 @@ main {
 
 .grey-bg {
   background-color: rgb(69, 68, 68);
+  color: white;
+}
+
+.green-bg {
+  background-color: rgb(20, 122, 57);
+  color: white;
 }
 
 .dice-container {
@@ -189,21 +222,8 @@ main {
   z-index: 1;
 }
 
-
-// .dice-image {
-//   background-image: url('/images/dice.svg');
-//   background-repeat: no-repeat;
-//   background-size: 200px;
-//   overflow: hidden;
-//   background-position: center center;
-// }
-
 .rounded-corner-tiny {
   border-radius: 2px;
-}
-
-.green-bg {
-  background-color: rgb(20, 122, 57);
 }
 
 .place-king { transform: rotate(30deg) rotate(-30deg); }
