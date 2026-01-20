@@ -6,12 +6,18 @@ import type { Card } from '../../models/deck.ts'
 import { Game, Pile } from '../../models/savedGame.ts'
 import SaveGameButton from './SaveGameButton.tsx'
 import { useNavigate } from 'react-router'
+import { useAddScores } from '../hooks/useScores.ts'
+import { useAuth0 } from '@auth0/auth0-react'
+import { createBeginningPileData } from '../helpers/util.ts'
+import type { GameEndStatus } from '../../models/savedGame.ts'
+import Modal from './Modal.tsx'
 
 interface Props {
   deckId: string
   clockPiles: Card[][]
   refreshDeck?: () => void
   savedGameData?: Game
+  handleDeleteSave: (id: number) => void
 }
 
 export default function ClockPatience({
@@ -19,8 +25,11 @@ export default function ClockPatience({
   refreshDeck,
   clockPiles,
   savedGameData,
+  handleDeleteSave,
 }: Props) {
   const navigate = useNavigate()
+  const addScore = useAddScores()
+  const { getAccessTokenSilently } = useAuth0()
   //activePiles tracks which of the piles still have cards, used to check if game won/lost
   const [activePiles, setActivePiles] = useState<boolean[]>(
     savedGameData ? savedGameData.activePiles : Array(13).fill(true),
@@ -29,27 +38,10 @@ export default function ClockPatience({
   const [pileData, setPileData] = useState<Pile[]>(
     savedGameData
       ? savedGameData.pileData
-      : clockPiles.map((pile, i) => {
-          const pileType: string =
-            i === 0
-              ? 'king'
-              : i === 1
-                ? 'ace'
-                : i === 11
-                  ? 'jack'
-                  : i === 12
-                    ? 'queen'
-                    : `${i}`
-          return {
-            pileType,
-            pileCards: pile,
-            facedownCards: pile,
-            faceupCards: [],
-            buttonIsClickable: pileType === 'king',
-            buttonIsVisible: true,
-            pileNumber: i,
-          }
-        }),
+      : createBeginningPileData(clockPiles),
+  )
+  const [savedGameId, setSavedGameId] = useState<number | null>(
+    savedGameData ? savedGameData.id : null,
   )
   //Selected card. Hidden when no card upturned
   const [openCard, setOpenCard] = useState<Card | null>(
@@ -63,15 +55,10 @@ export default function ClockPatience({
   const [isHidden, setisHidden] = useState<boolean>(
     savedGameData ? savedGameData.isHidden : false,
   )
-  const [gameLost, setGameLost] = useState<boolean>(
-    savedGameData ? savedGameData.gameLost : false,
-  )
-  const [gameEnded, setGameEnded] = useState<boolean>(
-    savedGameData ? savedGameData.gameEnded : false,
-  )
+  const [gameEndStatus, setGameEndStatus] = useState<GameEndStatus>('ongoing')
+  const [modalOpen, setModalOpen] = useState<boolean>(false)
 
-  console.log(savedGameData?.isHidden)
-
+  //Pile component calls this when the pile is clicked
   const handlePileClick = (
     pileType: string,
     pileNumber: number,
@@ -105,20 +92,33 @@ export default function ClockPatience({
     setisHidden(isHidden)
   }
 
+  //Saves whether game is won or lost to database
+  const handleAddScores = async (status: GameEndStatus) => {
+    try {
+      const token = await getAccessTokenSilently()
+      addScore.mutate({ token, status: status })
+    } catch (err) {
+      console.log('Error saving score')
+    }
+  }
+
   const handleResetGame = () => {
     setisHidden(true)
-    setGameEnded(false)
-    setGameLost(false)
+    setGameEndStatus('ongoing')
     setActivePiles(Array(13).fill(true))
     refreshDeck ? refreshDeck() : navigate('/new')
   }
 
-  const handleGameLost = (isLost: boolean) => {
-    setGameLost(isLost)
-    setGameEnded(true)
+  const handleGameLost = () => {
+    setGameEndStatus('lost')
+    handleAddScores('lost')
+    setModalOpen(true)
+    if (savedGameId) {
+      handleDeleteSave(savedGameId)
+    }
   }
 
-  //Game is ended if all piles are inactive except for the king pile
+  //Game is won if all piles are inactive except for the king pile
   const checkIfGameWon = (pileNumber: number) => {
     const indexes: number[] = []
     activePiles.forEach((value, i) => {
@@ -126,26 +126,33 @@ export default function ClockPatience({
         indexes.push(i)
       }
     })
-    indexes.filter((num) => num != 0 && num != pileNumber).length === 0
-      ? setGameEnded(true)
-      : null
+    //If true, game is won
+    if (indexes.filter((num) => num != 0 && num != pileNumber).length === 0) {
+      setGameEndStatus('won')
+      handleAddScores('won')
+      setModalOpen(true)
+      if (savedGameId) {
+        handleDeleteSave(savedGameId)
+      }
+    }
   }
 
   return (
     <>
-      <SaveGameButton
-        gameData={{
-          openCard,
-          currentPile,
-          isHidden,
-          gameLost,
-          gameEnded,
-          gameName: 'clock',
-          activePiles,
-          userId: '1',
-          pileData,
-        }}
-      />
+      {gameEndStatus === 'ongoing' && (
+        <SaveGameButton
+          gameData={{
+            openCard,
+            currentPile,
+            isHidden,
+            activePiles,
+            userId: 'empty',
+            pileData,
+          }}
+          {...(savedGameId && { id: savedGameId })}
+          setGameId={setSavedGameId}
+        />
+      )}
       <div>
         <div className="circle-container" key={deckId}>
           {clockPiles.map((pileCards: Card[], i) => {
@@ -166,7 +173,7 @@ export default function ClockPatience({
                   pileType={pileType}
                   handlePileClick={handlePileClick}
                   hideOpenCard={hideOpenCard}
-                  gameLost={handleGameLost}
+                  updateGameLost={handleGameLost}
                   pileCards={pileCards}
                   savedPileData={savedGameData?.pileData[i]}
                   savePile={handlePileSaveData}
@@ -177,9 +184,18 @@ export default function ClockPatience({
           {!isHidden && openCard && currentPile && (
             <DraggableCard openCard={openCard} pileType={currentPile} />
           )}
-          {gameEnded && (
-            <GameEndMessage gameLost={gameLost} resetGame={handleResetGame} />
-          )}
+
+          <Modal
+            open={modalOpen}
+            classes={[
+              'alert-message',
+              `${gameEndStatus === 'won' ? 'green-bg' : 'grey-bg'}`,
+            ]}
+            button1={{ function: handleResetGame, text: 'New game' }}
+            button2={{ function: () => navigate('/'), text: 'Main menu' }}
+            closeModal={() => setModalOpen(false)}
+            content={<GameEndMessage gameEndStatus={gameEndStatus} />}
+          />
         </div>
       </div>
     </>

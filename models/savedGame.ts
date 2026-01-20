@@ -1,26 +1,23 @@
 import { Card } from './deck'
 
+export type GameEndStatus = 'won' | 'lost' | 'ongoing'
 export interface GameData {
-  gameName: string
   activePiles: boolean[]
   pileData: Pile[]
   currentPile: string | null
   openCard: Card | null
   isHidden: boolean
-  gameLost: boolean
-  gameEnded: boolean
   userId: string
 }
 
 export interface Game extends GameData {
   id: number
-  date: string
 }
 
 export interface SaveOverview {
-  gameName: string
   id: number
-  date: string
+  createdAt: string
+  updatedAt: string
 }
 
 export interface Pile {
