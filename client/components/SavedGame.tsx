@@ -1,6 +1,6 @@
 import { useParams } from 'react-router'
 import { useGetSavedGame } from '../hooks/useSaveGame'
-import ClockFrame from './ClockFrame'
+import ClockFrame from '../pages/ClockFrame'
 import { Card } from '../../models/deck'
 
 //Retrieves a saved game from database to send to the game components
