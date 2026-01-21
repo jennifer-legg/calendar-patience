@@ -45,7 +45,7 @@ h2 {
   line-height: 1.2;
 }
 
-p, li, button {
+p, li, button, table {
   font-size: calc(1rem + 0.5vw);
 }
 
@@ -112,6 +112,41 @@ button.landing {
 
 button.landing:hover {
   background-color: $tea-green;
+}
+
+button.trash {
+  display: inline-block;
+}
+
+.dashboard {
+  display: flex;
+  flex-grow: 1;
+}
+
+button.new-game {
+  margin: 20px;
+  padding: 20px;
+  height: 100px;
+  width: 100%;
+  text-align: center;
+}
+
+.save-overview, .scores {
+  padding: 20px;
+  background-color: white;
+  color: $baltic-blue;
+  margin: 20px;
+  overflow-y: auto;
+  
+}
+
+.save-overview {
+  height: 60vh;
+  width: 45%;
+}
+
+.scores {
+  width: 100%;
 }
 
 #site-container {

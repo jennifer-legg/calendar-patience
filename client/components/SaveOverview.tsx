@@ -32,18 +32,22 @@ export default function SaveOverview() {
   }
 
   return (
-    <ul>
-      {gameOverview.map((item) => (
-        <li key={item.id}>
-          <Link to={`/save/${item.id}`}>{item.date}</Link>
-          <button
-            onClick={() => handleDelete(item.id)}
-            aria-label={`Delete save ${item.date}`}
-          >
-            <FontAwesomeIcon icon={faTrashCan} aria-hidden="true" />
-          </button>
-        </li>
-      ))}
-    </ul>
+    <div className="save-overview">
+      <h2>Your saved games</h2>
+      <ul>
+        {gameOverview.map((item) => (
+          <li key={item.id}>
+            <Link to={`/save/${item.id}`}>{item.date}</Link>
+            <button
+              className="trash"
+              onClick={() => handleDelete(item.id)}
+              aria-label={`Delete save ${item.date}`}
+            >
+              <FontAwesomeIcon icon={faTrashCan} aria-hidden="true" />
+            </button>
+          </li>
+        ))}
+      </ul>
+    </div>
   )
 }
