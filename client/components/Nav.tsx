@@ -18,7 +18,7 @@ export default function Nav() {
               </li>
             )}
           </IfAuthenticated>
-          {pathname !== '/new' && (
+          {pathname !== '/new' && pathname !== '/' && (
             <li>
               <Link to="/new">New game</Link>
             </li>
