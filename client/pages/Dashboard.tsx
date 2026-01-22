@@ -12,15 +12,15 @@ export default function Dashboard() {
       <Header />
       <main>
         <div className="dashboard">
-          <SaveOverview />
           <div>
             <Button
               classes={['new-game', 'dashboard']}
               fn={() => navigate('/')}
-              text="New game"
+              content={<h1>New game</h1>}
             />
             <Scores />
           </div>
+          <SaveOverview />
         </div>
       </main>
       <Footer />

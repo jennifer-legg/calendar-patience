@@ -1,23 +1,23 @@
-import { useNavigate } from 'react-router'
+import { Link } from 'react-router'
 import LoginOutBtn from './LoginOutBtn'
 
 export default function Nav() {
-  const navigate = useNavigate()
-
-  const handleNavigate = (path: string) => {
-    navigate(`${path}`)
-  }
-
   return (
-    <nav>
-      <button className="logo" onClick={() => handleNavigate('/')}>
-        <h1>Calendar Patience</h1>
-      </button>
-
-      <div className="nav-icon-container">
-        <button onClick={() => handleNavigate('/new')}>New game</button>
-        <LoginOutBtn />
-      </div>
-    </nav>
+    <div className="header">
+      <h1>Calendar Patience</h1>
+      <nav>
+        <ul className="nav">
+          <li>
+            <Link to="/">Home</Link>
+          </li>
+          <li>
+            <a href="/new">New game</a>
+          </li>
+          <li className="right">
+            <LoginOutBtn classes={['nav']} />
+          </li>
+        </ul>
+      </nav>
+    </div>
   )
 }

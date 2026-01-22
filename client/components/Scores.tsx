@@ -22,8 +22,8 @@ export default function Scores() {
         </thead>
         <tbody>
           <tr>
-            <th>{data && data.wins ? data.wins : '0'}</th>
-            <th>{data && data.losses ? data.losses : '0'}</th>
+            <td>{data && data.wins ? data.wins : '0'}</td>
+            <td>{data && data.losses ? data.losses : '0'}</td>
           </tr>
         </tbody>
       </table>

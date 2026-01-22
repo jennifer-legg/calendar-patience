@@ -1,12 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;400;700&display=swap');
 
+$lose-grey: rgb(69, 68, 68);
+$win-green: rgb(20, 122, 57);
+
+$yale-blue: rgb(32, 28, 61);
 $baltic-blue: #22577aff;
 $tropical-teal: #38a3a5ff;
 $emerald: #57cc99ff;
-$light-green: #80ed99ff;
-$tea-green: #c7f9ccff;
-$lose-grey: rgb(69, 68, 68);
-$win-green: rgb(20, 122, 57);
+$tea-green: rgb(199, 249, 224);
+$periwinkle: #d7d2fdff;
+$amethyst-smoke: #b272bbff;
 
 * {
     box-sizing: border-box;
@@ -21,8 +24,19 @@ body {
   font-size: 16px;
   height: 100%;
   padding: 0;
-  background-color: $baltic-blue;
+  background-image: linear-gradient(to bottom, $yale-blue, $baltic-blue, $tropical-teal);
+  max-height: fit-content;
   color: white;
+}
+
+button {
+  padding: 5px;
+  border-radius: 15px;
+  cursor: pointer;
+  text-align: center;
+  display: block; 
+  color: black;
+  border: none;
 }
 
 html {
@@ -32,12 +46,24 @@ html {
 table {
   margin-left: auto;
   margin-right: auto;
+  padding: 4px;
+}
+
+th, tr {
+  padding: 4px;
+}
+
+td {
+  color: black;
+  border-top: 2px dashed $baltic-blue;
+  padding: 10px;
 }
 
 h1 {
   font-size: clamp(1.5rem, 5vw, 3rem);
   line-height: 1.2;
-  padding: 5px;
+  padding-left: 14px;
+  padding-top: 5px;
 }
 
 h2 {
@@ -45,8 +71,8 @@ h2 {
   line-height: 1.2;
 }
 
-p, li, button, table {
-  font-size: calc(1rem + 0.5vw);
+p, button, table {
+  font-size: clamp(0.6rem, 2.5vw, 1.7rem);
 }
 
 ul {
@@ -57,38 +83,64 @@ li {
   padding: 2px;
 }
 
-nav {
+.header {
   display: flex; 
-  justify-content: space-around; 
-  gap: 10px; 
-  padding: 10px;
+  justify-content: space-between; 
+  align-items: center; 
 }
 
-button.nav-icon-container {
-  flex: 1; 
+ul.nav li {float: left;}
+
+ul.nav li a {
+  display: block;
+  color: white;
+  text-align: center;
   padding: 10px;
+  text-decoration: none;
+  font-size: clamp(0.6rem, 2.5vw, 1.7rem);
 }
 
-button.nav-icon-container {
-  height: 70px;
+ul.nav li button {
+  display: block;
+  color: white;
+  text-align: center;
   padding: 10px;
+  text-decoration: none;
+  background-color: inherit;
+  border-radius: 0%;
+  font-size: clamp(0.6rem, 2.5vw, 1.7rem);
+}
+
+ul.nav li a:hover:not(.active) {
+  background-color: $tea-green;
+  color: black;
+}
+
+ul.nav li button:hover:not(.active) {
+  background-color: $tea-green;
+  color: black;
+}
+
+ul.nav li a.active {
+  background-color: $emerald;
+}
+
+ul.nav li.right {
+  float: right;
 }
 
 div.landing {
-  height: 100vh;
   display: flex;
   justify-content: center;
   flex-direction: column;
   align-items: center;
-}
-
-button {
-  padding: 5px;
-  border-radius: 15px;
-  cursor: pointer;
-  text-align: center;
-  display: block; 
-  color: black;
+  background-color: $baltic-blue;
+  padding: 50px;
+  margin: 20px;
+  width: fit-content;
+  border: 2px solid $tropical-teal;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 img.landing {
@@ -102,10 +154,9 @@ img.landing {
 button.landing {
   background-color: $tropical-teal;
   color: black;
-  max-width: 45%;
+  width: 100%;
   margin-top: 10px;
   font-weight: 500;
-  width: 80%; 
   border: 1px solid $emerald;
   box-shadow: 2px 2px $emerald;
 }
@@ -124,11 +175,24 @@ button.trash {
 }
 
 button.new-game {
-  margin: 20px;
+  margin-left: 20px;
+  margin-top: 20px;
   padding: 20px;
-  height: 100px;
+  height: 40%;
   width: 100%;
-  text-align: center;
+  border-radius: 0%;
+  border: 5px solid $emerald;
+  display: flex;
+  align-items: center;      
+  justify-content: center;
+  background-image: radial-gradient(circle,  $baltic-blue, $tropical-teal);
+  color: white;
+  text-shadow: 6px 0 $baltic-blue;
+  margin-bottom: 10%;
+}
+
+button.new-game:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.6);
 }
 
 .save-overview, .scores {
@@ -145,8 +209,20 @@ button.new-game {
   width: 45%;
 }
 
+.save-overview h2 {
+  padding-bottom: 10px;
+  padding-top: 10px;
+  background-color: $periwinkle;
+}
+
+.save-overview li {
+  padding: 4px;
+}
+
 .scores {
   width: 100%;
+  height: 45%;
+  border: 6px solid $amethyst-smoke
 }
 
 #site-container {
@@ -186,29 +262,34 @@ button.new-game {
 header {
   grid-column: 1/4;
   grid-row: 1;
-  background-color: #1B1818;
+  background-color: $yale-blue;
   max-height: fit-content;
   text-align: left;
+  border-bottom: 2px solid $tea-green
 }
-
-
 
 header button {
   display: inline-block;
 }
 
-.logo {
-  background-color: #1B1818;
-  color: antiquewhite;
+button.logo {
+  background-color: $baltic-blue;
+  color: $tea-green;
+  text-align: left;
+  float: left;
 }
 
 footer {
   grid-column: 1/4;
   grid-row: 3;
-  background-color: #1B1818;
+  background-color: $yale-blue;
   color: white;
   padding: 10px;
   max-height: fit-content;
+}
+
+footer a {
+  color: $amethyst-smoke;
 }
 
 main {
