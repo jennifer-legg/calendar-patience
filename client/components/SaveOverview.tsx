@@ -28,7 +28,7 @@ export default function SaveOverview() {
       ) : !data[0] ? (
         <p>No saved games.</p>
       ) : (
-        <ul>
+        <ul className="saved-games">
           {data.map((item) => {
             const saveDate = new Date(
               item.updatedAt ? item.updatedAt : item.createdAt,

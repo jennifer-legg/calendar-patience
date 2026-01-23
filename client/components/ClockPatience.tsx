@@ -138,7 +138,6 @@ export default function ClockPatience({
 
   const handleSetSavedGameId = (id: number) => {
     setSavedGameId(id)
-    console.log('id set')
   }
 
   return (

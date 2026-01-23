@@ -141,7 +141,7 @@ nav {
 ul.second-nav {
   display: flex; 
   justify-content: space-between; 
-  align-items: center; 
+  align-items: center;
 }
 
 ul.second-nav li {
@@ -181,9 +181,45 @@ ul.second-nav li button:hover {
   color: black;
 }
 
+ul.second-nav li button:disabled {
+  background-color: grey;
+  cursor: not-allowed;
+}
+
+ul.second-nav li button:disabled:hover {
+  background-color: grey;
+  color: white;
+}
+
+.tooltip {
+  position: relative;
+}
+
+.tooltip-msg {
+  visibility: hidden; 
+  width: 130px;
+  background-color: $yale-blue;
+  color: white;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+  position: absolute;
+  z-index: 50;
+  left: 50%;
+  margin-left: -65px;
+  top: 100%;
+  font-size: smaller;
+}
+
+button.tooltip:hover:disabled .tooltip-msg {
+  visibility: visible;
+}
+
 div.rules {
   background-color: $yale-blue;
   padding: 10px;
+  z-index: 100;
+  position: absolute;
 }
 
 div.rules p {
@@ -202,13 +238,13 @@ div.landing {
   flex-direction: column;
   align-items: center;
   background-color: $baltic-blue;
-  padding: 50px;
+  padding: 20px;
   margin: 5%;
   width: fit-content;
   border: 2px solid $tropical-teal;
   margin-left: auto;
   margin-right: auto;
-  height: 90%;
+  height: fit-content;
 }
 
 img.landing {
@@ -224,7 +260,7 @@ button.landing {
   color: $yale-blue;
   width: 100%;
   margin-top: 10px;
-  font-weight: 600;
+  font-weight:500;
   border: 1px solid $emerald;
   box-shadow: 2px 2px $emerald;
 }
@@ -242,8 +278,9 @@ button.trash {
 }
 
 button.new-game {
+  max-height: fit-content;
   padding-right: 20px;
-  margin-bottom: 20px;
+  margin-bottom: 40px;
   aspect-ratio: 1 / 1;
   width: 100%;
   border: 5px solid $emerald;
@@ -264,18 +301,21 @@ button.new-game:hover {
 }
 
 .save-overview, .scores {
-  padding: 10px;
   background-color: white;
   color: $baltic-blue;
-  overflow-y: auto;
+  
 }
 
 .save-overview {
-  height: 100%;
+  flex-grow: 1;
   width: 100%;
   border: 20px solid $periwinkle;
   border-radius: 15px;
-  padding: 0%;
+}
+
+.saved-games {
+  overflow-y: auto;
+  height: 60vh;
 }
 
 .save-overview h2 {
@@ -284,20 +324,28 @@ button.new-game:hover {
   color: $yale-blue;
 }
 
-.save-overview li a {
-  padding: 4px;
+.saved-games li a {
   font-size: clamp(0.5rem, 2.3vw, 1.5rem);
+  white-space: nowrap;
+}
+
+.saved-games li {
+  padding-top: 4px;
 }
 
 .container {
   padding: 20px;
   width: 50%;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
 }
 
 .scores {
   width: 100%;
   height: 35%;
-  border: 6px solid $amethyst-smoke
+  border: 6px solid $amethyst-smoke;
+  padding: 10px;
 }
 
 #site-container {
@@ -476,10 +524,6 @@ main {
 }
 
 .alert-message {
-  height: 300px;
-  width: 250px;
-  position: absolute;
-  padding: 20px;
   text-align: center;
 }
 
@@ -494,15 +538,22 @@ main {
   margin-left: 5px;
   text-align: center;
   font-family: 'Montserrat', sans-serif;
-  
+  background-color: white;
+  display: inline-block;
+  margin: 10px;
 }
 
-.close-modal {
+.alert-message p {
+  padding: 5px;
+}
+
+button.close-modal {
   background-color: inherit;
   color: white;
   float: right;
   font-size: large;
   border: 1px solid white;
+  margin: none;
 }
 
 .glow-blue {

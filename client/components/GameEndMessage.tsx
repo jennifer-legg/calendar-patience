@@ -15,7 +15,8 @@ export default function GameEndMessage({ gameEndStatus }: Props) {
           src="/images/diceCrossed-50.webp"
           alt="Dice with red cross through the middle"
         />
-        <p>Game Over. Bad luck, the pack won</p>
+        <p>Game Over</p>
+        <p>Bad luck, the pack won</p>
       </>
     )
   } else {

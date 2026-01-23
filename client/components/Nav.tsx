@@ -5,7 +5,6 @@ import { IfAuthenticated } from './Auth0'
 
 export default function Nav() {
   const { pathname } = useLocation()
-  console.log(pathname)
   return (
     <div className="header">
       <h1>Calendar Patience</h1>
