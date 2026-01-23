@@ -1,16 +1,15 @@
 import DraggableCard from './DraggableCard.tsx'
 import ClockPile from './ClockPile.tsx'
+import Modal from './Modal.tsx'
+import GameOptions from './GameOptions.tsx'
 import GameEndMessage from './GameEndMessage'
 import { useState } from 'react'
 import type { Card } from '../../models/deck.ts'
-import { Game, Pile } from '../../models/savedGame.ts'
-import SaveGameButton from './SaveGameButton.tsx'
+import { Game, Pile, GameEndStatus } from '../../models/savedGame.ts'
 import { useNavigate } from 'react-router'
 import { useAddScores } from '../hooks/useScores.ts'
 import { useAuth0 } from '@auth0/auth0-react'
 import { createBeginningPileData } from '../helpers/util.ts'
-import type { GameEndStatus } from '../../models/savedGame.ts'
-import Modal from './Modal.tsx'
 
 interface Props {
   deckId: string
@@ -137,22 +136,26 @@ export default function ClockPatience({
     }
   }
 
+  const handleSetSavedGameId = (id: number) => {
+    setSavedGameId(id)
+    console.log('id set')
+  }
+
   return (
     <>
-      {gameEndStatus === 'ongoing' && (
-        <SaveGameButton
-          gameData={{
-            openCard,
-            currentPile,
-            isHidden,
-            activePiles,
-            userId: 'empty',
-            pileData,
-          }}
-          {...(savedGameId && { id: savedGameId })}
-          setGameId={setSavedGameId}
-        />
-      )}
+      <GameOptions
+        gameEndStatus={gameEndStatus}
+        setSavedGameId={handleSetSavedGameId}
+        {...(savedGameId && { id: savedGameId })}
+        savedGameData={{
+          openCard,
+          currentPile,
+          isHidden,
+          activePiles,
+          userId: 'empty',
+          pileData,
+        }}
+      />
       <div>
         <div className="circle-container" key={deckId}>
           {clockPiles.map((pileCards: Card[], i) => {

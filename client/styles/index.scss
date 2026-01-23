@@ -120,18 +120,14 @@ ul.nav li button {
   font-size: clamp(0.6rem, 2.5vw, 1.7rem);
 }
 
-ul.nav li a:hover:not(.active) {
+ul.nav li a:hover {
   background-color: $tea-green;
   color: black;
 }
 
-ul.nav li button:hover:not(.active) {
+ul.nav li button:hover {
   background-color: $tea-green;
   color: black;
-}
-
-ul.nav li a.active {
-  background-color: $emerald;
 }
 
 ul.nav li.right {
@@ -142,13 +138,63 @@ nav {
   height: 100%;
 }
 
-div.side-nav {
-  width: 100%;
-  grid-column: 1/2;
-  grid-row: 2;
-  background-color: $amethyst-smoke;
-  
+ul.second-nav {
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
 }
+
+ul.second-nav li {
+  border: 1px solid $tea-green;
+  background-color: $amethyst-smoke;
+  flex-grow: 1;
+}
+
+ul.second-nav li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 10px;
+  text-decoration: none;
+  font-size: clamp(0.6rem, 2.5vw, 1.7rem);
+}
+
+ul.second-nav li button {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 10px;
+  text-decoration: none;
+  background-color: inherit;
+  border-radius: 0%;
+  font-size: clamp(0.6rem, 2.5vw, 1.7rem);
+  width: 100%;
+}
+
+ul.second-nav li a:hover {
+  background-color: $tea-green;
+  color: black;
+}
+
+ul.second-nav li button:hover {
+  background-color: $tea-green;
+  color: black;
+}
+
+div.rules {
+  background-color: $yale-blue;
+  padding: 10px;
+}
+
+div.rules p {
+  padding: 10px;
+  text-align: justify;
+}
+
+div.rules p.center {
+  text-align: center;
+}
+
 
 div.landing {
   display: flex;

@@ -1,7 +1,5 @@
 import ClockPatience from '../components/ClockPatience.tsx'
 import type { Card } from '../../models/deck.ts'
-import { useState } from 'react'
-import ClockRules from '../components/ClockRules.tsx'
 import { Game } from '../../models/savedGame.ts'
 import { useAuth0 } from '@auth0/auth0-react'
 import { useDeleteSavedGame } from '../hooks/useSaveGame.ts'
@@ -15,7 +13,7 @@ interface Props {
   savedGameData?: Game
 }
 
-//Component handles deleting saved games when finished and displays rules
+//Component handles clock page payout and deleting saved games when finished
 export default function ClockFrame({
   deckId,
   clockPiles,
@@ -24,11 +22,6 @@ export default function ClockFrame({
 }: Props) {
   const deleteSave = useDeleteSavedGame()
   const { getAccessTokenSilently } = useAuth0()
-  const [rulesAreVisible, setRulesVisible] = useState(false)
-
-  const handleClick = () => {
-    setRulesVisible(rulesAreVisible ? false : true)
-  }
 
   const handleDeleteSave = async (id: number) => {
     try {
@@ -46,10 +39,6 @@ export default function ClockFrame({
     <>
       <Header />
       <main>
-        <button onClick={handleClick}>
-          {rulesAreVisible ? `Hide the rules` : `Show the rules`}
-        </button>
-        {rulesAreVisible && <ClockRules />}
         <ClockPatience
           deckId={deckId}
           refreshDeck={refreshDeck}

@@ -1,43 +1,48 @@
 import Button from './Button'
 import SaveGameButton from './SaveGameButton'
+import ClockRules from './ClockRules'
 import type { GameData, GameEndStatus } from '../../models/savedGame'
+import { useState } from 'react'
 
 interface Props {
-  setRulesVisible: () => void
-  rulesAreVisible: boolean
   gameEndStatus: GameEndStatus
   setSavedGameId: (id: number) => void
-  savedGameId?: number
+  id?: number
   savedGameData: GameData
 }
 
 export default function GameOptions({
-  setRulesVisible,
-  rulesAreVisible,
   gameEndStatus,
   setSavedGameId,
-  savedGameId,
+  id,
   savedGameData,
 }: Props) {
+  const [rulesAreVisible, setRulesVisible] = useState(false)
+
+  const handleClick = () => {
+    setRulesVisible(rulesAreVisible ? false : true)
+  }
+
   return (
-    <div className="side-nav">
-      <ul>
-        <li>
-          <Button
-            fn={setRulesVisible}
-            content={<>{rulesAreVisible ? 'Hide rules' : 'Show rules'}</>}
-          />
-        </li>
-        <li>
+    <>
+      <div className="second-nav">
+        <ul className="second-nav">
+          <li>
+            <Button
+              fn={handleClick}
+              content={<>{rulesAreVisible ? 'Hide rules' : 'Show rules'}</>}
+            />
+          </li>
           {gameEndStatus === 'ongoing' && (
             <SaveGameButton
               gameData={savedGameData}
-              {...(savedGameId && { id: savedGameId })}
+              {...(id && { id: id })}
               setGameId={setSavedGameId}
             />
           )}
-        </li>
-      </ul>
-    </div>
+        </ul>
+      </div>
+      {rulesAreVisible && <ClockRules />}
+    </>
   )
 }

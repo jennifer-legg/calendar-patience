@@ -88,14 +88,22 @@ export default function SaveGameButton({ gameData, id, setGameId }: Props) {
   if (isAuthenticated && user && user.sub) {
     return (
       <>
-        {!id && <button onClick={handleNewSave}>Save Game</button>}
+        {!id && (
+          <li>
+            <button onClick={handleNewSave}>Save Game</button>
+          </li>
+        )}
         {/* The button below is only visible if game has already been saved (has id). 
         It removes the id and saves the game as a new game */}
         {id && (
           <>
             {' '}
-            <button onClick={handleEdit}>Save Game</button>
-            <button onClick={handleNewSave}>New Save</button>{' '}
+            <li>
+              <button onClick={handleEdit}>Save Game</button>
+            </li>
+            <li>
+              <button onClick={handleNewSave}>New Save</button>
+            </li>
           </>
         )}
         <Modal
