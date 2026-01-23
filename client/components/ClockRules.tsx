@@ -1,6 +1,6 @@
 export default function ClockRules() {
   return (
-    <div>
+    <div className="rules">
       <h2>Rules for clock patience</h2>
       <p>
         Each of the pile of cards placed in the circle relates to the numbers on
@@ -30,7 +30,7 @@ export default function ClockRules() {
         cards in the piles around the outside of the clock, the game is over and
         you lose.{' '}
       </p>
-      <p>Good luck!</p>
+      <p className="center">Good luck!</p>
     </div>
   )
 }

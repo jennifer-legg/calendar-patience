@@ -11,20 +11,22 @@ export default function Scores() {
     return <p>Error loading scores</p>
   }
   return (
-    <table>
-      <caption>Statistics</caption>
-      <thead>
-        <tr>
-          <th>Wins</th>
-          <th>Losses</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <th>{data && data.wins ? data.wins : '0'}</th>
-          <th>{data && data.losses ? data.losses : '0'}</th>
-        </tr>
-      </tbody>
-    </table>
+    <div className="scores">
+      <h2>Statistics</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Wins</th>
+            <th>Losses</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{data && data.wins ? data.wins : '0'}</td>
+            <td>{data && data.losses ? data.losses : '0'}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   )
 }

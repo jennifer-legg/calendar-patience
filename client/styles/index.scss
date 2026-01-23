@@ -1,20 +1,359 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;400;700&display=swap');
 
+$lose-grey: rgb(69, 68, 68);
+$win-green: rgb(20, 122, 57);
+
+$yale-blue: rgb(32, 28, 61);
+$baltic-blue: #22577aff;
+$tropical-teal: #38a3a5ff;
+$emerald: #57cc99ff;
+$tea-green: rgb(199, 249, 224);
+$periwinkle: #d7d2fdff;
+$amethyst-smoke: #b272bbff;
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    padding-block: 0;
+    padding-inline: 0;
+    font-family: 'Montserrat', sans-serif;
+}
+
 html, 
 body {
-  font-family: 'Montserrat', sans-serif;
-  margin:0%;
+  font-size: 16px;
+  color: white;
+}
+
+body {
+  background-color: $yale-blue;
+  background-image: linear-gradient(to bottom, $yale-blue, $baltic-blue, $tropical-teal);
+  background-attachment: fixed;
+}
+
+button {
+  padding: 5px;
+  border-radius: 15px;
+  cursor: pointer;
+  text-align: center;
+  display: block; 
+  color: black;
+  border: none;
+  background: none;
+  font: inherit;
+}
+
+html {
+  font-size: 16px;
+}
+
+table {
+  margin-left: auto;
+  margin-right: auto;
+  padding: 4px;
+}
+
+th, tr {
+  padding: 10px;
+}
+
+td {
+  color: black;
+  border-top: 2px dashed $baltic-blue;
+  padding: 10px;
 }
 
 h1 {
+  font-size: clamp(1.5rem, 5vw, 3rem);
+  line-height: 1.2;
+  padding-left: 14px;
+  padding-top: 5px;
+}
+
+h2 {
+  font-size: clamp(0.8rem, 3vw, 2rem);
+  line-height: 1.2;
+}
+
+p, button, table {
+  font-size: clamp(0.6rem, 2.5vw, 1.7rem);
+}
+
+ul {
+  list-style-type: none;
+}
+
+li {
+  padding: 2px;
+}
+
+.header {
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+}
+
+ul.nav li {
+  float: left;
+  padding: 0px;
+
+}
+
+ul.nav li a {
+  display: block;
+  color: white;
   text-align: center;
+  padding: 10px;
+  text-decoration: none;
+  font-size: clamp(0.6rem, 2.5vw, 1.7rem);
+}
+
+ul.nav li button {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 10px;
+  text-decoration: none;
+  background-color: inherit;
+  border-radius: 0%;
+  font-size: clamp(0.6rem, 2.5vw, 1.7rem);
+}
+
+ul.nav li a:hover {
+  background-color: $tea-green;
+  color: black;
+}
+
+ul.nav li button:hover {
+  background-color: $tea-green;
+  color: black;
+}
+
+ul.nav li.right {
+  float: right;
+}
+
+nav {
+  height: 100%;
+}
+
+ul.second-nav {
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center;
+}
+
+ul.second-nav li {
+  border: 1px solid $tea-green;
+  background-color: $amethyst-smoke;
+  flex-grow: 1;
+}
+
+ul.second-nav li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 5px;
+  text-decoration: none;
+  font-size: clamp(0.6rem, 2.5vw, 1.7rem);
+}
+
+ul.second-nav li button {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 5px;
+  text-decoration: none;
+  background-color: inherit;
+  border-radius: 0%;
+  font-size: clamp(0.6rem, 2.5vw, 1.7rem);
+  width: 100%;
+}
+
+ul.second-nav li a:hover {
+  background-color: $tea-green;
+  color: black;
+}
+
+ul.second-nav li button:hover {
+  background-color: $tea-green;
+  color: black;
+}
+
+ul.second-nav li button:disabled {
+  background-color: grey;
+  cursor: not-allowed;
+}
+
+ul.second-nav li button:disabled:hover {
+  background-color: grey;
+  color: white;
+}
+
+.tooltip {
+  position: relative;
+}
+
+.tooltip-msg {
+  visibility: hidden; 
+  width: 130px;
+  background-color: $yale-blue;
+  color: white;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+  position: absolute;
+  z-index: 50;
+  left: 50%;
+  margin-left: -65px;
+  top: 100%;
+  font-size: smaller;
+}
+
+button.tooltip:hover:disabled .tooltip-msg {
+  visibility: visible;
+}
+
+div.rules {
+  background-color: $yale-blue;
+  padding: 10px;
+  z-index: 100;
+  position: absolute;
+}
+
+div.rules p {
+  padding: 10px;
+  text-align: justify;
+}
+
+div.rules p.center {
+  text-align: center;
+}
+
+
+div.landing {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  background-color: $baltic-blue;
+  padding: 20px;
+  margin: 5%;
+  width: fit-content;
+  border: 2px solid $tropical-teal;
+  margin-left: auto;
+  margin-right: auto;
+  height: fit-content;
+}
+
+img.landing {
+  height: 300px;
+  width: auto;
+  border-radius: 10px;
+  box-shadow: 8px 8px 4px $lose-grey;
+  margin-bottom: 10px;
+}
+
+button.landing {
+  background-color: $tropical-teal;
+  color: $yale-blue;
+  width: 100%;
+  margin-top: 10px;
+  font-weight:500;
+  border: 1px solid $emerald;
+  box-shadow: 2px 2px $emerald;
+}
+
+button.landing:hover {
+  background-color: $tea-green;
+}
+
+button.trash {
+  display: inline-block;
+}
+
+.dashboard {
+  display: flex;
+}
+
+button.new-game {
+  max-height: fit-content;
+  padding-right: 20px;
+  margin-bottom: 40px;
+  aspect-ratio: 1 / 1;
+  width: 100%;
+  border: 5px solid $emerald;
+  display: flex;
+  align-items: center;      
+  justify-content: center;
+  background-image: url('/images/card-148624.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  color: $amethyst-smoke;
+  text-shadow: 2px 0 #fff, -2px 0 #fff, 0 2px #fff, 0 -2px #fff,
+             1px 1px #fff, -1px -1px #fff, 1px -1px #fff, -1px 1px #fff;;
+}
+
+button.new-game:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.6);
+}
+
+.save-overview, .scores {
+  background-color: white;
+  color: $baltic-blue;
+  
+}
+
+.save-overview {
+  flex-grow: 1;
+  width: 100%;
+  border: 20px solid $periwinkle;
+  border-radius: 15px;
+}
+
+.saved-games {
+  overflow-y: auto;
+  height: 60vh;
+}
+
+.save-overview h2 {
+  padding: 10px;
+  background-color: $periwinkle;
+  color: $yale-blue;
+}
+
+.saved-games li a {
+  font-size: clamp(0.5rem, 2.3vw, 1.5rem);
+  white-space: nowrap;
+}
+
+.saved-games li {
+  padding-top: 4px;
+}
+
+.container {
+  padding: 20px;
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.scores {
+  width: 100%;
+  height: 35%;
+  border: 6px solid $amethyst-smoke;
+  padding: 10px;
 }
 
 #site-container {
   display: grid;
+  min-height: 100vh;
   grid-template-columns: 1fr 4fr 1fr;
-  gap: 20px;
-  grid-auto-rows: minmax(50px, auto);
+  gap: 0px 20px;
+  grid-template-rows: auto 1fr auto;
   text-align: center;
 }
 
@@ -46,11 +385,34 @@ h1 {
 header {
   grid-column: 1/4;
   grid-row: 1;
+  background-color: $yale-blue;
+  max-height: fit-content;
+  text-align: left;
+  border-bottom: 2px solid $tea-green
+}
+
+header button {
+  display: inline-block;
+}
+
+button.logo {
+  background-color: $baltic-blue;
+  color: $tea-green;
+  text-align: left;
+  float: left;
 }
 
 footer {
   grid-column: 1/4;
   grid-row: 3;
+  background-color: $yale-blue;
+  color: white;
+  padding: 10px;
+  max-height: fit-content;
+}
+
+footer a {
+  color: $amethyst-smoke;
 }
 
 main {
@@ -162,10 +524,6 @@ main {
 }
 
 .alert-message {
-  height: 300px;
-  width: 250px;
-  position: absolute;
-  padding: 20px;
   text-align: center;
 }
 
@@ -180,15 +538,22 @@ main {
   margin-left: 5px;
   text-align: center;
   font-family: 'Montserrat', sans-serif;
-  
+  background-color: white;
+  display: inline-block;
+  margin: 10px;
 }
 
-.close-modal {
+.alert-message p {
+  padding: 5px;
+}
+
+button.close-modal {
   background-color: inherit;
   color: white;
   float: right;
   font-size: large;
   border: 1px solid white;
+  margin: none;
 }
 
 .glow-blue {

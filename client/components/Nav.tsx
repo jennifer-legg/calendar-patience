@@ -1,28 +1,32 @@
-import { useNavigate } from 'react-router'
-import { useAuth0 } from '@auth0/auth0-react'
+import { Link } from 'react-router'
+import LoginOutBtn from './LoginOutBtn'
+import { useLocation } from 'react-router'
+import { IfAuthenticated } from './Auth0'
 
 export default function Nav() {
-  const { loginWithRedirect, logout, isAuthenticated } = useAuth0()
-  const navigate = useNavigate()
-  const handleLogin = () => {
-    loginWithRedirect()
-  }
-  const handleLogout = () => {
-    logout()
-  }
-
-  const handleNavigate = (path: string) => {
-    navigate(`${path}`)
-  }
-
+  const { pathname } = useLocation()
   return (
-    <nav>
-      <button onClick={() => handleNavigate('/')}>Home</button>
-      <button onClick={() => handleNavigate('/new')}>New game</button>
-      {!isAuthenticated && (
-        <button onClick={handleLogin}>Login/Register</button>
-      )}
-      {isAuthenticated && <button onClick={handleLogout}>Logout</button>}
-    </nav>
+    <div className="header">
+      <h1>Calendar Patience</h1>
+      <nav>
+        <ul className="nav">
+          <IfAuthenticated>
+            {pathname !== '/' && (
+              <li>
+                <Link to="/">Dashboard</Link>
+              </li>
+            )}
+          </IfAuthenticated>
+          {pathname !== '/new' && pathname !== '/' && (
+            <li>
+              <Link to="/new">New game</Link>
+            </li>
+          )}
+          <li className="right">
+            <LoginOutBtn classes={['nav']} />
+          </li>
+        </ul>
+      </nav>
+    </div>
   )
 }

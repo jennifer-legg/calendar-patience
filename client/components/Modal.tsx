@@ -52,7 +52,9 @@ export default function Modal({
             >
               X
             </button>
-            <div className="modal-content">
+            <div
+              className={`modal-content ${classes ? classes.join(' ') : ''}`}
+            >
               {content}
               {button1 && (
                 <button onClick={button1.function}>{button1.text}</button>
