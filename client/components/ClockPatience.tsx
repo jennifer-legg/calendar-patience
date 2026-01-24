@@ -8,7 +8,6 @@ import type { Card } from '../../models/deck.ts'
 import { Game, Pile, GameEndStatus } from '../../models/savedGame.ts'
 import { useNavigate } from 'react-router'
 import { useAddScores } from '../hooks/useScores.ts'
-import { useAuth0 } from '@auth0/auth0-react'
 import { createBeginningPileData } from '../helpers/util.ts'
 
 interface Props {
@@ -28,7 +27,6 @@ export default function ClockPatience({
 }: Props) {
   const navigate = useNavigate()
   const addScore = useAddScores()
-  const { getAccessTokenSilently } = useAuth0()
   //activePiles tracks which of the piles still have cards, used to check if game won/lost
   const [activePiles, setActivePiles] = useState<boolean[]>(
     savedGameData ? savedGameData.activePiles : Array(13).fill(true),
@@ -93,12 +91,7 @@ export default function ClockPatience({
 
   //Saves whether game is won or lost to database
   const handleAddScores = async (status: GameEndStatus) => {
-    try {
-      const token = await getAccessTokenSilently()
-      addScore.mutate({ token, status: status })
-    } catch (err) {
-      console.log('Error saving score')
-    }
+    addScore(status)
   }
 
   const handleResetGame = () => {

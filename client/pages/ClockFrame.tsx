@@ -12,7 +12,7 @@ interface Props {
   savedGameData?: Game
 }
 
-//Component handles clock page payout and deleting saved games when finished
+//Component handles deleting saved games when finished
 export default function ClockFrame({
   deckId,
   clockPiles,
