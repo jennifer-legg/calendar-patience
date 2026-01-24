@@ -2,21 +2,19 @@
 
 ## Overview
 
-An online version of a traditional card game, it utilises drag and drop functionality, database and http requests, and the [Deck of Cards API](https://deckofcardsapi.com/). The API creates the initial deck of cards, complete with images of the face and back of the cards.
+An online version of a traditional card game, this is a personal project of mine which utilises drag and drop functionality, database and http requests, and the [Deck of Cards API](https://deckofcardsapi.com/). The API creates the initial deck of cards, complete with images of the face and back of the cards.
 
-Deployed on Render.com and [playable on desktop](https://calendar-patience.onrender.com/).
+This repository is deployed on Render.com and [playable on desktop](https://calendar-patience.onrender.com/). I am currently developing event handlers for touch events to allow play on touch screen devices.
 
 ## Key features
 
-- Database with queries managed with knex.js
-- HTML5 Drag and Drop API functionality for mouse users
-- React components
-- Responsive UI built with CSS
-- Secure sign-in with Auth0
+- Optional secure sign-in with Auth0.
+- Save game and win/loss statistics features available if the user is logged in.
+- Database with queries managed with knex.js.
+- HTML5 Drag and Drop API functionality for mouse users.
+- Responsive UI built with CSS.
 
 ## Tech used
-
-I am currently creating and adding database functionality and user login, so that the player can save a game to come back to or check how many wins or losses they have overall.
 
 ### Frontend
 
