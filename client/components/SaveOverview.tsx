@@ -23,9 +23,12 @@ export default function SaveOverview() {
       <h2>Your saved games</h2>
       {isPending ? (
         <p>Loading...</p>
-      ) : isError || !data ? (
-        <p>Error retrieving your saved games. Please try again later.</p>
-      ) : !data[0] ? (
+      ) : isError ? (
+        <>
+          <p>Error retrieving your saved games.</p>{' '}
+          <p>Please try again later.</p>
+        </>
+      ) : !data || !data[0] ? (
         <p>No saved games.</p>
       ) : (
         <ul className="saved-games">
