@@ -2,9 +2,9 @@
 
 ## Overview
 
-An online version of a traditional card game, it utilises drag and drop functionality, database and http requests, and the [Deck of Cards API](https://deckofcardsapi.com/). The API creates the initial deck of cards, complete with images of the face and back of the cards. 
+An online version of a traditional card game, it utilises drag and drop functionality, database and http requests, and the [Deck of Cards API](https://deckofcardsapi.com/). The API creates the initial deck of cards, complete with images of the face and back of the cards.
 
-Deployed on Render.com and [playable on desktop] (https://calendar-patience.onrender.com/).
+Deployed on Render.com and [playable on desktop](https://calendar-patience.onrender.com/).
 
 ## Key features
 
