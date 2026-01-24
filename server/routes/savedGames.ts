@@ -13,7 +13,7 @@ router.get('/overview', checkJwt, async (req: JwtRequest, res) => {
   }
   try {
     const overview = await db.getOverviewByUserId(auth0Id)
-    overview[0] ? res.json(overview) : res.sendStatus(500)
+    res.json(overview)
   } catch (error) {
     console.log(
       error instanceof Error ? error.message : 'Error getting overview',
