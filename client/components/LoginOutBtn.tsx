@@ -12,7 +12,11 @@ export default function LoginOutBtn({ classes }: Props) {
   }
 
   const handleLogout = () => {
-    logout()
+    logout({
+      logoutParams: {
+        returnTo: window.location.origin,
+      },
+    })
   }
 
   return (
