@@ -6,6 +6,7 @@ import {
 } from '@tanstack/react-query'
 import * as API from '../apis/scores.ts'
 import { useAuth0 } from '@auth0/auth0-react'
+import { GameEndStatus } from '../../models/savedGame.ts'
 
 export function useGetScores() {
   const { getAccessTokenSilently } = useAuth0()
@@ -23,7 +24,19 @@ export function useGetScores() {
 }
 
 export function useAddScores() {
-  return useScoresMutation(API.addScores)
+  const { getAccessTokenSilently } = useAuth0()
+  const { mutate } = useScoresMutation(API.addScores)
+
+  const handleAddScores = async (status: GameEndStatus) => {
+    try {
+      const token = await getAccessTokenSilently()
+      mutate({ token, status: status })
+    } catch (err) {
+      console.log('Unable to add score')
+    }
+  }
+
+  return handleAddScores
 }
 
 export function useScoresMutation<TData = unknown, TVariables = unknown>(

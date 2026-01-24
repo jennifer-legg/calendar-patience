@@ -1,21 +1,15 @@
 import { useGetSaveOverviewByUserId } from '../hooks/useSaveGame'
 import { Link } from 'react-router'
-import { useAuth0 } from '@auth0/auth0-react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrashCan } from '@fortawesome/free-regular-svg-icons'
+import useMutateSaveGame from '../hooks/useMutateSaveGame'
 
 export default function SaveOverview() {
-  const { data, isError, isPending, deleteSavedGame } =
-    useGetSaveOverviewByUserId()
-  const { getAccessTokenSilently } = useAuth0()
+  const { data, isError, isPending } = useGetSaveOverviewByUserId()
+  const mutate = useMutateSaveGame()
 
   const handleDelete = async (saveId: number) => {
-    try {
-      const token = await getAccessTokenSilently()
-      deleteSavedGame.mutate({ saveId, token })
-    } catch (err) {
-      console.log('Error authenticating ')
-    }
+    mutate({ mutationType: 'delete', id: saveId })
   }
 
   return (

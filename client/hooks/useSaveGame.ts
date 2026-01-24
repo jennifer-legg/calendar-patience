@@ -24,7 +24,7 @@ export function useGetSavedGame(id: number) {
 
 export function useGetSaveOverviewByUserId() {
   const { getAccessTokenSilently } = useAuth0()
-  const query = useQuery({
+  return useQuery({
     queryKey: ['overview'],
     queryFn: async () => {
       try {
@@ -35,13 +35,17 @@ export function useGetSaveOverviewByUserId() {
       }
     },
   })
+}
+
+export function useMutateSavedGame() {
   return {
-    ...query,
-    deleteSavedGame: useDeleteSavedGame(),
+    deleteGame: useMutations(API.deleteSavedGame),
+    editGame: useMutations(API.editSavedGame),
+    addGame: useMutations(API.saveGame),
   }
 }
 
-export function useSaveGameMutation<TData = unknown, TVariables = unknown>(
+function useMutations<TData = unknown, TVariables = unknown>(
   mutationFn: MutationFunction<TData, TVariables>,
 ) {
   const queryClient = useQueryClient()
@@ -54,16 +58,4 @@ export function useSaveGameMutation<TData = unknown, TVariables = unknown>(
   })
 
   return mutation
-}
-
-export function useAddSave() {
-  return useSaveGameMutation(API.saveGame)
-}
-
-export function useEditSave() {
-  return useSaveGameMutation(API.editSavedGame)
-}
-
-export function useDeleteSavedGame() {
-  return useSaveGameMutation(API.deleteSavedGame)
 }
