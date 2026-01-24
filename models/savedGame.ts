@@ -1,5 +1,7 @@
 import { Card } from './deck'
 
+export type MutationType = 'save' | 'delete'
+
 export type GameEndStatus = 'won' | 'lost' | 'ongoing'
 export interface GameData {
   activePiles: boolean[]

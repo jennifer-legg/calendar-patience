@@ -1,10 +1,9 @@
 import ClockPatience from '../components/ClockPatience.tsx'
 import type { Card } from '../../models/deck.ts'
 import { Game } from '../../models/savedGame.ts'
-import { useAuth0 } from '@auth0/auth0-react'
-import { useDeleteSavedGame } from '../hooks/useSaveGame.ts'
 import Footer from '../components/Footer.tsx'
 import Header from '../components/Header.tsx'
+import useMutateSaveGame from '../hooks/useMutateSaveGame.ts'
 
 interface Props {
   deckId: string
@@ -20,19 +19,10 @@ export default function ClockFrame({
   refreshDeck,
   savedGameData,
 }: Props) {
-  const deleteSave = useDeleteSavedGame()
-  const { getAccessTokenSilently } = useAuth0()
+  const mutate = useMutateSaveGame()
 
   const handleDeleteSave = async (id: number) => {
-    try {
-      const token = await getAccessTokenSilently()
-      deleteSave.mutate({
-        saveId: id,
-        token,
-      })
-    } catch (err) {
-      console.log('Unable to delete saved game')
-    }
+    await mutate({ mutationType: 'delete', id })
   }
 
   return (

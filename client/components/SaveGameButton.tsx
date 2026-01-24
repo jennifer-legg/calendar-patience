@@ -1,8 +1,8 @@
 import { Game, GameData } from '../../models/savedGame'
-import { useAddSave, useEditSave } from '../hooks/useSaveGame'
 import { useAuth0 } from '@auth0/auth0-react'
 import { useState } from 'react'
 import Modal from './Modal'
+import useMutateSaveGame from '../hooks/useMutateSaveGame'
 
 interface Props {
   gameData: GameData | Game
@@ -10,58 +10,28 @@ interface Props {
   setGameId: (id: number) => void
 }
 
-//If the game is a new game (without an id) this component will save to db as new item (post)
-//If the game is a previously saved game (has an id) the game will save over top (patch)
 export default function SaveGameButton({ gameData, id, setGameId }: Props) {
-  const { user, isAuthenticated, getAccessTokenSilently } = useAuth0()
+  const { isAuthenticated } = useAuth0()
   const [saveStatusMsg, setSaveStatusMsg] = useState<string>('')
   const [modalIsOpen, setModalOpen] = useState<boolean>(false)
-  const saveGame = useAddSave()
-  const editSave = useEditSave()
+  const mutate = useMutateSaveGame()
 
   const handleSave = async () => {
-    if (user && user.sub) {
-      try {
-        const token = await getAccessTokenSilently()
-        if (id) {
-          const gameToSave: Game = { ...gameData, userId: user.sub, id }
-          editSave.mutate({ gameToSave, token }, mutationOptions)
-        } else {
-          const gameToSave: GameData = { ...gameData, userId: user.sub }
-          const newGameId: number = await saveGame.mutateAsync(
-            {
-              gameToSave,
-              token,
-            },
-            mutationOptions,
-          )
-          setGameId(newGameId)
-        }
-      } catch (err) {
-        console.log('Unable to save game')
-      }
+    const { message, newId } = await mutate({
+      mutationType: 'save',
+      gameData,
+      id,
+    })
+    if (newId) {
+      setGameId(newId)
     }
+    setSaveStatusMsg(message)
+    setModalOpen(true)
   }
 
   const handleSetModalClose = () => {
     setModalOpen(false)
   }
-
-  const handleMutationSuccess = () => {
-    setSaveStatusMsg('Save successful')
-    setModalOpen(true)
-  }
-
-  const handleError = () => {
-    setSaveStatusMsg('Message unable to save. Please try again later.')
-    setModalOpen(true)
-  }
-
-  const mutationOptions = {
-    onSuccess: handleMutationSuccess,
-    onError: handleError,
-  }
-  console.log(!isAuthenticated)
 
   return (
     <>
